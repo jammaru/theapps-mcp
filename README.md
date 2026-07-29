@@ -1,49 +1,60 @@
 # apps-mcp
 
-**Unofficial** Model Context Protocol (MCP) server for the [Apps API](https://theapps.jp/api) (`theapps.jp`).
+**Unofficial** [Apps API](https://theapps.jp/api) 向け MCP サーバー（MIT）
 
-- Protocol: **MCP 2026-07-28** oriented (stateless factory; stdio by default, optional HTTP)
-- Runtime: **Bun** + **TypeScript** + **Biome** + **Zod**
-- Auth: your own `APPS_APP_ID` / `APPS_APP_SECRET` (no hosted OAuth)
-- License: **MIT**
+認証は OAuth ではなく、Apps 管理画面の **アプリID / アプリシークレット** です。  
+ローカルで動かして、自分の資格情報だけを MCP クライアントに渡す使い方がいちばん簡単です。
 
-## Why local OSS?
+## 使い方（いちばん簡単）
 
-Apps API auth is **app credentials** (client credentials), not a hosted OAuth connector flow.  
-The safest and simplest UX is: install locally, put secrets in your MCP client `env`, done.
+### 1. アプリID・シークレットを取得
 
-## Quick start
+1. [Apps](https://theapps.jp/) にログイン
+2. 管理画面で API 機能をインストール
+3. API 設定画面で **アプリID** と **アプリシークレット** を控える
 
-### 1. Get credentials
+チャット・GitHub・問い合わせ本文には貼らないでください。
 
-In the Apps admin API settings, copy **App ID** and **App Secret**.  
-Never paste them into chat, GitHub, or support forms.
+### 2. セットアップ
 
-### 2. Add to your MCP client
-
-```json
-{
-  "mcpServers": {
-    "apps": {
-      "command": "bunx",
-      "args": ["-y", "apps-mcp"],
-      "env": {
-        "APPS_APP_ID": "your-app-id",
-        "APPS_APP_SECRET": "your-app-secret"
-      }
-    }
-  }
-}
+```bash
+npx -y github:manmaru-ai/apps-mcp configure
 ```
 
-Node alternative:
+対話ウィザードが次を行います。
+
+- アプリID / アプリシークレットの入力
+- 書き込み許可の有無（既定は読み取り専用）
+- Cursor / Claude Code / Claude Desktop への MCP 登録（任意）
+- 手動追加用 JSON の表示
+
+再設定:
+
+```bash
+npx -y github:manmaru-ai/apps-mcp configure --force
+```
+
+npm 公開後は `npx -y apps-mcp configure` でも同じです。
+
+### 3. クライアントを再起動
+
+設定後、Cursor や Claude Desktop を再起動してください。  
+まずはツール `apps_auth_status` で接続確認できます。
+
+Windows Store 版 Claude Desktop は設定ファイルのパスが異なります。`configure` が自動検出します。
+
+---
+
+## 手動で追加する場合
+
+`configure` を使わず、設定ファイルに直接書いても構いません。
 
 ```json
 {
   "mcpServers": {
     "apps": {
       "command": "npx",
-      "args": ["-y", "apps-mcp"],
+      "args": ["-y", "github:manmaru-ai/apps-mcp"],
       "env": {
         "APPS_APP_ID": "your-app-id",
         "APPS_APP_SECRET": "your-app-secret"
@@ -53,9 +64,26 @@ Node alternative:
 }
 ```
 
-### 3. (Optional) enable writes
+Bun の場合:
 
-Writes talk to **production** (Apps API has **no sandbox**).
+```json
+{
+  "mcpServers": {
+    "apps": {
+      "command": "bunx",
+      "args": ["-y", "github:manmaru-ai/apps-mcp"],
+      "env": {
+        "APPS_APP_ID": "your-app-id",
+        "APPS_APP_SECRET": "your-app-secret"
+      }
+    }
+  }
+}
+```
+
+### 書き込みを許可する場合のみ
+
+Apps API は **本番のみ**（Sandbox なし）です。
 
 ```json
 {
@@ -67,53 +95,41 @@ Writes talk to **production** (Apps API has **no sandbox**).
 }
 ```
 
-Create/update/delete tools still require `confirm: true`. Prefer `dry_run: true` first.
+作成・更新・削除ツールは、さらに `confirm: true` が必要です。先に `dry_run: true` 推奨。
 
-## Environment
+## 環境変数
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `APPS_APP_ID` | yes* | App ID |
-| `APPS_APP_SECRET` | yes* | App Secret |
-| `APPS_ACCESS_TOKEN` | no | Static bearer (skips refresh if set; 401 will not auto-refresh) |
-| `APPS_API_BASE_URL` | no | Default `https://api.theapps.jp` (override needs `APPS_MCP_ALLOW_CUSTOM_BASE_URL=true`) |
-| `APPS_MCP_ALLOW_CUSTOM_BASE_URL` | no | Allow non-default API base (dangerous) |
-| `APPS_MCP_ALLOW_WRITE` | no | Default `false` |
-| `APPS_MCP_TIMEOUT_MS` | no | HTTP timeout (default `30000`) |
-| `PORT` / `APPS_MCP_PORT` | no | HTTP mode port (default `8787`, Bun only) |
-| `APPS_MCP_HOST` | no | HTTP bind host (default `127.0.0.1`) |
-| `APPS_MCP_HTTP_ALLOW_REMOTE` | no | Allow non-loopback HTTP bind (dangerous) |
+| 変数 | 必須 | 説明 |
+|------|------|------|
+| `APPS_APP_ID` | yes* | アプリID |
+| `APPS_APP_SECRET` | yes* | アプリシークレット |
+| `APPS_ACCESS_TOKEN` | no | 固定 Bearer（指定時は自動更新しない） |
+| `APPS_MCP_ALLOW_WRITE` | no | 書き込み許可（既定 `false`） |
+| `APPS_API_BASE_URL` | no | 既定 `https://api.theapps.jp`（変更には `APPS_MCP_ALLOW_CUSTOM_BASE_URL=true`） |
 
-\* Or provide `APPS_ACCESS_TOKEN`.
+\* または `APPS_ACCESS_TOKEN`
 
-## Tools (overview)
+## できること
 
-| Area | Examples |
-|------|----------|
-| Auth | `apps_auth_status`, `apps_clear_token_cache` |
-| Customer / payment | `apps_get_customer`, `apps_get_charge`, `apps_get_paid_payment`, `apps_get_installments_payment` |
-| Registration plans | `apps_list_advance_plans`, `apps_create_advance_plan`, … |
-| One-time products | `apps_list_products`, `apps_create_product`, … |
-| Subscriptions | `apps_list_paid_plans`, … |
-| Installments | `apps_list_installment_plans`, … |
-| Coupons | `apps_list_coupons`, … |
-| Discord | `apps_get_discord_role`, `apps_create_discord_channel`, … |
+| 領域 | 例 |
+|------|----|
+| 認証 | `apps_auth_status` |
+| 顧客・決済照会 | `apps_get_customer`, `apps_get_charge`, … |
+| 登録ページ | `apps_list_advance_plans`, … |
+| 決済ページ | `apps_list_products`, `apps_list_paid_plans`, … |
+| クーポン | `apps_list_coupons`, … |
+| Discord | `apps_get_discord_role`, … |
 
-Official endpoint details: https://theapps.jp/api/endpoints
+公式エンドポイント: https://theapps.jp/api/endpoints
 
-### Important API facts
-
-- Base URL is production only: `https://api.theapps.jp`
-- Payment page APIs use `/v1/client/...` (not `/v1/apps/...`)
-- `payment_id` comes from the Webhook payment-success event — not the admin UI display id
+- 決済ページ API は `/v1/client/...`
+- `payment_id` は Webhook 決済成功イベント由来（管理画面の表示IDではない）
 
 ## Agent skill
 
-Repository skill: [`skills/apps-api/`](./skills/apps-api/)
+[`skills/apps-api/`](./skills/apps-api/)
 
-Install into your agent skills folder if you want workflow guidance alongside the MCP tools.
-
-## Develop
+## 開発
 
 ```bash
 bun install
@@ -123,23 +139,7 @@ bun run check
 bun run typecheck
 ```
 
-Optional stateless HTTP (**Bun only**, loopback by default):
-
 ```bash
-bun run src/index.ts --http
+bun run src/index.ts configure
+bun run src/index.ts --http   # Bun のみ / 既定は loopback
 ```
-
-`npx` / Node users should use **stdio** (default). HTTP mode uses `Bun.serve` and refuses non-loopback binds unless `APPS_MCP_HTTP_ALLOW_REMOTE=true`.
-
-Build distributable bin:
-
-```bash
-bun run build
-```
-
-## Security notes
-
-- Default mode is **read-only**
-- Write tools require env flag + `confirm: true`
-- Do not log secrets
-- This MCP does not implement charge/refund/cancel APIs (not publicly available)

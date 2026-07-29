@@ -16,10 +16,11 @@ description: >-
 
 ## 最短手順
 
-1. `apps_auth_status` で資格情報の有無を確認
-2. 読み取りツールから開始
-3. 書き込みは `APPS_MCP_ALLOW_WRITE=true` + `confirm: true`（先に `dry_run: true` 推奨）
-4. `payment_id` は管理画面表示IDではなく Webhook 決済成功イベント由来
+1. 未セットアップなら案内: `npx -y github:manmaru-ai/apps-mcp configure`
+2. `apps_auth_status` で資格情報の有無を確認
+3. 読み取りツールから開始
+4. 書き込みは `APPS_MCP_ALLOW_WRITE=true` + `confirm: true`（先に `dry_run: true` 推奨）
+5. `payment_id` は管理画面表示IDではなく Webhook 決済成功イベント由来
 
 ## パス早見
 
