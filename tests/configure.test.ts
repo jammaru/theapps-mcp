@@ -13,7 +13,6 @@ describe("buildAppsMcpEntry", () => {
       appId: "id",
       appSecret: "secret",
       allowWrite: true,
-      runner: "npx",
     });
     expect(entry).toEqual({
       command: "npx",

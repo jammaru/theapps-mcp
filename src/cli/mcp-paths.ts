@@ -66,9 +66,7 @@ export function buildAppsMcpEntry(options: {
   appId: string;
   appSecret: string;
   allowWrite: boolean;
-  runner?: "npx" | "bunx";
 }): McpServerEntry {
-  const runner = options.runner ?? "npx";
   const env: Record<string, string> = {
     APPS_APP_ID: options.appId,
     APPS_APP_SECRET: options.appSecret,
@@ -77,7 +75,7 @@ export function buildAppsMcpEntry(options: {
     env.APPS_MCP_ALLOW_WRITE = "true";
   }
   return {
-    command: runner,
+    command: "npx",
     args: ["-y", "github:manmaru-ai/apps-mcp"],
     env,
   };

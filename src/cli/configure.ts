@@ -106,16 +106,6 @@ export async function configure(argv: string[] = process.argv.slice(2)): Promise
       message: "書き込み（作成・更新・削除）を許可しますか？（本番API / 既定はいいえ）",
       initial: false,
     },
-    {
-      type: "select",
-      name: "runner",
-      message: "起動コマンド",
-      choices: [
-        { title: "npx（Node）", value: "npx" },
-        { title: "bunx（Bun）", value: "bunx" },
-      ],
-      initial: 0,
-    },
   ]);
 
   if (!answers.appId || !answers.appSecret) {
@@ -127,7 +117,6 @@ export async function configure(argv: string[] = process.argv.slice(2)): Promise
     appId: String(answers.appId).trim(),
     appSecret: String(answers.appSecret).trim(),
     allowWrite: Boolean(answers.allowWrite),
-    runner: answers.runner === "bunx" ? "bunx" : "npx",
   });
 
   console.log("\n--- 手動追加用（コピー可） ---\n");
