@@ -58,6 +58,37 @@ describe("AppsAuth", () => {
       globalThis.fetch = originalFetch;
     }
   });
+
+  test("malformed token response does not surface access_token in error body", async () => {
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = mock(async () => {
+      return new Response(
+        JSON.stringify({
+          access_token: "leaky-token-value",
+          token_type: "Bearer",
+        }),
+        { status: 200, headers: { "Content-Type": "application/json" } },
+      );
+    }) as unknown as typeof fetch;
+
+    try {
+      const config = loadConfig({
+        APPS_APP_ID: "app",
+        APPS_APP_SECRET: "secret",
+      } as unknown as NodeJS.ProcessEnv);
+      const auth = new AppsAuth(config);
+      await expect(auth.getAccessToken()).rejects.toBeInstanceOf(AppsApiError);
+      try {
+        await auth.getAccessToken();
+      } catch (error) {
+        expect(error).toBeInstanceOf(AppsApiError);
+        const body = JSON.stringify((error as AppsApiError).body);
+        expect(body).not.toContain("leaky-token-value");
+      }
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  });
 });
 
 describe("AppsClient", () => {

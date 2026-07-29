@@ -42,10 +42,17 @@ Usage:
     const allowRemote = ["1", "true", "yes", "on"].includes(
       (process.env.APPS_MCP_HTTP_ALLOW_REMOTE ?? "").trim().toLowerCase(),
     );
+    const httpBearer = process.env.APPS_MCP_HTTP_BEARER?.trim() ?? "";
     const loopback = host === "127.0.0.1" || host === "localhost" || host === "::1";
     if (!loopback && !allowRemote) {
       console.error(
-        `Refusing to bind HTTP on ${host}. Use 127.0.0.1 or set APPS_MCP_HTTP_ALLOW_REMOTE=true (dangerous).`,
+        `Refusing to bind HTTP on ${host}. Use 127.0.0.1 or set APPS_MCP_HTTP_ALLOW_REMOTE=true (requires APPS_MCP_HTTP_BEARER).`,
+      );
+      process.exit(1);
+    }
+    if (!loopback && !httpBearer) {
+      console.error(
+        "Remote HTTP bind requires APPS_MCP_HTTP_BEARER (shared secret). Refusing unauthenticated remote MCP.",
       );
       process.exit(1);
     }
@@ -55,11 +62,23 @@ Usage:
       hostname: host,
       port,
       fetch(req) {
+        if (httpBearer) {
+          const header = req.headers.get("authorization") ?? "";
+          if (header !== `Bearer ${httpBearer}`) {
+            return new Response(JSON.stringify({ error: "unauthorized" }), {
+              status: 401,
+              headers: { "Content-Type": "application/json" },
+            });
+          }
+        }
         return handler.fetch(req);
       },
     });
 
-    console.error(`apps-mcp listening on http://${host}:${port} — MCP 2026-07-28 stateless HTTP`);
+    console.error(
+      `apps-mcp listening on http://${host}:${port} — MCP 2026-07-28 stateless HTTP` +
+        (httpBearer ? " (bearer auth required)" : " (loopback)"),
+    );
     return;
   }
 

@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { chmodSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import prompts from "prompts";
 import {
@@ -6,7 +6,7 @@ import {
   claudeCodeConfigPath,
   claudeDesktopConfigPath,
   cursorMcpConfigPath,
-  formatMcpSnippet,
+  formatConfigureStdoutSnippets,
   type McpConfigFile,
   type McpServerEntry,
   removeMcpServer,
@@ -27,6 +27,16 @@ function readJsonFile(path: string): McpConfigFile {
 function writeJsonFile(path: string, data: McpConfigFile): void {
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, `${JSON.stringify(data, null, 2)}\n`, { encoding: "utf8", mode: 0o600 });
+  // Node's mode is ignored on Windows; on Unix re-apply after write for umask safety.
+  if (process.platform !== "win32") {
+    try {
+      chmodSync(path, 0o600);
+    } catch {
+      console.warn(
+        `警告: ${path} の権限を 0600 にできませんでした。ファイル権限を確認してください。`,
+      );
+    }
+  }
 }
 
 async function maybeUpdateClient(
@@ -89,7 +99,8 @@ export async function configure(argv: string[] = process.argv.slice(2)): Promise
 
   const answers = await prompts([
     {
-      type: "text",
+      // password style: avoid echoing client id into scrollback / IDE terminal logs
+      type: "password",
       name: "appId",
       message: "APPS_APP_ID（アプリID）",
       validate: (v: string) => (v.trim() ? true : "必須です"),
@@ -119,9 +130,12 @@ export async function configure(argv: string[] = process.argv.slice(2)): Promise
     allowWrite: Boolean(answers.allowWrite),
   });
 
-  console.log("\n--- 手動追加用（コピー可） ---\n");
-  console.log(formatMcpSnippet(entry));
-  console.log("\n------------------------------\n");
+  const snippets = formatConfigureStdoutSnippets(entry);
+  console.log("\n--- 設定プレビュー ---\n");
+  console.log(snippets.preview);
+  console.log("\n--- 手動追加用テンプレート ---\n");
+  console.log(snippets.template);
+  console.log("");
 
   await maybeUpdateClient("Cursor", cursorMcpConfigPath(), entry);
   await maybeUpdateClient("Claude Code", claudeCodeConfigPath(), entry);

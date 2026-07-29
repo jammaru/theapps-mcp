@@ -8,6 +8,19 @@ export type McpServerEntry = {
   env?: Record<string, string>;
 };
 
+/** Env keys that must never be echoed to stdout/logs in plaintext. */
+export const SENSITIVE_MCP_ENV_KEYS = [
+  "APPS_APP_ID",
+  "APPS_APP_SECRET",
+  "APPS_ACCESS_TOKEN",
+] as const;
+
+const PLACEHOLDER_MCP_ENV: Record<(typeof SENSITIVE_MCP_ENV_KEYS)[number], string> = {
+  APPS_APP_ID: "your-app-id",
+  APPS_APP_SECRET: "your-app-secret",
+  APPS_ACCESS_TOKEN: "your-access-token",
+};
+
 export type McpConfigFile = {
   mcpServers?: Record<string, McpServerEntry>;
   [key: string]: unknown;
@@ -97,6 +110,44 @@ export function removeMcpServer(config: McpConfigFile, serverName: string): McpC
   return { ...config, mcpServers };
 }
 
+export function redactMcpEntry(entry: McpServerEntry): McpServerEntry {
+  if (!entry.env) return { ...entry };
+  const env: Record<string, string> = { ...entry.env };
+  for (const key of SENSITIVE_MCP_ENV_KEYS) {
+    if (env[key] !== undefined) {
+      // Full mask for stdout — never leak length/prefix/suffix into scrollback.
+      env[key] = "(set)";
+    }
+  }
+  return { ...entry, env };
+}
+
+/** Manual-copy template: real secrets never appear — placeholders only. */
+export function placeholderMcpEntry(entry: McpServerEntry): McpServerEntry {
+  if (!entry.env) return { ...entry };
+  const env: Record<string, string> = { ...entry.env };
+  for (const key of SENSITIVE_MCP_ENV_KEYS) {
+    if (env[key] !== undefined) {
+      env[key] = PLACEHOLDER_MCP_ENV[key];
+    }
+  }
+  return { ...entry, env };
+}
+
 export function formatMcpSnippet(entry: McpServerEntry, serverName = "apps"): string {
   return JSON.stringify({ mcpServers: { [serverName]: entry } }, null, 2);
+}
+
+/**
+ * Strings configure() prints for preview/template.
+ * Keep this as the single wiring point so tests catch plaintext regressions.
+ */
+export function formatConfigureStdoutSnippets(entry: McpServerEntry): {
+  preview: string;
+  template: string;
+} {
+  return {
+    preview: formatMcpSnippet(redactMcpEntry(entry)),
+    template: formatMcpSnippet(placeholderMcpEntry(entry)),
+  };
 }

@@ -26,7 +26,7 @@ npx -y github:manmaru-ai/apps-mcp configure
 - アプリID / アプリシークレットの入力
 - 書き込み許可の有無（既定は読み取り専用）
 - Cursor / Claude Code / Claude Desktop への MCP 登録（任意）
-- 手動追加用 JSON の表示
+- 設定プレビューと手動追加用テンプレートの表示
 
 再設定:
 
@@ -89,6 +89,7 @@ Apps API は **本番のみ**（Sandbox なし）です。
 | `APPS_ACCESS_TOKEN` | no | 固定 Bearer（指定時は自動更新しない） |
 | `APPS_MCP_ALLOW_WRITE` | no | 書き込み許可（既定 `false`） |
 | `APPS_API_BASE_URL` | no | 既定 `https://api.theapps.jp`（変更には `APPS_MCP_ALLOW_CUSTOM_BASE_URL=true`） |
+| `APPS_MCP_HTTP_BEARER` | HTTP remote 時 | 非 loopback の `--http` では必須。`Authorization: Bearer …` |
 
 \* または `APPS_ACCESS_TOKEN`
 
@@ -125,4 +126,5 @@ bun run typecheck
 ```bash
 bun run src/index.ts configure
 bun run src/index.ts --http   # Bun のみ / 既定は loopback
+# 非 loopback は APPS_MCP_HTTP_ALLOW_REMOTE=true と APPS_MCP_HTTP_BEARER が必要
 ```

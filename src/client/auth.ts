@@ -71,8 +71,12 @@ export class AppsAuth {
     const basic = Buffer.from(`${this.config.appId}:${this.config.appSecret}`, "utf8").toString(
       "base64",
     );
-    const url = `${this.config.apiBaseUrl}/v1/identity/oauth2/token`;
-    const res = await fetch(url, {
+    const base = new URL(this.config.apiBaseUrl);
+    const url = new URL("/v1/identity/oauth2/token", `${base.origin}/`);
+    if (url.origin !== base.origin) {
+      throw new Error("Refusing to leave configured API origin for token request");
+    }
+    const res = await fetch(url.toString(), {
       method: "POST",
       headers: {
         Authorization: `Basic ${basic}`,
@@ -91,7 +95,10 @@ export class AppsAuth {
 
     const token = body as TokenResponse;
     if (!token.access_token || typeof token.expires_in !== "number") {
-      throw new AppsApiError("Token response missing access_token or expires_in", res.status, body);
+      // Never attach raw token JSON — access_token may be present without expires_in.
+      throw new AppsApiError("Token response missing access_token or expires_in", res.status, {
+        error: "invalid_token_response",
+      });
     }
 
     this.cache = {

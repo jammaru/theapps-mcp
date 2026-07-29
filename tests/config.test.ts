@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { hasCredentials, loadConfig, maskSecret } from "../src/config.ts";
-import { AppsApiError, fail, ok } from "../src/lib/result.ts";
+import { AppsApiError, fail, ok, runTool, sanitizeForToolOutput } from "../src/lib/result.ts";
 import { guardWrite } from "../src/lib/write-guard.ts";
 import { createRuntime, createServer } from "../src/server.ts";
 import { TOOL_CATALOG } from "../src/tools/catalog.ts";
@@ -71,6 +71,31 @@ describe("result helpers", () => {
     expect(fail("x").isError).toBe(true);
     const err = new AppsApiError("boom", 400, { error: "bad" });
     expect(err.status).toBe(400);
+  });
+
+  test("sanitizeForToolOutput redacts credential fields", () => {
+    const cleaned = sanitizeForToolOutput({
+      error: "invalid",
+      access_token: "tok-leak",
+      nested: { refresh_token: "r-leak", ok: true },
+    }) as Record<string, unknown>;
+    expect(cleaned.access_token).toBe("(redacted)");
+    expect((cleaned.nested as Record<string, unknown>).refresh_token).toBe("(redacted)");
+    expect((cleaned.nested as Record<string, unknown>).ok).toBe(true);
+    expect(cleaned.error).toBe("invalid");
+  });
+
+  test("runTool never echoes access_token from AppsApiError body", async () => {
+    const result = await runTool(async () => {
+      throw new AppsApiError("Token response missing access_token or expires_in", 200, {
+        access_token: "should-not-leak",
+        token_type: "Bearer",
+      });
+    });
+    expect(result.isError).toBe(true);
+    const text = result.content[0]?.text ?? "";
+    expect(text).not.toContain("should-not-leak");
+    expect(text).toContain("(redacted)");
   });
 });
 
