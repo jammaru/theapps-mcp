@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+
+# Build
+dist/
+bin/apps-mcp.js
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# IDE / OS
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+
+# Coverage / caches
+coverage/
+.biome/
+*.tsbuildinfo
