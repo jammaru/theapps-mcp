@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import { createMcpHandler } from "@modelcontextprotocol/server";
 import { serveStdio } from "@modelcontextprotocol/server/stdio";
 import { createRuntime, createServer } from "./server.ts";
