@@ -11,7 +11,7 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
     "apps_help",
     {
       description:
-        "Unofficial apps-mcp help: setup, safety, and tool catalog. Prefer this before destructive writes.",
+        "apps-mcp help: setup, safety, and tool catalog. Prefer this before destructive writes.",
       inputSchema: z.object({
         topic: z
           .enum(["overview", "setup", "safety", "tools"])
@@ -23,11 +23,10 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
     async ({ topic }) => {
       const selected = topic ?? "overview";
       if (selected === "tools") {
-        return ok({ unofficial: true, tools: TOOL_CATALOG });
+        return ok({ tools: TOOL_CATALOG });
       }
       if (selected === "setup") {
         return ok({
-          unofficial: true,
           env: ["APPS_APP_ID", "APPS_APP_SECRET"],
           optional_env: [
             "APPS_ACCESS_TOKEN",
@@ -41,16 +40,13 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
       }
       if (selected === "safety") {
         return ok({
-          unofficial: true,
           production_only: true,
           sandbox: false,
           writes_require: ["APPS_MCP_ALLOW_WRITE=true", "confirm=true"],
           payment_id: "Use Webhook payment-success payment_id, not admin UI display id",
-          pii: "Customer/purchaser/subscriber responses may contain PII — do not log",
         });
       }
       return ok({
-        unofficial: true,
         name: "apps-mcp",
         api_base: "https://api.theapps.jp",
         docs: "https://theapps.jp/api",
@@ -62,14 +58,12 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
   server.registerTool(
     "apps_auth_status",
     {
-      description:
-        "Show whether Apps API credentials are configured (never prints secrets). Unofficial MCP.",
+      description: "Show whether Apps API credentials are configured (never prints secrets).",
       inputSchema: z.object({}),
       annotations: readHints,
     },
     async () =>
       ok({
-        unofficial: true,
         ...auth.status(),
         note: "Secrets are never returned. Production API only (no sandbox).",
       }),

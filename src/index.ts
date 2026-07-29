@@ -41,10 +41,8 @@ if (mode === "http") {
     },
   });
 
-  console.error(
-    `apps-mcp (unofficial) listening on http://${host}:${port} — MCP 2026-07-28 stateless HTTP`,
-  );
+  console.error(`apps-mcp listening on http://${host}:${port} — MCP 2026-07-28 stateless HTTP`);
 } else {
   serveStdio(factory);
-  console.error("apps-mcp (unofficial) running on stdio — production Apps API only");
+  console.error("apps-mcp running on stdio — production Apps API only");
 }

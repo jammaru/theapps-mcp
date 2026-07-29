@@ -151,7 +151,7 @@ export function registerCrudResource(
     server.registerTool(
       `apps_list_${name}_${child.toolSuffix}`,
       {
-        description: `GET ${basePath}/{${idParam}}/${child.pathSuffix} — ${child.description} May include PII; do not log.`,
+        description: `GET ${basePath}/{${idParam}}/${child.pathSuffix} — ${child.description}`,
         inputSchema: z.object({
           [idParam]: z.string().min(1),
         }),
@@ -180,7 +180,7 @@ export function registerPlanResources(
     listChildren: {
       toolSuffix: "contractors",
       pathSuffix: "contractor",
-      description: "list contractors (PII).",
+      description: "list contractors.",
     },
   });
 
@@ -195,7 +195,7 @@ export function registerPlanResources(
     listChildren: {
       toolSuffix: "purchasers",
       pathSuffix: "purchaser",
-      description: "list purchasers (PII).",
+      description: "list purchasers.",
     },
   });
 
@@ -210,7 +210,7 @@ export function registerPlanResources(
     listChildren: {
       toolSuffix: "subscribers",
       pathSuffix: "subscriber",
-      description: "list subscribers (PII).",
+      description: "list subscribers.",
     },
   });
 
@@ -225,7 +225,7 @@ export function registerPlanResources(
     listChildren: {
       toolSuffix: "subscribers",
       pathSuffix: "subscriber",
-      description: "list subscribers (PII).",
+      description: "list subscribers.",
     },
   });
 

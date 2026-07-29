@@ -9,8 +9,7 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
   server.registerTool(
     "apps_get_customer",
     {
-      description:
-        "GET /v1/customer/{customer_id} — fetch customer info (may include PII; do not log).",
+      description: "GET /v1/customer/{customer_id} — fetch customer info.",
       inputSchema: z.object({
         customer_id: z.string().min(1).describe("customer_id (UUID from Webhook/API)"),
       }),

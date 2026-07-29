@@ -2,9 +2,6 @@
 
 **Unofficial** Model Context Protocol (MCP) server for the [Apps API](https://theapps.jp/api) (`theapps.jp`).
 
-> This project is **not** affiliated with, endorsed by, or related to the Apps product or its operator.  
-> It is a community open-source client. Always follow the official docs and terms.
-
 - Protocol: **MCP 2026-07-28** oriented (stateless factory; stdio by default, optional HTTP)
 - Runtime: **Bun** + **TypeScript** + **Biome** + **Zod**
 - Auth: your own `APPS_APP_ID` / `APPS_APP_SECRET` (no hosted OAuth)
@@ -144,10 +141,5 @@ bun run build
 
 - Default mode is **read-only**
 - Write tools require env flag + `confirm: true`
-- Do not log PII or secrets
+- Do not log secrets
 - This MCP does not implement charge/refund/cancel APIs (not publicly available)
-
-## Disclaimer
-
-Apps / アップス / theapps.jp are trademarks of their respective owners.  
-This software is provided as-is, with no warranty, and no official support channel.

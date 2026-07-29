@@ -1,4 +1,4 @@
-# Apps API エンドポイント要約（非公式メモ）
+# Apps API エンドポイント要約
 
 一次情報: https://theapps.jp/api/endpoints
 

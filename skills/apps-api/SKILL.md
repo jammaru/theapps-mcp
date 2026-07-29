@@ -1,13 +1,13 @@
 ---
 name: apps-api
 description: >-
-  Unofficial guidance for using apps-mcp with theapps.jp Apps API.
+  Guidance for using apps-mcp with theapps.jp Apps API.
   Trigger on Apps API, theapps.jp, 決済ページ, 登録ページ, Webhook, APP_ID, APP_SECRET.
 ---
 
-# Apps API（非公式 apps-mcp）
+# Apps API（apps-mcp）
 
-**非公式**: 本スキルと apps-mcp は Apps（theapps.jp）およびその運営会社とは無関係です。公式仕様は常に https://theapps.jp/api を正とします。
+仕様の正は https://theapps.jp/api です。
 
 ## 役割分担
 
