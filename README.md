@@ -95,14 +95,91 @@ Apps API は **本番のみ**（Sandbox なし）です。
 
 ## できること
 
-| 領域 | 例 |
-|------|----|
-| 認証 | `apps_auth_status` |
-| 顧客・決済照会 | `apps_get_customer`, `apps_get_charge`, … |
-| 登録ページ | `apps_list_advance_plans`, … |
-| 決済ページ | `apps_list_products`, `apps_list_paid_plans`, … |
-| クーポン | `apps_list_coupons`, … |
-| Discord | `apps_get_discord_role`, … |
+書き込み（create / update / delete）は `APPS_MCP_ALLOW_WRITE=true` かつ `confirm: true` が必要です。
+
+### 認証・ヘルプ
+
+| ツール | 内容 |
+|--------|------|
+| `apps_help` | セットアップ・安全・ツール一覧の案内 |
+| `apps_auth_status` | 資格情報の有無（シークレットは返さない） |
+| `apps_clear_token_cache` | アクセストークンキャッシュのクリア |
+
+### 顧客・決済照会
+
+| ツール | 内容 |
+|--------|------|
+| `apps_get_customer` | 顧客情報 |
+| `apps_get_charge` | 買い切り決済 |
+| `apps_get_paid_payment` | 定期課金の決済 |
+| `apps_get_installments_payment` | 分割払いの決済 |
+
+### 登録ページ（advance）
+
+| ツール | 内容 |
+|--------|------|
+| `apps_list_advance_plans` | 一覧 |
+| `apps_get_advance_plan` | 取得 |
+| `apps_create_advance_plan` | 作成 |
+| `apps_update_advance_plan` | 更新 |
+| `apps_delete_advance_plan` | 削除 |
+| `apps_list_advance_plan_contractors` | 契約者一覧 |
+
+### 決済ページ — 買い切り（product）
+
+| ツール | 内容 |
+|--------|------|
+| `apps_list_products` | 一覧 |
+| `apps_get_product` | 取得 |
+| `apps_create_product` | 作成 |
+| `apps_update_product` | 更新 |
+| `apps_delete_product` | 削除 |
+| `apps_list_product_purchasers` | 購入者一覧 |
+
+### 決済ページ — 定期（paid）
+
+| ツール | 内容 |
+|--------|------|
+| `apps_list_paid_plans` | 一覧 |
+| `apps_get_paid_plan` | 取得 |
+| `apps_create_paid_plan` | 作成 |
+| `apps_update_paid_plan` | 更新 |
+| `apps_delete_paid_plan` | 削除 |
+| `apps_list_paid_plan_subscribers` | 購読者一覧 |
+
+### 決済ページ — 分割（installments）
+
+| ツール | 内容 |
+|--------|------|
+| `apps_list_installment_plans` | 一覧 |
+| `apps_get_installment_plan` | 取得 |
+| `apps_create_installment_plan` | 作成 |
+| `apps_update_installment_plan` | 更新 |
+| `apps_delete_installment_plan` | 削除 |
+| `apps_list_installment_plan_subscribers` | 購読者一覧 |
+
+### クーポン
+
+| ツール | 内容 |
+|--------|------|
+| `apps_list_coupons` | 一覧 |
+| `apps_get_coupon` | 取得 |
+| `apps_create_coupon` | 作成 |
+| `apps_update_coupon` | 更新 |
+| `apps_delete_coupon` | 削除 |
+
+### Discord
+
+| ツール | 内容 |
+|--------|------|
+| `apps_get_discord_role` | ロール取得 |
+| `apps_create_discord_role` | ロール作成 |
+| `apps_update_discord_role` | ロール更新 |
+| `apps_delete_discord_role` | ロール削除 |
+| `apps_get_discord_channel` | チャンネル取得 |
+| `apps_create_discord_channel` | チャンネル作成 |
+| `apps_update_discord_channel` | チャンネル更新 |
+| `apps_delete_discord_channel` | チャンネル削除 |
 
 公式エンドポイント: https://theapps.jp/api/endpoints
 
