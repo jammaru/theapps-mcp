@@ -64,23 +64,6 @@ Windows Store 版 Claude Desktop は設定ファイルのパスが異なりま�
 }
 ```
 
-Bun の場合:
-
-```json
-{
-  "mcpServers": {
-    "apps": {
-      "command": "bunx",
-      "args": ["-y", "github:manmaru-ai/apps-mcp"],
-      "env": {
-        "APPS_APP_ID": "your-app-id",
-        "APPS_APP_SECRET": "your-app-secret"
-      }
-    }
-  }
-}
-```
-
 ### 書き込みを許可する場合のみ
 
 Apps API は **本番のみ**（Sandbox なし）です。
