@@ -43,7 +43,6 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
           production_only: true,
           sandbox: false,
           writes_require: ["APPS_MCP_ALLOW_WRITE=true", "confirm=true"],
-          payment_id: "Use Webhook payment-success payment_id, not admin UI display id",
         });
       }
       return ok({

@@ -2,7 +2,6 @@ import type { McpServer } from "@modelcontextprotocol/server";
 import * as z from "zod/v4";
 import type { AppsClient } from "../client/http.ts";
 import { runTool } from "../lib/result.ts";
-import { paymentIdNote } from "../lib/schemas.ts";
 import { readHints } from "../lib/write-guard.ts";
 
 export function registerCustomerPaymentTools(server: McpServer, client: AppsClient): void {
@@ -11,7 +10,7 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
     {
       description: "GET /v1/customer/{customer_id} — fetch customer info.",
       inputSchema: z.object({
-        customer_id: z.string().min(1).describe("customer_id (UUID from Webhook/API)"),
+        customer_id: z.string().min(1),
       }),
       annotations: readHints,
     },
@@ -22,9 +21,9 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
   server.registerTool(
     "apps_get_charge",
     {
-      description: `GET /v1/charge/{payment_id} — one-time payment details. ${paymentIdNote}.`,
+      description: "GET /v1/charge/{payment_id} — one-time payment details.",
       inputSchema: z.object({
-        payment_id: z.string().min(1).describe(paymentIdNote),
+        payment_id: z.string().min(1),
       }),
       annotations: readHints,
     },
@@ -35,9 +34,10 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
   server.registerTool(
     "apps_get_paid_payment",
     {
-      description: `GET /v1/paid/{payment_id} — subscription payment details. ${paymentIdNote}. Distinct from /v1/client/paid plan APIs.`,
+      description:
+        "GET /v1/paid/{payment_id} — subscription payment details. Distinct from /v1/client/paid plan APIs.",
       inputSchema: z.object({
-        payment_id: z.string().min(1).describe(paymentIdNote),
+        payment_id: z.string().min(1),
       }),
       annotations: readHints,
     },
@@ -48,9 +48,9 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
   server.registerTool(
     "apps_get_installments_payment",
     {
-      description: `GET /v1/installments/{payment_id} — installment payment details. ${paymentIdNote}.`,
+      description: "GET /v1/installments/{payment_id} — installment payment details.",
       inputSchema: z.object({
-        payment_id: z.string().min(1).describe(paymentIdNote),
+        payment_id: z.string().min(1),
       }),
       annotations: readHints,
     },

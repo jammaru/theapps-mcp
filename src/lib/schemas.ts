@@ -11,6 +11,3 @@ export const confirmSchema = {
 export const jsonObject = z
   .record(z.string(), z.unknown())
   .describe("JSON object matching the official Apps API request schema");
-
-export const paymentIdNote =
-  "payment_id from Webhook payment-success event — NOT the admin UI display ID";
