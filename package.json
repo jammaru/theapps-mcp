@@ -1,7 +1,7 @@
 {
   "name": "theapps-mcp",
   "version": "0.1.0",
-  "description": "Model Context Protocol server and Agent Skills for theapps.jp Apps API",
+  "description": "MCP server and Agent Skills for Apps API (theapps.jp)",
   "type": "module",
   "license": "MIT",
   "bin": {
