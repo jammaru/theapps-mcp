@@ -22,7 +22,7 @@ describe("buildAppsMcpEntry", () => {
     });
     expect(entry).toEqual({
       command: "npx",
-      args: ["-y", "github:manmaru-ai/apps-mcp"],
+      args: ["-y", "github:jammaru/apps-mcp"],
       env: {
         APPS_APP_ID: "id",
         APPS_APP_SECRET: "secret",
@@ -99,7 +99,7 @@ describe("formatMcpSnippet / redact", () => {
   test("redact and placeholder cover APPS_ACCESS_TOKEN", () => {
     const entry = {
       command: "npx",
-      args: ["-y", "github:manmaru-ai/apps-mcp"],
+      args: ["-y", "github:jammaru/apps-mcp"],
       env: {
         APPS_ACCESS_TOKEN: "static-live-token-value",
       },

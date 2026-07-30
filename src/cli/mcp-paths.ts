@@ -89,7 +89,7 @@ export function buildAppsMcpEntry(options: {
   }
   return {
     command: "npx",
-    args: ["-y", "github:manmaru-ai/apps-mcp"],
+    args: ["-y", "github:jammaru/apps-mcp"],
     env,
   };
 }

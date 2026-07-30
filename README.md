@@ -31,7 +31,7 @@ Cursor や Claude などの AI エージェントから、顧客照会・決済�
 - 未導入: https://nodejs.org/ から LTS をインストール
 
 ```bash
-npx -y github:manmaru-ai/apps-mcp configure
+npx -y github:jammaru/apps-mcp configure
 ```
 
 対話ウィザードが次を行います。
@@ -44,13 +44,13 @@ npx -y github:manmaru-ai/apps-mcp configure
 接続後は Agent Skills も入れると、プラン作成などの手順が安定します。
 
 ```bash
-npx skills add manmaru-ai/apps-mcp
+npx skills add jammaru/apps-mcp
 ```
 
 再設定:
 
 ```bash
-npx -y github:manmaru-ai/apps-mcp configure --force
+npx -y github:jammaru/apps-mcp configure --force
 ```
 
 npm 公開後は `npx -y apps-mcp configure` でも同じです。
@@ -64,8 +64,8 @@ Apps-mcp をセットアップしてください。
 
 1. node -v / npx -v を確認する。無ければ Node.js LTS（20以上）の入れ方を案内して、導入後に続きをやる
 2. ユーザーに Apps 管理画面のアプリID / アプリシークレットを用意してもらう（configure の対話入力で渡す）
-3. 実行: npx -y github:manmaru-ai/apps-mcp configure
-4. 推奨: npx skills add manmaru-ai/apps-mcp
+3. 実行: npx -y github:jammaru/apps-mcp configure
+4. 推奨: npx skills add jammaru/apps-mcp
 5. Cursor / Claude の再起動を案内し、ツール apps_auth_status で接続確認する手順を伝える
 ```
 
@@ -98,7 +98,7 @@ Agent がツールを選びます。書き込みは既定でオフなので、�
   "mcpServers": {
     "apps": {
       "command": "npx",
-      "args": ["-y", "github:manmaru-ai/apps-mcp"],
+      "args": ["-y", "github:jammaru/apps-mcp"],
       "env": {
         "APPS_APP_ID": "your-app-id",
         "APPS_APP_SECRET": "your-app-secret"
@@ -236,7 +236,7 @@ MCP は実行、スキルは「どのツール・どのフィールド・どの�
 Cursor / Claude Code などでは次で入れられます。
 
 ```bash
-npx skills add manmaru-ai/apps-mcp
+npx skills add jammaru/apps-mcp
 ```
 
 入るスキル名は `apps-api` です。書き込みやプラン作成の前に `recipes/` と `references/` を読む想定です。  
