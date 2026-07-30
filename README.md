@@ -28,6 +28,12 @@ npx -y github:manmaru-ai/apps-mcp configure
 - Cursor / Claude Code / Claude Desktop への MCP 登録（任意）
 - 設定プレビューと手動追加用テンプレートの表示
 
+接続後は Agent skill も入れると、プラン作成などの手順が安定します。
+
+```bash
+npx skills add manmaru-ai/apps-mcp
+```
+
 再設定:
 
 ```bash
@@ -186,9 +192,19 @@ Apps API は **本番のみ**（Sandbox なし）です。
 - 決済ページ API は `/v1/client/...`
 - `payment_id` は Webhook 決済成功イベント由来（管理画面の表示IDではない）
 
-## Agent skill
+## Agent skill（利用者向け）
 
-[`skills/apps-api/`](./skills/apps-api/)
+MCP は実行、スキルは「どのツール・どのフィールド・どの順番か」を案内します。  
+Cursor / Claude Code などでは次で入れられます。
+
+```bash
+npx skills add manmaru-ai/apps-mcp
+```
+
+入るスキル名は `apps-api` です。書き込みやプラン作成の前に `recipes/` と `references/` を読む想定です。  
+中身: [`skills/apps-api/`](./skills/apps-api/)
+
+迷ったらツール `apps_help`（`topic=skill`）でも索引を返せます。
 
 ## 開発
 

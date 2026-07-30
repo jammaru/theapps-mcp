@@ -4,6 +4,7 @@ import type { AppsClient } from "../client/http.ts";
 import type { AppsConfig } from "../config.ts";
 import { fail, runTool } from "../lib/result.ts";
 import { confirmSchema, jsonObject } from "../lib/schemas.ts";
+import { APPS_SKILL_HINT } from "../lib/skill-hint.ts";
 import { destructiveHints, guardWrite, readHints, writeHints } from "../lib/write-guard.ts";
 
 type CrudResource = {
@@ -59,7 +60,7 @@ export function registerCrudResource(
   server.registerTool(
     `apps_list_${name}s`,
     {
-      description: `GET ${basePath} — list ${label}. ${resource.listDescription}`,
+      description: `GET ${basePath} — list ${label}. ${resource.listDescription} ${APPS_SKILL_HINT}`,
       inputSchema: z.object({}),
       annotations: readHints,
     },
@@ -69,7 +70,7 @@ export function registerCrudResource(
   server.registerTool(
     `apps_get_${name}`,
     {
-      description: `GET ${basePath}/{${idParam}} — get one ${label}.`,
+      description: `GET ${basePath}/{${idParam}} — get one ${label}. ${APPS_SKILL_HINT}`,
       inputSchema: z.object({
         [idParam]: z.string().min(1),
       }),
@@ -84,7 +85,7 @@ export function registerCrudResource(
   server.registerTool(
     `apps_create_${name}`,
     {
-      description: `POST ${basePath} — create ${label}. Production write. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${resource.createDescription}`,
+      description: `POST ${basePath} — create ${label}. Production write. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${resource.createDescription} ${APPS_SKILL_HINT}`,
       inputSchema: writeInput(),
       annotations: writeHints,
     },
@@ -106,7 +107,7 @@ export function registerCrudResource(
   server.registerTool(
     `apps_update_${name}`,
     {
-      description: `PUT ${basePath}/{${idParam}} — update ${label}. Production write. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true.`,
+      description: `PUT ${basePath}/{${idParam}} — update ${label}. Production write. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${APPS_SKILL_HINT}`,
       inputSchema: idWriteInput(idParam),
       annotations: writeHints,
     },
@@ -128,7 +129,7 @@ export function registerCrudResource(
   server.registerTool(
     `apps_delete_${name}`,
     {
-      description: `DELETE ${basePath}/{${idParam}} — delete ${label}. Destructive production write. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true.`,
+      description: `DELETE ${basePath}/{${idParam}} — delete ${label}. Destructive production write. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${APPS_SKILL_HINT}`,
       inputSchema: idConfirmInput(idParam),
       annotations: destructiveHints,
     },
@@ -151,7 +152,7 @@ export function registerCrudResource(
     server.registerTool(
       `apps_list_${name}_${child.toolSuffix}`,
       {
-        description: `GET ${basePath}/{${idParam}}/${child.pathSuffix} — ${child.description}`,
+        description: `GET ${basePath}/{${idParam}}/${child.pathSuffix} — ${child.description} ${APPS_SKILL_HINT}`,
         inputSchema: z.object({
           [idParam]: z.string().min(1),
         }),

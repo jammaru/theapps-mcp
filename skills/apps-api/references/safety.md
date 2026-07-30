@@ -2,20 +2,27 @@
 
 ## 本番のみ
 
-Sandbox はありません。検証でも実データに影響し得ます。
+Sandbox はありません。検証でも実データ・実プランに影響し得ます。
 
 ## 資格情報
 
-- `APPS_APP_ID` / `APPS_APP_SECRET` をリポジトリ・チャット・Issue に貼らない
-- ツールはシークレットをエコーしない
+- `APPS_APP_ID` / `APPS_APP_SECRET` / アクセストークンをリポジトリ・チャット・Issue・スクリーンショットに貼らない
+- ツールはシークレットを返さない設計。応答に出てきても保存・再投稿しない
 
 ## 書き込みガード
 
-1. デフォルト `APPS_MCP_ALLOW_WRITE` は無効（読み取り専用）
+1. 既定は読み取り専用（`APPS_MCP_ALLOW_WRITE` 未設定 / false）
 2. 有効化後も `confirm: true` が必須
-3. 先に `dry_run: true` でリクエスト内容を確認
-4. DELETE は破壊的（`destructiveHint`）
+3. 先に `dry_run: true` で method / path / body を確認
+4. DELETE は破壊的（戻せない前提でユーザー確認）
 
-## payment_id
+## 個人情報
 
-管理画面の数字IDでは動かない場合があります。Webhook「決済成功」の `payment_id` を使います。
+顧客・購入者・契約者・メール・Discord ID などはログ・コミット・共有ドキュメントに残さない。要約が必要なら個人を特定できない形にする。
+
+## やってはいけないこと
+
+- Sandbox があるかのように案内する
+- 未公開 API（決済実行・返金・解約 REST、顧客一覧検索、Webhook CRUD API など）を存在する前提で呼ぶ
+- 管理画面の表示 ID を `payment_id` として使う
+- `/v1/apps/...` パスで決済ページを叩く

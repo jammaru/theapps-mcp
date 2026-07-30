@@ -22,3 +22,8 @@ Thumbs.db
 coverage/
 .biome/
 *.tsbuildinfo
+
+# Local agent skill installs
+.agents/
+.claude/skills/
+skills-lock.json

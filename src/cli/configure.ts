@@ -143,4 +143,5 @@ export async function configure(argv: string[] = process.argv.slice(2)): Promise
 
   console.log("\n完了です。MCP クライアントを再起動してください。");
   console.log("動作確認: ツール apps_auth_status を実行");
+  console.log("手順スキル（推奨）: npx skills add manmaru-ai/apps-mcp");
 }
