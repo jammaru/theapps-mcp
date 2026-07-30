@@ -1,9 +1,17 @@
 # Apps-mcp
 
-**Unofficial** [Apps API](https://theapps.jp/api) 向け MCP サーバー（MIT）
+**Unofficial** [Apps API](https://theapps.jp/api) 向けのツールキットです。  
+Cursor や Claude などの AI エージェントから、顧客照会・決済ページ作成・クーポン・Discord 連携などを扱えるようにします。
+
+このリポジトリには次の **2つ** があります。
+
+- **MCP（Apps-mcp）** … 実際に Apps API を呼び出す実行役です。認証、HTTP、読み取り／書き込みのガードを担当します。エージェントの「ツール」として動きます。
+- **Agent Skill（apps-api）** … 使い方の手順書です。どのツールを使うか、必須フィールド、よくある作業の流れ、注意点をエージェントに渡します。MCP だけでは迷いやすい作成・更新を、Skill があると安定させやすくなります。
 
 認証は OAuth ではなく、Apps 管理画面の **アプリID / アプリシークレット** です。  
 ローカルで動かして、自分の資格情報だけを MCP クライアントに渡す使い方がいちばん簡単です。
+
+問題や改善案があれば、Issue や Pull Request を歓迎します。
 
 ## 使い方（いちばん簡単）
 
