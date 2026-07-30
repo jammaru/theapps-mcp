@@ -7,11 +7,14 @@ updates:
     open-pull-requests-limit: 5
     labels:
       - dependencies
-    groups:
-      production-dependencies:
-        dependency-type: production
-      development-dependencies:
-        dependency-type: development
+    # Prefer patch/minor; majors need intentional review for this small surface.
+    ignore:
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+      - dependency-name: zod
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@modelcontextprotocol/server"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
