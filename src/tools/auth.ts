@@ -11,7 +11,7 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
     "apps_help",
     {
       description:
-        "apps-mcp help: setup, safety, and tool catalog. Prefer this before destructive writes.",
+        "Apps-mcp help: setup, safety, and tool catalog. Prefer this before destructive writes.",
       inputSchema: z.object({
         topic: z
           .enum(["overview", "setup", "safety", "tools"])
@@ -46,7 +46,7 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
         });
       }
       return ok({
-        name: "apps-mcp",
+        name: "Apps-mcp",
         api_base: "https://api.theapps.jp",
         docs: "https://theapps.jp/api",
         tip: "Call apps_help with topic=tools|setup|safety for details.",

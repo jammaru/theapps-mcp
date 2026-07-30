@@ -1,4 +1,4 @@
-# apps-mcp
+# Apps-mcp
 
 **Unofficial** [Apps API](https://theapps.jp/api) 向け MCP サーバー（MIT）
 

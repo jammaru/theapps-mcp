@@ -13,7 +13,7 @@ async function main(): Promise<void> {
   }
 
   if (command === "help" || command === "--help" || command === "-h") {
-    console.log(`apps-mcp
+    console.log(`Apps-mcp
 
 Usage:
   apps-mcp                 Start MCP server on stdio
@@ -76,14 +76,14 @@ Usage:
     });
 
     console.error(
-      `apps-mcp listening on http://${host}:${port} — MCP 2026-07-28 stateless HTTP` +
+      `Apps-mcp listening on http://${host}:${port} — MCP 2026-07-28 stateless HTTP` +
         (httpBearer ? " (bearer auth required)" : " (loopback)"),
     );
     return;
   }
 
   serveStdio(factory);
-  console.error("apps-mcp running on stdio — production Apps API only");
+  console.error("Apps-mcp running on stdio — production Apps API only");
 }
 
 main().catch((error) => {

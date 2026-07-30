@@ -89,7 +89,7 @@ async function maybeUpdateClient(
 export async function configure(argv: string[] = process.argv.slice(2)): Promise<void> {
   const force = argv.includes("--force");
 
-  console.log("\napps-mcp configure\n");
+  console.log("\nApps-mcp configure\n");
   console.log("Apps 管理画面の API 設定で取得したアプリID / アプリシークレットを使います。");
   console.log("ブラウザログインは不要です。\n");
 

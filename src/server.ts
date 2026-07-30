@@ -7,7 +7,7 @@ import { registerCustomerPaymentTools } from "./tools/customer-payment.ts";
 import { registerDiscordTools } from "./tools/discord.ts";
 import { registerPlanResources } from "./tools/plans.ts";
 
-export const SERVER_NAME = "apps-mcp";
+export const SERVER_NAME = "Apps-mcp";
 export const SERVER_VERSION = "0.1.0";
 
 export type AppsRuntime = {
