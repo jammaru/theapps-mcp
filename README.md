@@ -6,7 +6,7 @@ Cursor や Claude などの AI エージェントから、顧客照会・決済�
 このリポジトリには次の **2つ** があります。
 
 - **MCP（Apps-mcp）** … 実際に Apps API を呼び出す実行役です。認証、HTTP、読み取り／書き込みのガードを担当します。エージェントの「ツール」として動きます。
-- **Agent Skill（apps-api）** … 使い方の手順書です。どのツールを使うか、必須フィールド、よくある作業の流れ、注意点をエージェントに渡します。MCP だけでは迷いやすい作成・更新を、Skill があると安定させやすくなります。
+- **Agent Skills（apps-api）** … 使い方の手順書です。どのツールを使うか、必須フィールド、よくある作業の流れ、注意点をエージェントに渡します。MCP だけでは迷いやすい作成・更新を、Skills があると安定させやすくなります。
 
 認証は OAuth ではなく、Apps 管理画面の **アプリID / アプリシークレット** です。  
 ローカルで動かして、自分の資格情報だけを MCP クライアントに渡す使い方がいちばん簡単です。
@@ -41,7 +41,7 @@ npx -y github:manmaru-ai/apps-mcp configure
 - Cursor / Claude Code / Claude Desktop への MCP 登録（任意）
 - 設定プレビューと手動追加用テンプレートの表示
 
-接続後は Agent skill も入れると、プラン作成などの手順が安定します。
+接続後は Agent Skills も入れると、プラン作成などの手順が安定します。
 
 ```bash
 npx skills add manmaru-ai/apps-mcp
@@ -230,7 +230,7 @@ Apps API は **本番のみ**（Sandbox なし）です。
 - 決済ページ API は `/v1/client/...`
 - `payment_id` は Webhook 決済成功イベント由来（管理画面の表示IDではない）
 
-## Agent skill（利用者向け）
+## Agent Skills（利用者向け）
 
 MCP は実行、スキルは「どのツール・どのフィールド・どの順番か」を案内します。  
 Cursor / Claude Code などでは次で入れられます。
