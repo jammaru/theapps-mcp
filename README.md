@@ -17,6 +17,11 @@
 
 ### 2. セットアップ
 
+`npx` を使うため、**Node.js 20 以上**が必要です。入っていなければ先に入れてください。
+
+- 確認: `node -v` / `npx -v`
+- 未導入: https://nodejs.org/ から LTS をインストール
+
 ```bash
 npx -y github:manmaru-ai/apps-mcp configure
 ```
@@ -41,6 +46,20 @@ npx -y github:manmaru-ai/apps-mcp configure --force
 ```
 
 npm 公開後は `npx -y apps-mcp configure` でも同じです。
+
+#### Agent にセットアップを任せたい場合
+
+次のプロンプトを Agent に渡してください。
+
+```text
+Apps-mcp をセットアップしてください。
+
+1. node -v / npx -v を確認する。無ければ Node.js LTS（20以上）の入れ方を案内して、導入後に続きをやる
+2. ユーザーに Apps 管理画面のアプリID / アプリシークレットを用意してもらう（configure の対話入力で渡す）
+3. 実行: npx -y github:manmaru-ai/apps-mcp configure
+4. 推奨: npx skills add manmaru-ai/apps-mcp
+5. Cursor / Claude の再起動を案内し、ツール apps_auth_status で接続確認する手順を伝える
+```
 
 ### 3. クライアントを再起動
 
