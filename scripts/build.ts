@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const outdir = join(root, "bin");
-const outfile = join(outdir, "apps-mcp.js");
+const outfile = join(outdir, "theapps-mcp.js");
 
 mkdirSync(outdir, { recursive: true });
 
@@ -15,7 +15,7 @@ const result = await Bun.build({
   format: "esm",
   sourcemap: "none",
   minify: false,
-  naming: "apps-mcp.js",
+  naming: "theapps-mcp.js",
 });
 
 if (!result.success) {

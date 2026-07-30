@@ -4,7 +4,7 @@ node_modules/
 
 # Build
 dist/
-bin/apps-mcp.js
+bin/theapps-mcp.js
 
 # Env / secrets
 .env

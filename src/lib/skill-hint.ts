@@ -1,4 +1,4 @@
-/** End-user skill name installed via `npx skills add jammaru/apps-mcp`. */
+/** End-user skill name installed via `npx skills add jammaru/theapps-mcp`. */
 export const APPS_SKILL_NAME = "apps-api";
 
 /** Appended to tool descriptions so agents load recipes/references before acting. */

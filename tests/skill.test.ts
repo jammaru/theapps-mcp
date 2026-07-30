@@ -35,7 +35,7 @@ describe("end-user apps-api skill", () => {
   test("SKILL.md is end-user oriented and installable", async () => {
     const text = await Bun.file(join(skillRoot, "SKILL.md")).text();
     expect(text).toContain("name: apps-api");
-    expect(text).toContain("npx skills add jammaru/apps-mcp");
+    expect(text).toContain("npx skills add jammaru/theapps-mcp");
     expect(text).toContain("recipes/");
     expect(text).toContain("apps_auth_status");
     expect(text.toLowerCase()).not.toContain("contributor");

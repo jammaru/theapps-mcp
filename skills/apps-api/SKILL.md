@@ -21,14 +21,14 @@ Apps API をエージェントから安全・正確に使うためのスキル�
 ## セットアップ（未接続のとき）
 
 ```bash
-npx -y github:jammaru/apps-mcp configure
+npx -y github:jammaru/theapps-mcp configure
 ```
 
 その後クライアントを再起動し、`apps_auth_status` で資格情報の有無を確認する。  
 スキル自体の導入:
 
 ```bash
-npx skills add jammaru/apps-mcp
+npx skills add jammaru/theapps-mcp
 ```
 
 ## 基本ワークフロー

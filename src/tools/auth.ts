@@ -34,8 +34,8 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
             "APPS_API_BASE_URL",
             "APPS_MCP_ALLOW_CUSTOM_BASE_URL",
           ],
-          configure: "npx -y github:jammaru/apps-mcp configure",
-          skill_install: `npx skills add jammaru/apps-mcp`,
+          configure: "npx -y github:jammaru/theapps-mcp configure",
+          skill_install: `npx skills add jammaru/theapps-mcp`,
           docs: "https://theapps.jp/api/setup",
           note: "Never paste secrets into chat or GitHub.",
         });
@@ -52,7 +52,7 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
       if (selected === "skill") {
         return ok({
           name: APPS_SKILL_NAME,
-          install: "npx skills add jammaru/apps-mcp",
+          install: "npx skills add jammaru/theapps-mcp",
           role: "End-user playbooks and field references for accurate Apps-mcp usage.",
           read_first: [
             "recipes/lookup.md",
@@ -77,7 +77,7 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
         api_base: "https://api.theapps.jp",
         docs: "https://theapps.jp/api",
         skill: APPS_SKILL_NAME,
-        skill_install: "npx skills add jammaru/apps-mcp",
+        skill_install: "npx skills add jammaru/theapps-mcp",
         tip: "Call apps_help with topic=tools|setup|safety|skill. For writes, read the apps-api skill recipes first.",
       });
     },

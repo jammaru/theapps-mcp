@@ -1,11 +1,11 @@
 {
-  "name": "apps-mcp",
+  "name": "theapps-mcp",
   "version": "0.1.0",
   "description": "Model Context Protocol server and Agent Skills for theapps.jp Apps API",
   "type": "module",
   "license": "MIT",
   "bin": {
-    "apps-mcp": "./bin/apps-mcp.js"
+    "theapps-mcp": "./bin/theapps-mcp.js"
   },
   "files": [
     "bin/",
@@ -36,7 +36,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/jammaru/apps-mcp.git"
+    "url": "https://github.com/jammaru/theapps-mcp.git"
   },
   "engines": {
     "node": ">=20"

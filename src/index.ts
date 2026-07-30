@@ -16,11 +16,11 @@ async function main(): Promise<void> {
     console.log(`Apps-mcp
 
 Usage:
-  apps-mcp                 Start MCP server on stdio
-  apps-mcp configure       Interactive setup for Cursor / Claude
-  apps-mcp configure --force
-  apps-mcp --http          Stateless HTTP (Bun only, loopback)
-  apps-mcp help
+  theapps-mcp                 Start MCP server on stdio
+  theapps-mcp configure       Interactive setup for Cursor / Claude
+  theapps-mcp configure --force
+  theapps-mcp --http          Stateless HTTP (Bun only, loopback)
+  theapps-mcp help
 `);
     return;
   }
