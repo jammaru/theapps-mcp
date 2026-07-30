@@ -192,7 +192,7 @@ export function registerPlanResources(
     idParam: "product_id",
     listDescription: "One-time payment page plans.",
     createDescription:
-      "Body is Product object (product_name, stripe_env_id, price required on create).",
+      "Body is Product object (product_name, stripe_env_id, price, platform required on create).",
     listChildren: {
       toolSuffix: "purchasers",
       pathSuffix: "purchaser",
@@ -207,7 +207,7 @@ export function registerPlanResources(
     idParam: "paid_id",
     listDescription: "Recurring payment page plans. Path is /v1/client/paid (not /v1/apps).",
     createDescription:
-      "Body is Paid object (plan_name, stripe_env_id, price, billing_cycle required on create).",
+      "Body is Paid object (plan_name, stripe_env_id, price, billing_cycle, platform required on create).",
     listChildren: {
       toolSuffix: "subscribers",
       pathSuffix: "subscriber",
@@ -222,7 +222,7 @@ export function registerPlanResources(
     idParam: "paid_id",
     listDescription: "Installment (limited-count monthly) payment page plans.",
     createDescription:
-      "Body is InstallmentPaid object (plan_name, stripe_env_id, price, billing_cycle; installments_count >= 2).",
+      "Body is InstallmentPaid object (plan_name, stripe_env_id, price, billing_cycle, platform; installments_count >= 2).",
     listChildren: {
       toolSuffix: "subscribers",
       pathSuffix: "subscriber",

@@ -38,7 +38,8 @@
     "product_name": "単発セミナー",
     "stripe_env_id": "1",
     "price": 5000,
-    "language": "ja"
+    "language": "ja",
+    "platform": { "stripe": true }
   },
   "dry_run": true
 }
@@ -53,6 +54,7 @@
     "stripe_env_id": "1",
     "price": 1980,
     "language": "ja",
+    "platform": { "stripe": true },
     "billing_cycle": { "interval": "month", "count": 1 }
   },
   "dry_run": true
@@ -68,6 +70,7 @@
     "stripe_env_id": "1",
     "price": 30000,
     "language": "ja",
+    "platform": { "stripe": true },
     "billing_cycle": { "interval": "month", "installments_count": 3 }
   },
   "dry_run": true

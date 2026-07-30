@@ -11,7 +11,7 @@
 
 ## Product（1回払い）— `apps_*_product`
 
-必須（作成）: `product_name`, `stripe_env_id`, `price`
+必須（作成）: `product_name`, `stripe_env_id`, `price`, **`platform`（決済プラットフォームを1つ以上 true）**
 
 よく使う任意項目:
 
@@ -20,7 +20,7 @@
 | `language` | `ja` / `en` / `pt` |
 | `provider_name` / `label` | 提供者名・ラベル |
 | `stock` | 在庫。`-1` は無制限 |
-| `platform` | PaymentPlatform（作成後は変更不可） |
+| `platform` | PaymentPlatform。**作成時必須**（例: `{ "stripe": true }`）。作成後は変更不可 |
 | `waiting_list` | 成立条件付き申込 |
 | `discord_rule` | Discord 自動化 |
 | `tax_rate` / `allow_duplicate` / `limit_per_person` | 税率・重複・購入上限 |
@@ -32,7 +32,8 @@
   "product_name": "単発講座",
   "stripe_env_id": "1",
   "price": 3000,
-  "language": "ja"
+  "language": "ja",
+  "platform": { "stripe": true }
 }
 ```
 
@@ -40,7 +41,7 @@
 
 ## Paid（定期払い）— `apps_*_paid_plan`
 
-必須（作成）: `plan_name`, `stripe_env_id`, `price`, `billing_cycle`
+必須（作成）: `plan_name`, `stripe_env_id`, `price`, `billing_cycle`, **`platform`**
 
 `billing_cycle`（BillingCycle）:
 
@@ -60,6 +61,7 @@
   "stripe_env_id": "1",
   "price": 1980,
   "language": "ja",
+  "platform": { "stripe": true },
   "billing_cycle": {
     "interval": "month",
     "count": 1
@@ -73,7 +75,7 @@
 
 ## InstallmentPaid（毎月払い・回数制限）— `apps_*_installment_plan`
 
-必須（作成）: `plan_name`, `stripe_env_id`, `price`, `billing_cycle`
+必須（作成）: `plan_name`, `stripe_env_id`, `price`, `billing_cycle`, **`platform`**
 
 `billing_cycle`（InstallmentBillingCycle）:
 
@@ -86,6 +88,8 @@
 
 パス上の ID パラメータ名は `paid_id`（ツール引数も `paid_id`）。
 
+更新時: `price` と `billing_cycle` は変更できない（API が 400）。名前など変更可能な項目だけ送る。
+
 作成例の最小 body:
 
 ```json
@@ -94,6 +98,7 @@
   "stripe_env_id": "1",
   "price": 30000,
   "language": "ja",
+  "platform": { "stripe": true },
   "billing_cycle": {
     "interval": "month",
     "installments_count": 3
