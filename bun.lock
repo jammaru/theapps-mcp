@@ -1,9 +1,9 @@
-{
+﻿{
   "lockfileVersion": 1,
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "apps-mcp",
+      "name": "theapps-mcp",
       "dependencies": {
         "@modelcontextprotocol/server": "^2.0.0",
         "prompts": "^2.4.2",
