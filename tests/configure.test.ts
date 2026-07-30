@@ -1,4 +1,7 @@
 import { describe, expect, test } from "bun:test";
+import { mkdirSync, mkdtempSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import {
   buildAppsMcpEntry,
   claudeDesktopConfigPath,
@@ -127,14 +130,35 @@ describe("formatMcpSnippet / redact", () => {
 
 describe("claudeDesktopConfigPath", () => {
   test("prefers Windows Store path when Packages exists", () => {
+    const root = mkdtempSync(join(tmpdir(), "apps-mcp-claude-"));
+    const localAppData = join(root, "Local");
+    const appData = join(root, "Roaming");
+    mkdirSync(join(localAppData, "Packages"), { recursive: true });
+
     const path = claudeDesktopConfigPath(
       {
-        LOCALAPPDATA: process.env.LOCALAPPDATA,
-        APPDATA: process.env.APPDATA,
+        LOCALAPPDATA: localAppData,
+        APPDATA: appData,
       } as NodeJS.ProcessEnv,
       "win32",
     );
-    expect(path).toBeTruthy();
-    expect(path?.includes("Claude")).toBe(true);
+    expect(path).toContain(join("Packages", "Claude_pzs8sxrjxfjjc"));
+    expect(path?.endsWith(join("Claude", "claude_desktop_config.json"))).toBe(true);
+  });
+
+  test("falls back to APPDATA when Packages is missing", () => {
+    const root = mkdtempSync(join(tmpdir(), "apps-mcp-claude-"));
+    const localAppData = join(root, "Local");
+    const appData = join(root, "Roaming");
+    mkdirSync(localAppData, { recursive: true });
+
+    const path = claudeDesktopConfigPath(
+      {
+        LOCALAPPDATA: localAppData,
+        APPDATA: appData,
+      } as NodeJS.ProcessEnv,
+      "win32",
+    );
+    expect(path).toBe(join(appData, "Claude", "claude_desktop_config.json"));
   });
 });
