@@ -259,3 +259,7 @@ bun run src/index.ts configure
 bun run src/index.ts --http   # Bun のみ / 既定は loopback
 # 非 loopback は APPS_MCP_HTTP_ALLOW_REMOTE=true と APPS_MCP_HTTP_BEARER が必要
 ```
+
+## License
+
+MIT

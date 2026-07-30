@@ -1,7 +1,7 @@
 {
   "name": "apps-mcp",
   "version": "0.1.0",
-  "description": "Unofficial Model Context Protocol server for theapps.jp Apps API",
+  "description": "Model Context Protocol server and Agent Skills for theapps.jp Apps API",
   "type": "module",
   "license": "MIT",
   "bin": {
@@ -32,8 +32,7 @@
     "model-context-protocol",
     "theapps",
     "apps-api",
-    "agent-skills",
-    "unofficial"
+    "agent-skills"
   ],
   "repository": {
     "type": "git",
