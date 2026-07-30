@@ -114,7 +114,8 @@ export async function configure(argv: string[] = process.argv.slice(2)): Promise
     {
       type: "confirm",
       name: "allowWrite",
-      message: "書き込み（作成・更新・削除）を許可しますか？（本番API / 既定はいいえ）",
+      message:
+        "書き込み（作成・更新・削除）を許可しますか？\n  ※接続先は本番APIのみです（Sandboxなし）。実データに影響し得ます / 既定はいいえ",
       initial: false,
     },
   ]);
