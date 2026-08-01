@@ -85,7 +85,8 @@ jobs:
             fi
           else
             NOTES="$(cat <<EOF
-          ## Agent Skills
+          ## Install
+          - npm: https://www.npmjs.com/package/theapps-mcp/v/${VERSION}
           - Claude Desktop: upload the attached \`apps-api-skill.zip\`
           - Coding agents: \`npx skills add jammaru/theapps-mcp\`
           EOF
