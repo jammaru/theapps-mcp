@@ -34,7 +34,7 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
             "APPS_API_BASE_URL",
             "APPS_MCP_ALLOW_CUSTOM_BASE_URL",
           ],
-          configure: "npx -y github:jammaru/theapps-mcp configure",
+          configure: "npx -y theapps-mcp configure",
           skill_install: `npx skills add jammaru/theapps-mcp`,
           docs: "https://theapps.jp/api/setup",
           note: "Never paste secrets into chat or GitHub.",

@@ -25,13 +25,14 @@ Cursor や Claude などの AI エージェントから、顧客照会・決済�
 
 ### 2. セットアップ
 
-`npx` を使うため、**Node.js 20 以上**が必要です。入っていなければ先に入れてください。
+**Node.js 20 以上があれば十分です**（Bun は不要。リポジトリのクローンも不要）。  
+ターミナルで次を実行してください。
 
 - 確認: `node -v` / `npx -v`
 - 未導入: https://nodejs.org/ から LTS をインストール
 
 ```bash
-npx -y github:jammaru/theapps-mcp configure
+npx -y theapps-mcp configure
 ```
 
 対話ウィザードが次を行います。
@@ -50,10 +51,8 @@ npx skills add jammaru/theapps-mcp
 再設定:
 
 ```bash
-npx -y github:jammaru/theapps-mcp configure --force
+npx -y theapps-mcp configure --force
 ```
-
-npm 公開後は `npx -y theapps-mcp configure` でも同じです。
 
 #### Agent にセットアップを任せたい場合
 
@@ -64,7 +63,7 @@ Apps-mcp をセットアップしてください。
 
 1. node -v / npx -v を確認する。無ければ Node.js LTS（20以上）の入れ方を案内して、導入後に続きをやる
 2. ユーザーに Apps 管理画面のアプリID / アプリシークレットを用意してもらう（configure の対話入力で渡す）
-3. 実行: npx -y github:jammaru/theapps-mcp configure
+3. 実行: npx -y theapps-mcp configure
 4. 推奨: npx skills add jammaru/theapps-mcp
 5. Cursor / Claude の再起動を案内し、ツール apps_auth_status で接続確認する手順を伝える
 ```
@@ -98,7 +97,7 @@ Agent がツールを選びます。書き込みは既定でオフなので、�
   "mcpServers": {
     "apps": {
       "command": "npx",
-      "args": ["-y", "github:jammaru/theapps-mcp"],
+      "args": ["-y", "theapps-mcp"],
       "env": {
         "APPS_APP_ID": "your-app-id",
         "APPS_APP_SECRET": "your-app-secret"
@@ -246,12 +245,16 @@ npx skills add jammaru/theapps-mcp
 
 ## 開発
 
+利用者向けの `npx` 導入に Bun は不要です。Bun はコントリビュータ／リリース向けです。  
+`bin/theapps-mcp.js` は Git に含めず、`bun run build` または npm 公開時に生成します。リリース手順は [CONTRIBUTING.md](./CONTRIBUTING.md) を参照してください。
+
 ```bash
 bun install
 bun run start
 bun test
 bun run check
 bun run typecheck
+bun run build
 ```
 
 ```bash

@@ -36,3 +36,6 @@ jobs:
 
       - name: Build
         run: bun run build
+
+      - name: Smoke CLI (Node)
+        run: node bin/theapps-mcp.js help

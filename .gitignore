@@ -27,3 +27,6 @@ coverage/
 .agents/
 .claude/skills/
 skills-lock.json
+
+# npm pack artifacts
+*.tgz
