@@ -1,11 +1,11 @@
 ---
 name: apps-api
 description: >-
-  Apps（theapps.jp）を Apps-mcp 経由で操作するための利用者向けガイド。
-  顧客・決済照会、登録ページ、決済ページ（1回払い/定期/分割）、クーポン、Discord 連携、
-  Webhook、アプリID、アプリシークレット、payment_id の話題で使う。
-  ユーザーが Apps のプラン作成・顧客確認・クーポン発行などを依頼したら、
-  明示がなくてもこのスキルを検討する。
+  Apps（theapps.jp）を Apps-mcp（apps_* ツール）で操作する利用者向けガイド。
+  顧客・決済照会、登録ページ、決済ページ（1回払い/定期/分割）、クーポン、Discord、
+  Webhook、アプリID、アプリシークレット、payment_id、theapps-mcp の話題で使う。
+  apps_* MCP ツールを呼ぶ直前、または Apps のプラン作成・顧客確認・クーポン発行などの依頼では、
+  明示がなくても必ずこのスキルを最初に読む（ツール説明のヒントだけに頼らない）。
 ---
 
 # Apps-mcp（利用者向け）
@@ -18,6 +18,15 @@ Apps API をエージェントから安全・正確に使うためのスキル�
 仕様の正本: https://theapps.jp/api  
 エンドポイント詳細: https://theapps.jp/api/endpoints
 
+## いつ読むか（必須）
+
+`apps_*` を使うタスクでは、**最初の MCP 呼び出しより前に** この `SKILL.md` を読む。  
+ツール説明の「read the skill」はヒントであり、代わりにはならない。
+
+- 読み取りだけでも、まずこのファイル → 必要なら [recipes/lookup.md](recipes/lookup.md)
+- 作成・更新・削除の前は、該当 `recipes/` と `references/` も読む
+- 同じ会話で既に読済みなら再読は不要。別タスク・書き込みに入るときは再確認する
+
 ## セットアップ（未接続のとき）
 
 ```bash
@@ -25,19 +34,22 @@ npx -y theapps-mcp configure
 ```
 
 その後クライアントを再起動し、`apps_auth_status` で資格情報の有無を確認する。  
-スキル自体の導入:
+スキルの導入（MCP とセットで）:
 
 ```bash
 npx skills add jammaru/theapps-mcp
 ```
 
+Claude Desktop は [apps-api-skill.zip](https://github.com/jammaru/theapps-mcp/releases/latest/download/apps-api-skill.zip) をアップロードする。
+
 ## 基本ワークフロー
 
-1. `apps_auth_status` で接続確認（シークレットは返ってこない）
-2. 読み取りツールから始める（一覧 → 1件取得）
-3. 書き込み前に該当 `recipes/` と `references/` を読む
-4. 書き込みは必ず `dry_run: true` → 差分説明 → `confirm: true`
-5. 顧客・購入者・契約者などの個人情報はログ・コミット・Issue に残さない
+1. このスキルを読む（未読ならここで）
+2. `apps_auth_status` で接続確認（シークレットは返ってこない）
+3. 読み取りツールから始める（一覧 → 1件取得）
+4. 書き込み前に該当 `recipes/` と `references/` を読む
+5. 書き込みは必ず `dry_run: true` → 差分説明 → `confirm: true`
+6. 顧客・購入者・契約者などの個人情報はログ・コミット・Issue に残さない
 
 書き込みには `APPS_MCP_ALLOW_WRITE=true` が必要。詳細は [recipes/write-safely.md](recipes/write-safely.md)。
 

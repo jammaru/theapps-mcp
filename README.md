@@ -48,6 +48,8 @@ npx -y theapps-mcp configure
 npx skills add jammaru/theapps-mcp
 ```
 
+Claude Desktop は Release の [apps-api-skill.zip](https://github.com/jammaru/theapps-mcp/releases/latest/download/apps-api-skill.zip) をアップロードしてください。
+
 再設定:
 
 ```bash
@@ -231,17 +233,33 @@ Apps API は **本番のみ**（Sandbox なし）です。
 
 ## Agent Skills（利用者向け）
 
-MCP は実行、スキルは「どのツール・どのフィールド・どの順番か」を案内します。  
-Cursor / Claude Code などでは次で入れられます。
+MCP は実行、スキルは「どのツール・どのフィールド・どの順番か」を案内します。
+
+### コーディングエージェント（Cursor / Claude Code など）
 
 ```bash
 npx skills add jammaru/theapps-mcp
 ```
 
-入るスキル名は `apps-api` です。書き込みやプラン作成の前に `recipes/` と `references/` を読む想定です。  
-中身: [`skills/apps-api/`](./skills/apps-api/)
+GitHub CLI（v2.90.0 以降）でも入れられます。
 
-迷ったらツール `apps_help`（`topic=skill`）でも索引を返せます。
+```bash
+gh skill install jammaru/theapps-mcp apps-api
+```
+
+### Claude Desktop
+
+「カスタマイズ」→「スキル」から、Release の `apps-api-skill.zip` をアップロードしてください。
+
+- [最新版をダウンロード (apps-api-skill.zip)](https://github.com/jammaru/theapps-mcp/releases/latest/download/apps-api-skill.zip)
+- バージョン履歴: [Releases](https://github.com/jammaru/theapps-mcp/releases)
+
+### 中身
+
+スキル名は `apps-api` です。`apps_*` を呼ぶ前にこのスキルを読み、書き込み前は `recipes/` と `references/` も読む想定です。  
+ソース: [`skills/apps-api/`](./skills/apps-api/)
+
+各ツール説明にも「先にスキルを読む」ヒントを付けています。迷ったら `apps_help`（`topic=skill`）で索引を返せます。
 
 ## 開発
 

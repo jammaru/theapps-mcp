@@ -30,3 +30,4 @@ skills-lock.json
 
 # npm pack artifacts
 *.tgz
+apps-api-skill.zip
