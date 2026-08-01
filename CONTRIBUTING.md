@@ -28,25 +28,41 @@ npx -y theapps-mcp configure
 
 ## Release
 
+Publishing uses **npm Trusted Publishing** (OIDC from GitHub Actions). No long-lived npm publish token.
+
+### First-time only (package does not exist on npm yet)
+
+Trusted Publishing can only be configured after the package exists. Publish `0.1.0` once from your machine with a 2FA OTP (no bypass-token needed):
+
+```bash
+bun run build
+npm publish --access public --otp=123456
+```
+
+Replace `123456` with the current code from your authenticator app.
+
+Then on npmjs.com:
+
+1. Open https://www.npmjs.com/package/theapps-mcp → **Settings** → **Trusted Publisher**
+2. Choose **GitHub Actions**
+3. Fill exactly:
+
+| Field | Value |
+|-------|--------|
+| Organization or user | `jammaru` |
+| Repository | `theapps-mcp` |
+| Workflow filename | `release.yml` |
+| Environment name | _(leave empty)_ |
+| Allowed actions | **npm publish** (check this) |
+
+### Later releases
+
 1. Ensure `main` is green on CI
-2. Bump the version (creates a commit + annotated tag):
+2. Bump version (commit + tag):
 
 ```bash
 npm version patch   # or minor / major
-```
-
-3. Push branch and tag:
-
-```bash
 git push origin main --follow-tags
 ```
 
-4. The **Release** workflow will:
-   - run checks / tests / build
-   - publish to npm (`theapps-mcp@x.y.z`) if that version is not already published
-   - create a GitHub Release for `vx.y.z`
-
-### GitHub secrets
-
-Repository secret **`NPM_TOKEN`** (npm Automation token) is required for publishing.  
-Optional: configure [Trusted Publishing](https://docs.npmjs.com/trusted-publishers) for this repo on npmjs.com (workflow uses OIDC `id-token: write`).
+3. The **Release** workflow publishes to npm via OIDC and creates the GitHub Release.
