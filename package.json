@@ -1,6 +1,6 @@
 {
   "name": "theapps-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCP server and Agent Skills for Apps API (theapps.jp)",
   "type": "module",
   "license": "MIT",
