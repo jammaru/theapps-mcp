@@ -2,8 +2,14 @@ import type { McpServer } from "@modelcontextprotocol/server";
 import * as z from "zod/v4";
 import type { AppsClient } from "../client/http.ts";
 import type { AppsConfig } from "../config.ts";
+import {
+  discordChannelCreateBody,
+  discordChannelUpdateBody,
+  discordRoleCreateBody,
+  discordRoleUpdateBody,
+} from "../lib/body-schemas.ts";
 import { fail, runTool } from "../lib/result.ts";
-import { confirmSchema, jsonObject } from "../lib/schemas.ts";
+import { confirmSchema } from "../lib/schemas.ts";
 import { APPS_SKILL_HINT } from "../lib/skill-hint.ts";
 import { destructiveHints, guardWrite, readHints, writeHints } from "../lib/write-guard.ts";
 
@@ -33,10 +39,10 @@ export function registerDiscordTools(
   server.registerTool(
     "apps_create_discord_role",
     {
-      description: `POST /v1/discord/guilds/{guild_id}/roles — create Discord role. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${APPS_SKILL_HINT}`,
+      description: `POST /v1/discord/guilds/{guild_id}/roles — create Discord role. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. Body: name required. ${APPS_SKILL_HINT}`,
       inputSchema: z.object({
         guild_id: z.string().min(1),
-        body: jsonObject.describe("name, position, permissions[]"),
+        body: discordRoleCreateBody,
         ...confirmSchema,
       }),
       annotations: writeHints,
@@ -59,7 +65,7 @@ export function registerDiscordTools(
       inputSchema: z.object({
         guild_id: z.string().min(1),
         role_id: z.string().min(1),
-        body: jsonObject,
+        body: discordRoleUpdateBody,
         ...confirmSchema,
       }),
       annotations: writeHints,
@@ -118,10 +124,10 @@ export function registerDiscordTools(
   server.registerTool(
     "apps_create_discord_channel",
     {
-      description: `POST /v1/discord/guilds/{guild_id}/channels — create channel (parent_id for category). Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${APPS_SKILL_HINT}`,
+      description: `POST /v1/discord/guilds/{guild_id}/channels — create channel (parent_id for category). Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. Body: type and name required. ${APPS_SKILL_HINT}`,
       inputSchema: z.object({
         guild_id: z.string().min(1),
-        body: jsonObject.describe("type, name, topic?, role?, user?, parent_id?"),
+        body: discordChannelCreateBody,
         ...confirmSchema,
       }),
       annotations: writeHints,
@@ -148,7 +154,7 @@ export function registerDiscordTools(
       inputSchema: z.object({
         guild_id: z.string().min(1),
         channel_id: z.string().min(1),
-        body: jsonObject,
+        body: discordChannelUpdateBody,
         ...confirmSchema,
       }),
       annotations: writeHints,

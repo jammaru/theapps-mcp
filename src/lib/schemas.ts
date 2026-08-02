@@ -8,6 +8,7 @@ export const confirmSchema = {
     .describe("If true, return the planned request without calling the API"),
 };
 
+/** Fallback for untyped JSON objects. Prefer resource schemas in body-schemas.ts for writes. */
 export const jsonObject = z
   .record(z.string(), z.unknown())
   .describe("JSON object matching the official Apps API request schema");

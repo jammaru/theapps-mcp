@@ -23,7 +23,8 @@
     "product_name": "単発講座",
     "stripe_env_id": "1",
     "price": 3000,
-    "language": "ja"
+    "language": "ja",
+    "platform": { "stripe": true }
   },
   "dry_run": true
 }

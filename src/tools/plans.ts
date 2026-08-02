@@ -1,9 +1,22 @@
 import type { McpServer } from "@modelcontextprotocol/server";
+import type { ZodType } from "zod/v4";
 import * as z from "zod/v4";
 import type { AppsClient } from "../client/http.ts";
 import type { AppsConfig } from "../config.ts";
+import {
+  advanceCreateBody,
+  advanceUpdateBody,
+  couponCreateBody,
+  couponUpdateBody,
+  installmentCreateBody,
+  installmentUpdateBody,
+  paidCreateBody,
+  paidUpdateBody,
+  productCreateBody,
+  productUpdateBody,
+} from "../lib/body-schemas.ts";
 import { fail, runTool } from "../lib/result.ts";
-import { confirmSchema, jsonObject } from "../lib/schemas.ts";
+import { confirmSchema } from "../lib/schemas.ts";
 import { APPS_SKILL_HINT } from "../lib/skill-hint.ts";
 import { destructiveHints, guardWrite, readHints, writeHints } from "../lib/write-guard.ts";
 
@@ -19,6 +32,10 @@ type CrudResource = {
   /** List response note */
   listDescription: string;
   createDescription: string;
+  /** Shallow Zod schema for create body (required + conditional fields) */
+  createBody: ZodType;
+  /** Shallow Zod schema for update body (partial; extras preserved) */
+  updateBody: ZodType;
   /** Optional sub-collection e.g. contractor */
   listChildren?: {
     toolSuffix: string;
@@ -27,17 +44,17 @@ type CrudResource = {
   };
 };
 
-function writeInput() {
+function writeInput(body: ZodType) {
   return z.object({
-    body: jsonObject,
+    body,
     ...confirmSchema,
   });
 }
 
-function idWriteInput(idParam: string) {
+function idWriteInput(idParam: string, body: ZodType) {
   return z.object({
     [idParam]: z.string().min(1),
-    body: jsonObject,
+    body,
     ...confirmSchema,
   });
 }
@@ -86,7 +103,7 @@ export function registerCrudResource(
     `apps_create_${name}`,
     {
       description: `POST ${basePath} — create ${label}. Production write. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${resource.createDescription} ${APPS_SKILL_HINT}`,
-      inputSchema: writeInput(),
+      inputSchema: writeInput(resource.createBody),
       annotations: writeHints,
     },
     async ({ body, confirm, dry_run }) => {
@@ -108,7 +125,7 @@ export function registerCrudResource(
     `apps_update_${name}`,
     {
       description: `PUT ${basePath}/{${idParam}} — update ${label}. Production write. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${APPS_SKILL_HINT}`,
-      inputSchema: idWriteInput(idParam),
+      inputSchema: idWriteInput(idParam, resource.updateBody),
       annotations: writeHints,
     },
     async (args) => {
@@ -177,7 +194,10 @@ export function registerPlanResources(
     basePath: "/v1/advance",
     idParam: "plan_id",
     listDescription: "Opt-in / registration plans.",
-    createDescription: "Body is Plan object (contract_type, plan_name, language required).",
+    createDescription:
+      "Body is Plan object (contract_type, plan_name, language required; discord_rule if discord; line if line).",
+    createBody: advanceCreateBody,
+    updateBody: advanceUpdateBody,
     listChildren: {
       toolSuffix: "contractors",
       pathSuffix: "contractor",
@@ -192,7 +212,9 @@ export function registerPlanResources(
     idParam: "product_id",
     listDescription: "One-time payment page plans.",
     createDescription:
-      "Body is Product object (product_name, stripe_env_id, price, platform required on create).",
+      "Body is Product object (product_name, stripe_env_id, price, platform with ≥1 true required on create).",
+    createBody: productCreateBody,
+    updateBody: productUpdateBody,
     listChildren: {
       toolSuffix: "purchasers",
       pathSuffix: "purchaser",
@@ -207,7 +229,9 @@ export function registerPlanResources(
     idParam: "paid_id",
     listDescription: "Recurring payment page plans. Path is /v1/client/paid (not /v1/apps).",
     createDescription:
-      "Body is Paid object (plan_name, stripe_env_id, price, billing_cycle, platform required on create).",
+      "Body is Paid object (plan_name, stripe_env_id, price, billing_cycle.interval, platform with ≥1 true required on create).",
+    createBody: paidCreateBody,
+    updateBody: paidUpdateBody,
     listChildren: {
       toolSuffix: "subscribers",
       pathSuffix: "subscriber",
@@ -222,7 +246,9 @@ export function registerPlanResources(
     idParam: "paid_id",
     listDescription: "Installment (limited-count monthly) payment page plans.",
     createDescription:
-      "Body is InstallmentPaid object (plan_name, stripe_env_id, price, billing_cycle, platform; installments_count >= 2).",
+      "Body is InstallmentPaid object (plan_name, stripe_env_id, price, billing_cycle with installments_count≥2, platform with ≥1 true).",
+    createBody: installmentCreateBody,
+    updateBody: installmentUpdateBody,
     listChildren: {
       toolSuffix: "subscribers",
       pathSuffix: "subscriber",
@@ -236,6 +262,9 @@ export function registerPlanResources(
     basePath: "/v1/client/coupon",
     idParam: "coupon_id",
     listDescription: "Discount coupons. 100% off uses coupon_type=0 and rate=100.",
-    createDescription: "Body is Coupon object per official docs.",
+    createDescription:
+      "Body is Coupon object (stripe_env_id, coupon_name, coupon_code, coupon_type, coupon_term, payment_type; rate if type=0, price if type=1).",
+    createBody: couponCreateBody,
+    updateBody: couponUpdateBody,
   });
 }
