@@ -273,11 +273,7 @@ describe("installment waiting_list", () => {
   };
 
   test("type=2 requires interval", () => {
-    expectFail(
-      installmentCreateBody,
-      { ...minimal, waiting_list: { type: 2 } },
-      "waiting_list",
-    );
+    expectFail(installmentCreateBody, { ...minimal, waiting_list: { type: 2 } }, "waiting_list");
     expectOk(installmentCreateBody, {
       ...minimal,
       waiting_list: { type: 2, interval: 24 },
