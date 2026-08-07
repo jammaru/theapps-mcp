@@ -77,6 +77,54 @@ const lineObject = z
   })
   .describe("LINE channel settings");
 
+/** WaitingList — when present, type is required (advance / installment APIs). */
+const waitingListObject = z
+  .looseObject({
+    type: z.number().int().min(0).max(3).describe("0 off, 1 manual, 2 auto, 3 formation"),
+    interval: z.number().int().optional().describe("Hours until auto-approve when type=2"),
+  })
+  .describe("WaitingList / formation conditions");
+
+function refineWaitingList(
+  body: { waiting_list?: unknown },
+  ctx: z.RefinementCtx,
+  options: { requireIntervalForType2: boolean },
+): void {
+  if (body.waiting_list === undefined) return;
+  if (
+    body.waiting_list === null ||
+    typeof body.waiting_list !== "object" ||
+    Array.isArray(body.waiting_list)
+  ) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["waiting_list"],
+      message: "waiting_list must be an object when sent",
+    });
+    return;
+  }
+  const wl = body.waiting_list as Record<string, unknown>;
+  if (typeof wl.type !== "number" || !Number.isInteger(wl.type) || wl.type < 0 || wl.type > 3) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["waiting_list", "type"],
+      message: "waiting_list.type is required (0–3) when waiting_list is sent",
+    });
+    return;
+  }
+  if (
+    options.requireIntervalForType2 &&
+    wl.type === 2 &&
+    (typeof wl.interval !== "number" || !Number.isInteger(wl.interval))
+  ) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["waiting_list", "interval"],
+      message: "waiting_list.interval is required when type=2 (auto-approve)",
+    });
+  }
+}
+
 // --- Product ---
 
 const productBase = z.looseObject({
@@ -85,6 +133,7 @@ const productBase = z.looseObject({
   price: z.number().int(),
   platform: platformObject,
   language: language.optional(),
+  waiting_list: waitingListObject.optional(),
 });
 
 export const productCreateBody = bodySchema(
@@ -139,11 +188,15 @@ const installmentBase = z.looseObject({
   billing_cycle: installmentBillingCycle,
   platform: platformObject,
   language: language.optional(),
+  waiting_list: waitingListObject.optional(),
 });
 
 export const installmentCreateBody = bodySchema(
   installmentBase
-    .superRefine(requirePlatform)
+    .superRefine((body, ctx) => {
+      requirePlatform(body, ctx);
+      refineWaitingList(body, ctx, { requireIntervalForType2: true });
+    })
     .describe(
       "Installment create body — plan_name, stripe_env_id, price, billing_cycle (installments_count>=2), platform required",
     ),
@@ -152,6 +205,7 @@ export const installmentCreateBody = bodySchema(
 export const installmentUpdateBody = bodySchema(
   installmentBase
     .partial()
+    .superRefine((body, ctx) => refineWaitingList(body, ctx, { requireIntervalForType2: true }))
     .describe(
       "Installment update body — partial updates allowed; price/billing_cycle immutable upstream (API 400)",
     ),
@@ -272,6 +326,7 @@ const advanceBase = z.looseObject({
   language,
   discord_rule: z.unknown().optional(),
   line: lineObject.optional(),
+  waiting_list: waitingListObject.optional(),
 });
 
 function refineAdvanceBody(
@@ -279,6 +334,7 @@ function refineAdvanceBody(
     contract_type?: "email" | "discord" | "line";
     discord_rule?: unknown;
     line?: unknown;
+    waiting_list?: unknown;
   },
   ctx: z.RefinementCtx,
 ): void {
@@ -296,6 +352,7 @@ function refineAdvanceBody(
       message: "line (channel_id, channel_secret) is required when contract_type=line",
     });
   }
+  refineWaitingList(body, ctx, { requireIntervalForType2: false });
 }
 
 export const advanceCreateBody = bodySchema(

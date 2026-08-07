@@ -66,14 +66,17 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
             "recipes/create-registration-page.md",
             "recipes/create-coupon.md",
             "recipes/discord.md",
+            "recipes/webhook.md",
             "recipes/write-safely.md",
           ],
           references: [
             "references/safety.md",
             "references/payment-pages.md",
+            "references/waiting-list.md",
             "references/advance-plan.md",
             "references/coupon.md",
             "references/customer-payment.md",
+            "references/webhook.md",
             "references/discord.md",
           ],
         });

@@ -155,9 +155,13 @@ Apps API は **本番のみ**（Sandbox なし）です。
 | ツール | 内容 |
 |--------|------|
 | `apps_get_customer` | 顧客情報 |
+| `apps_list_charges` | 買い切り決済の一覧 |
 | `apps_get_charge` | 買い切り決済 |
+| `apps_list_paid_payments` | 定期課金決済の一覧 |
 | `apps_get_paid_payment` | 定期課金の決済 |
+| `apps_list_installments_payments` | 分割払い決済の一覧 |
 | `apps_get_installments_payment` | 分割払いの決済 |
+| `apps_verify_webhook_signature` | Webhook 署名（HMAC-SHA256）の検証 |
 
 ### 登録ページ（advance）
 
@@ -229,7 +233,9 @@ Apps API は **本番のみ**（Sandbox なし）です。
 公式エンドポイント: https://theapps.jp/api/endpoints
 
 - 決済ページ API は `/v1/client/...`
-- `payment_id` は Webhook 決済成功イベント由来（管理画面の表示IDではない）
+- `payment_id` は Webhook 決済成功イベント由来（管理画面の表示IDや通知の `id` ではない）
+- Webhook 署名・イベント: https://theapps.jp/api/webhook
+- WaitingList（登録ページ / 毎月払いなど）: Skills の `references/waiting-list.md`
 
 ## Agent Skills（利用者向け）
 

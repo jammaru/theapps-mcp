@@ -111,6 +111,8 @@ describe("createServer", () => {
     expect(server).toBeDefined();
     expect(TOOL_CATALOG).toContain("apps_help");
     expect(TOOL_CATALOG).toContain("apps_list_paid_plans");
+    expect(TOOL_CATALOG).toContain("apps_list_charges");
+    expect(TOOL_CATALOG).toContain("apps_verify_webhook_signature");
     expect(TOOL_CATALOG).toContain("apps_delete_discord_channel");
   });
 });

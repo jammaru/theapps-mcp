@@ -212,6 +212,13 @@ async function main(): Promise<void> {
     record("apps_get_installments_payment", false, "no payment_id");
   }
 
+  await expectOk("apps_list_charges", () => ro.client.get("/v1/charge", { limit: 5 }));
+  await expectOk("apps_list_paid_payments", () => ro.client.get("/v1/paid", { limit: 5 }));
+  await expectOk("apps_list_installments_payments", () =>
+    ro.client.get("/v1/installments", { limit: 5 }),
+  );
+  record("apps_verify_webhook_signature", true, "local crypto helper (see unit tests)");
+
   if (guildId && roleId) {
     await expectOk("apps_get_discord_role", async () => {
       try {

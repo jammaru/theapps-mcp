@@ -21,11 +21,17 @@ Apps-mcp 利用時はトークン取得を MCP が行う。
 | Method | Path | ツール |
 |--------|------|--------|
 | GET | `/v1/customer/{customer_id}` | `apps_get_customer` |
+| GET | `/v1/charge` | `apps_list_charges`（任意 `limit`） |
 | GET | `/v1/charge/{payment_id}` | `apps_get_charge` |
+| GET | `/v1/paid` | `apps_list_paid_payments`（任意 `limit`） |
 | GET | `/v1/paid/{payment_id}` | `apps_get_paid_payment` |
+| GET | `/v1/installments` | `apps_list_installments_payments`（任意 `limit`） |
 | GET | `/v1/installments/{payment_id}` | `apps_get_installments_payment` |
 
-`payment_id` は Webhook 決済成功イベント由来。管理画面表示 ID ではない。
+`payment_id` は Webhook 決済成功イベント由来。管理画面表示 ID ではない。  
+Webhook の `id` / `Apps-Webhook-Id` は重複判定用で、`payment_id` とは別。
+
+署名検証（HTTP なし）: `apps_verify_webhook_signature` → [webhook.md](webhook.md)
 
 ## 登録ページ `/v1/advance`
 
@@ -38,11 +44,14 @@ Apps-mcp 利用時はトークン取得を MCP が行う。
 | DELETE | `/v1/advance/{plan_id}` | `apps_delete_advance_plan` |
 | GET | `/v1/advance/{plan_id}/contractor` | `apps_list_advance_plan_contractors` |
 
+`waiting_list` は [waiting-list.md](waiting-list.md)。使わないときはオブジェクトを送らない。
+
 ## 決済ページ（client 系）
 
 ### 1回払い `/v1/client/product`
 
-CRUD + `/{product_id}/purchaser` → `apps_*_product*` / `apps_list_product_purchasers`
+CRUD + `/{product_id}/purchaser` → `apps_*_product*` / `apps_list_product_purchasers`  
+`waiting_list` 可 → [waiting-list.md](waiting-list.md)
 
 ### 定期払い `/v1/client/paid`
 
@@ -50,7 +59,8 @@ CRUD + `/{paid_id}/subscriber` → `apps_*_paid_plan*` / `apps_list_paid_plan_su
 
 ### 毎月払い（回数制限） `/v1/client/installments`
 
-CRUD + `/{paid_id}/subscriber` → `apps_*_installment_plan*` / `apps_list_installment_plan_subscribers`
+CRUD + `/{paid_id}/subscriber` → `apps_*_installment_plan*` / `apps_list_installment_plan_subscribers`  
+`waiting_list` 可（送信時 `type` 必須、`type=2` なら `interval` 必須）
 
 ### クーポン `/v1/client/coupon`
 

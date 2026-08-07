@@ -80,3 +80,9 @@
 ## 削除
 
 `apps_delete_*` は破壊的。紐づく申込 URL が使えなくなる前提でユーザー確認 → dry_run → confirm。
+
+## WaitingList（任意）
+
+1回払い・毎月払いでは `waiting_list` で手動承認 / 自動承認 / 成立条件付き申込を設定できる。  
+毎月払いで送る場合は `type` 必須。`type=2` なら `interval` も必須。  
+詳細: [references/waiting-list.md](../references/waiting-list.md)

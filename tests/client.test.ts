@@ -120,6 +120,36 @@ describe("AppsClient", () => {
     }
   });
 
+  test("lists payment collections without path ids", async () => {
+    const originalFetch = globalThis.fetch;
+    const seen: string[] = [];
+    globalThis.fetch = mock(async (input: RequestInfo | URL) => {
+      seen.push(String(input));
+      return new Response(JSON.stringify({ items: [], has_more: false, mode: "live", error: [] }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }) as unknown as typeof fetch;
+
+    try {
+      const runtime = createRuntime(
+        loadConfig({
+          APPS_ACCESS_TOKEN: "static-token",
+        } as unknown as NodeJS.ProcessEnv),
+      );
+      await runtime.client.get("/v1/charge");
+      await runtime.client.get("/v1/paid", { limit: 2 });
+      await runtime.client.get("/v1/installments");
+      expect(seen).toEqual([
+        "https://api.theapps.jp/v1/charge",
+        "https://api.theapps.jp/v1/paid?limit=2",
+        "https://api.theapps.jp/v1/installments",
+      ]);
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  });
+
   test("maps HTTP 204 to a JSON-serializable payload", async () => {
     const originalFetch = globalThis.fetch;
     globalThis.fetch = mock(
@@ -242,6 +272,10 @@ describe("tool catalog", () => {
   test("has unique names and no /v1/apps paths in catalog source files", async () => {
     expect(new Set(TOOL_CATALOG).size).toBe(TOOL_CATALOG.length);
     expect(TOOL_CATALOG.length).toBeGreaterThan(30);
+    expect(TOOL_CATALOG).toContain("apps_list_charges");
+    expect(TOOL_CATALOG).toContain("apps_list_paid_payments");
+    expect(TOOL_CATALOG).toContain("apps_list_installments_payments");
+    expect(TOOL_CATALOG).toContain("apps_verify_webhook_signature");
     const files = [
       "../src/tools/plans.ts",
       "../src/tools/customer-payment.ts",

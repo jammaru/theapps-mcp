@@ -29,6 +29,9 @@
 | `contract_start` / `contract_end` | 受付期間（`time` は Unix 時間） |
 | `use_phone_number` | 電話番号入力 |
 | `notes` | 備考欄定義 |
+| `waiting_list` | 手動承認・自動承認・成立条件付き申込。詳細は [waiting-list.md](waiting-list.md) |
+
+`waiting_list` を送る場合は `type` 必須。使わない場合は **オブジェクトごと送らない**。
 
 ## 最小 body 例（メール登録）
 

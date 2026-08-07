@@ -241,6 +241,48 @@ describe("advance body schemas", () => {
   test("update allows partial without contract_type", () => {
     expectOk(advanceUpdateBody, { plan_name: "renamed" });
   });
+
+  test("waiting_list requires type when sent", () => {
+    expectFail(
+      advanceCreateBody,
+      {
+        contract_type: "email",
+        plan_name: "先行",
+        language: "ja",
+        waiting_list: {},
+      },
+      "waiting_list",
+    );
+    expectOk(advanceCreateBody, {
+      contract_type: "email",
+      plan_name: "先行",
+      language: "ja",
+      waiting_list: { type: 1 },
+    });
+  });
+});
+
+describe("installment waiting_list", () => {
+  const minimal = {
+    plan_name: "3回払い",
+    stripe_env_id: "1",
+    price: 30000,
+    language: "ja" as const,
+    platform: { stripe: true },
+    billing_cycle: { interval: "month", installments_count: 3 },
+  };
+
+  test("type=2 requires interval", () => {
+    expectFail(
+      installmentCreateBody,
+      { ...minimal, waiting_list: { type: 2 } },
+      "waiting_list",
+    );
+    expectOk(installmentCreateBody, {
+      ...minimal,
+      waiting_list: { type: 2, interval: 24 },
+    });
+  });
 });
 
 describe("discord body schemas", () => {

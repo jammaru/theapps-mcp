@@ -21,7 +21,7 @@
 | `provider_name` / `label` | 提供者名・ラベル |
 | `stock` | 在庫。`-1` は無制限 |
 | `platform` | PaymentPlatform。**作成時必須**（例: `{ "stripe": true }`）。作成後は変更不可 |
-| `waiting_list` | 成立条件付き申込 |
+| `waiting_list` | 成立条件付き申込（詳細: [waiting-list.md](waiting-list.md)） |
 | `discord_rule` | Discord 自動化 |
 | `tax_rate` / `allow_duplicate` / `limit_per_person` | 税率・重複・購入上限 |
 
@@ -87,6 +87,8 @@
 | `sales_count` | 任意 | 販売上限。`-1` は無制限 |
 
 パス上の ID パラメータ名は `paid_id`（ツール引数も `paid_id`）。
+
+`waiting_list` を送る場合は `type` 必須。`type=2`（自動承認）なら `interval` も必須。詳細: [waiting-list.md](waiting-list.md)。
 
 更新時: `price` と `billing_cycle` は変更できない（API が 400）。名前など変更可能な項目だけ送る。
 

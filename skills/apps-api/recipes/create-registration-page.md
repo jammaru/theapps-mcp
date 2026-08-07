@@ -26,6 +26,12 @@
 }
 ```
 
+## WaitingList（任意）
+
+手動承認・自動承認・成立条件付き申込を使う場合だけ `waiting_list` を付ける。  
+**使わないときはキーごと省略**（`type: 0` を送らない）。送信時は `type` 必須。  
+詳細: [references/waiting-list.md](../references/waiting-list.md)
+
 ## 契約者を見る
 
 `apps_list_advance_plan_contractors` に `plan_id`。  

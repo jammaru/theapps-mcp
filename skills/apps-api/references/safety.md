@@ -20,9 +20,17 @@ Sandbox はありません。検証でも実データ・実プランに影響し
 
 顧客・購入者・契約者・メール・Discord ID などはログ・コミット・共有ドキュメントに残さない。要約が必要なら個人を特定できない形にする。
 
+## Webhook
+
+- 受信は 30 秒以内に 200。重複は `Apps-Webhook-Id` / body.`id` で判定
+- 署名検証は生ボディで行う（再 stringify 禁止）
+- Webhook シークレットはチャット・ログに出さない
+- 詳細: [webhook.md](webhook.md)
+
 ## やってはいけないこと
 
 - Sandbox があるかのように案内する
 - 未公開 API（決済実行・返金・解約 REST、顧客一覧検索、Webhook CRUD API など）を存在する前提で呼ぶ
-- 管理画面の表示 ID を `payment_id` として使う
+- 管理画面の表示 ID を `payment_id` として使う（Webhook の通知 `id` も `payment_id` ではない）
 - `/v1/apps/...` パスで決済ページを叩く
+- 登録ページで使わない `waiting_list` を `type: 0` 付きで送る（オブジェクトごと省略する）

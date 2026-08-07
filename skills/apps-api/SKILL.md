@@ -2,8 +2,9 @@
 name: apps-api
 description: >-
   Apps（theapps.jp）を Apps-mcp（apps_* ツール）で操作する利用者向けガイド。
-  顧客・決済照会、登録ページ、決済ページ（1回払い/定期/分割）、クーポン、Discord、
-  Webhook、アプリID、アプリシークレット、payment_id、theapps-mcp の話題で使う。
+  顧客・決済照会（一覧含む）、登録ページ、決済ページ（1回払い/定期/分割）、
+  WaitingList、クーポン、Discord、Webhook 署名・イベント、
+  アプリID、アプリシークレット、payment_id、theapps-mcp の話題で使う。
   apps_* MCP ツールを呼ぶ直前、または Apps のプラン作成・顧客確認・クーポン発行などの依頼では、
   明示がなくても必ずこのスキルを最初に読む（ツール説明のヒントだけに頼らない）。
 ---
@@ -62,6 +63,7 @@ Claude Desktop は [apps-api-skill.zip](https://github.com/jammaru/theapps-mcp/r
 | 登録ページ（オプトイン）を作る | [recipes/create-registration-page.md](recipes/create-registration-page.md) |
 | 割引コードを作る | [recipes/create-coupon.md](recipes/create-coupon.md) |
 | Discord ロール / チャンネル | [recipes/discord.md](recipes/discord.md) |
+| Webhook 受信・署名・重複判定 | [recipes/webhook.md](recipes/webhook.md) |
 | 書き込みの安全手順 | [recipes/write-safely.md](recipes/write-safely.md) |
 
 ## フィールドリファレンス
@@ -70,9 +72,11 @@ Claude Desktop は [apps-api-skill.zip](https://github.com/jammaru/theapps-mcp/r
 |------|------|
 | 顧客・決済照会 | [references/customer-payment.md](references/customer-payment.md) |
 | 決済ページ（Product / Paid / Installment） | [references/payment-pages.md](references/payment-pages.md) |
+| WaitingList（成立条件付き申込） | [references/waiting-list.md](references/waiting-list.md) |
 | 登録ページ（Plan） | [references/advance-plan.md](references/advance-plan.md) |
 | クーポン | [references/coupon.md](references/coupon.md) |
 | Discord | [references/discord.md](references/discord.md) |
+| Webhook | [references/webhook.md](references/webhook.md) |
 | パス早見 | [references/endpoints.md](references/endpoints.md) |
 | 安全・禁止事項 | [references/safety.md](references/safety.md) |
 
@@ -86,7 +90,8 @@ Claude Desktop は [apps-api-skill.zip](https://github.com/jammaru/theapps-mcp/r
 | 分割（回数制限） | `apps_list_installment_plans` | `apps_get_installment_plan` | `apps_create/update/delete_installment_plan` |
 | クーポン | `apps_list_coupons` | `apps_get_coupon` | `apps_create/update/delete_coupon` |
 | 顧客 | — | `apps_get_customer` | — |
-| 決済照会 | — | `apps_get_charge` / `apps_get_paid_payment` / `apps_get_installments_payment` | — |
+| 決済照会 | `apps_list_charges` / `apps_list_paid_payments` / `apps_list_installments_payments` | `apps_get_charge` / `apps_get_paid_payment` / `apps_get_installments_payment` | — |
+| Webhook | — | `apps_verify_webhook_signature` | （設定は管理画面のみ） |
 | Discord | — | `apps_get_discord_role` / `apps_get_discord_channel` | create/update/delete 系 |
 
 迷ったら `apps_help`（`topic=tools|setup|safety`）。
@@ -95,5 +100,6 @@ Claude Desktop は [apps-api-skill.zip](https://github.com/jammaru/theapps-mcp/r
 
 - 接続先は本番のみ（`https://api.theapps.jp`）。Sandbox はない
 - 決済ページ API は `/v1/client/...`（`/v1/apps/...` ではない）
-- `payment_id` は管理画面の表示 ID ではなく、Webhook「決済成功」由来
+- `payment_id` は管理画面の表示 ID ではなく、Webhook「決済成功」由来（通知の `id` とも別）
 - 決済実行・返金・解約・顧客一覧検索の REST は公開範囲では未提供（存在する前提で呼ばない）
+- 登録ページで WaitingList を使わないときは `waiting_list` を送らない
