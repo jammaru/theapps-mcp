@@ -1,0 +1,251 @@
+---
+import config from 'virtual:starlight/user-config';
+
+import LanguageSelect from 'virtual:starlight/components/LanguageSelect';
+import Search from 'virtual:starlight/components/Search';
+import SiteTitle from 'virtual:starlight/components/SiteTitle';
+import SocialIcons from 'virtual:starlight/components/SocialIcons';
+import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
+import { resolveLocale } from '../../lib/i18n';
+
+/**
+ * Starlight 標準 Header をベースに、
+ * サイドバー無し（ランディング）だけ追加のモバイルメニューを載せる。
+ * ドキュメントは PageFrame の MobileMenuToggle + Sidebar をそのまま使う。
+ */
+const shouldRenderSearch =
+	config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
+
+const hasSidebar = Astro.locals.starlightRoute.hasSidebar;
+const locale = resolveLocale(Astro.currentLocale);
+const docsHref = locale === 'en' ? '/en/docs/getting-started/' : '/docs/getting-started/';
+const openLabel = locale === 'en' ? 'Open menu' : 'メニューを開く';
+const closeLabel = locale === 'en' ? 'Close menu' : 'メニューを閉じる';
+const appearanceLabel = locale === 'en' ? 'Appearance' : '表示';
+---
+
+<div
+	class="header"
+	data-apps-header
+	data-open-label={openLabel}
+	data-close-label={closeLabel}
+>
+	<div class="title-wrapper sl-flex">
+		<SiteTitle />
+	</div>
+	<div class="sl-flex print:hidden apps-header-search">
+		{shouldRenderSearch && <Search />}
+	</div>
+	<div class="sl-hidden md:sl-flex print:hidden right-group">
+		<div class="sl-flex social-icons">
+			<SocialIcons />
+		</div>
+		<ThemeSelect />
+		<LanguageSelect />
+	</div>
+	{
+		!hasSidebar && (
+			<button
+				type="button"
+				class="apps-splash-menu-btn print:hidden"
+				aria-expanded="false"
+				aria-controls="apps-mobile-panel"
+				aria-label={openLabel}
+				data-apps-menu-toggle
+			>
+				<svg class="apps-menu-icon apps-menu-open" viewBox="0 0 24 24" aria-hidden="true">
+					<path
+						d="M4 7h16M4 12h16M4 17h16"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.8"
+						stroke-linecap="round"></path>
+				</svg>
+				<svg class="apps-menu-icon apps-menu-close" viewBox="0 0 24 24" aria-hidden="true">
+					<path
+						d="M6 6l12 12M18 6L6 18"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.8"
+						stroke-linecap="round"></path>
+				</svg>
+			</button>
+		)
+	}
+</div>
+
+{
+	!hasSidebar && (
+		<div id="apps-mobile-panel" class="apps-mobile-panel" hidden data-apps-mobile-panel>
+			<nav class="apps-mobile-nav" aria-label={locale === 'en' ? 'Site' : 'サイト'}>
+				<a href={docsHref}>{locale === 'en' ? 'Docs' : 'ドキュメント'}</a>
+				<details class="apps-mobile-links">
+					<summary>
+						<span>{locale === 'en' ? 'Links' : 'リンク'}</span>
+						<span class="apps-mobile-plus" aria-hidden="true"></span>
+					</summary>
+					<div class="apps-mobile-links-body">
+						<a href="https://github.com/jammaru/theapps-mcp" rel="noopener noreferrer" target="_blank">
+							GitHub
+						</a>
+						<a href="https://www.npmjs.com/package/theapps-mcp" rel="noopener noreferrer" target="_blank">
+							npm
+						</a>
+						<a href="https://x.com/jammaru_lab" rel="noopener noreferrer" target="_blank">X</a>
+					</div>
+				</details>
+			</nav>
+
+			<div class="apps-mobile-appearance">
+				<span>{appearanceLabel}</span>
+				<button
+					type="button"
+					class="apps-mobile-theme-switch"
+					aria-label={appearanceLabel}
+					data-apps-theme-toggle
+				>
+					<span class="apps-mobile-theme-track" aria-hidden="true">
+						<span class="apps-mobile-theme-thumb">
+							<svg class="apps-theme-icon apps-theme-sun" viewBox="0 0 24 24" fill="none">
+								<circle cx="12" cy="12" r="3.25" stroke="currentColor" stroke-width="1.6"></circle>
+								<path
+									d="M12 3.5v1.6M12 18.9v1.6M3.5 12h1.6M18.9 12h1.6M6.05 6.05l1.13 1.13M16.82 16.82l1.13 1.13M6.05 17.95l1.13-1.13M16.82 7.18l1.13-1.13"
+									stroke="currentColor"
+									stroke-width="1.6"
+									stroke-linecap="round"></path>
+							</svg>
+							<svg class="apps-theme-icon apps-theme-moon" viewBox="0 0 24 24" fill="none">
+								<path
+									d="M16.5 14.2A6.7 6.7 0 0 1 9.8 7.5a6.2 6.2 0 1 0 6.7 6.7Z"
+									stroke="currentColor"
+									stroke-width="1.6"
+									stroke-linejoin="round"></path>
+							</svg>
+						</span>
+					</span>
+				</button>
+			</div>
+
+			<div class="apps-mobile-langs">
+				<a href="/" hreflang="ja" lang="ja" aria-current={locale === 'ja' ? 'page' : undefined}>JA</a>
+				<a href="/en/" hreflang="en" lang="en" aria-current={locale === 'en' ? 'page' : undefined}>EN</a>
+			</div>
+
+			<div class="apps-mobile-socials">
+				<a href="https://github.com/jammaru/theapps-mcp" rel="noopener noreferrer" target="_blank" aria-label="GitHub">
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.12-1.47-1.12-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.36 1.08 2.94.83.09-.65.35-1.08.64-1.33-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8c.85 0 1.71.11 2.51.33 1.9-1.29 2.74-1.02 2.74-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.86v2.76c0 .26.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+				</a>
+				<a href="https://www.npmjs.com/package/theapps-mcp" rel="noopener noreferrer" target="_blank" aria-label="npm">
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 4h16v16H4V4zm3.2 3.2v9.6h4.8V9.6h3.2v7.2h3.2V7.2H7.2z"/></svg>
+				</a>
+				<a href="https://x.com/jammaru_lab" rel="noopener noreferrer" target="_blank" aria-label="X">
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.7 3h3.1l-6.8 7.8L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.3l4.4 5.8L17.7 3zm-1.1 16.2h1.7L7.5 4.7H5.7l10.9 14.5z"/></svg>
+				</a>
+			</div>
+		</div>
+	)
+}
+
+<style>
+	@layer starlight.core {
+		.header {
+			display: flex;
+			gap: var(--sl-nav-gap);
+			justify-content: space-between;
+			align-items: center;
+			height: 100%;
+		}
+
+		.title-wrapper {
+			overflow: clip;
+			padding: 0.25rem;
+			margin: -0.25rem;
+			min-width: 0;
+		}
+
+		.right-group,
+		.social-icons {
+			gap: 1rem;
+			align-items: center;
+		}
+		.social-icons::after {
+			content: '';
+			height: 2rem;
+			border-inline-end: 1px solid var(--sl-color-gray-5);
+		}
+
+		@media (min-width: 50rem) {
+			:global(:root[data-has-sidebar]) {
+				--__sidebar-pad: calc(2 * var(--sl-nav-pad-x));
+			}
+			:global(:root:not([data-has-toc])) {
+				--__toc-width: 0rem;
+			}
+			.header {
+				--__sidebar-width: max(0rem, var(--sl-content-inline-start, 0rem) - var(--sl-nav-pad-x));
+				--__main-column-fr: calc(
+					(
+							100% + var(--__sidebar-pad, 0rem) - var(--__toc-width, var(--sl-sidebar-width)) -
+								(2 * var(--__toc-width, var(--sl-nav-pad-x))) - var(--sl-content-inline-start, 0rem) -
+								var(--sl-content-width)
+						) / 2
+				);
+				display: grid;
+				grid-template-columns:
+					minmax(
+						calc(var(--__sidebar-width) + max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))),
+						auto
+					)
+					1fr
+					auto;
+				align-content: center;
+			}
+		}
+	}
+</style>
+
+<script>
+	const header = document.querySelector<HTMLElement>('[data-apps-header]');
+	const toggle = document.querySelector<HTMLButtonElement>('[data-apps-menu-toggle]');
+	const panel = document.querySelector<HTMLElement>('[data-apps-mobile-panel]');
+	const openLabel = header?.dataset.openLabel ?? 'Open menu';
+	const closeLabel = header?.dataset.closeLabel ?? 'Close menu';
+
+	const syncThemeUi = () => {
+		const mode = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+		document.querySelectorAll('[data-apps-theme-toggle]').forEach((el) => {
+			el.setAttribute('data-mode', mode);
+		});
+		document.querySelectorAll('[data-theme-toggle]').forEach((el) => {
+			el.setAttribute('data-mode', mode);
+		});
+	};
+
+	const setOpen = (open: boolean) => {
+		if (!toggle || !panel) return;
+		toggle.setAttribute('aria-expanded', String(open));
+		toggle.setAttribute('aria-label', open ? closeLabel : openLabel);
+		panel.hidden = !open;
+		document.body.toggleAttribute('data-apps-mobile-menu', open);
+		syncThemeUi();
+	};
+
+	toggle?.addEventListener('click', () => setOpen(!!panel?.hidden));
+	panel?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+	window.addEventListener('keyup', (e) => {
+		if (e.code === 'Escape') setOpen(false);
+	});
+	matchMedia('(min-width: 50rem)').addEventListener('change', () => setOpen(false));
+
+	document.querySelectorAll<HTMLButtonElement>('[data-apps-theme-toggle]').forEach((btn) => {
+		btn.addEventListener('click', () => {
+			const current = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+			const next = current === 'light' ? 'dark' : 'light';
+			document.documentElement.dataset.theme = next;
+			localStorage.setItem('starlight-theme', next);
+			syncThemeUi();
+		});
+	});
+
+	syncThemeUi();
+</script>

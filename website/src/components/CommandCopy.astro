@@ -34,7 +34,15 @@ const uid = `cmd-${Math.random().toString(36).slice(2, 8)}`;
 	</div>
 	<div class="cmd-row">
 		<span class="cmd-prompt" aria-hidden="true">$</span>
-		<pre class="cmd-code" data-command-text role="tabpanel" id={`${uid}-panel-${tabs[0].id}`} aria-labelledby={`${uid}-tab-${tabs[0].id}`}>{tabs[0].command}</pre>
+		<code
+			class="cmd-code"
+			data-command-text
+			role="tabpanel"
+			id={`${uid}-panel-${tabs[0].id}`}
+			aria-labelledby={`${uid}-tab-${tabs[0].id}`}
+		>
+			{tabs[0].command}
+		</code>
 		<button type="button" class="cmd-copy" data-copy aria-label="Copy command">Copy</button>
 	</div>
 </div>

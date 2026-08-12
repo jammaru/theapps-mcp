@@ -9,7 +9,11 @@ const docsHref = locale === 'en' ? '/en/docs/getting-started/' : '/docs/getting-
 ---
 
 <section class="apps-hero" aria-labelledby="apps-hero-title">
-	<div>
+	<div class="apps-hero-visual">
+		<HeroLogo />
+		<p class="apps-hero-name">Apps-mcp</p>
+	</div>
+	<div class="apps-hero-copy">
 		<p class="apps-kicker">{t.kicker}</p>
 		<h1 id="apps-hero-title" class="apps-brand">{t.title}</h1>
 		<p class="apps-lead">{t.lead}</p>
@@ -41,5 +45,4 @@ const docsHref = locale === 'en' ? '/en/docs/getting-started/' : '/docs/getting-
 			/>
 		</div>
 	</div>
-	<HeroLogo />
 </section>

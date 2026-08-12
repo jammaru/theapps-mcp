@@ -36,6 +36,7 @@ const sidebar = [
 
 export default defineConfig({
 	site,
+	devToolbar: { enabled: false },
 	integrations: [
 		starlight({
 			title: 'Apps-mcp',
@@ -115,6 +116,7 @@ export default defineConfig({
 				},
 			],
 			components: {
+				Header: './src/components/overrides/Header.astro',
 				Hero: './src/components/overrides/Hero.astro',
 				SiteTitle: './src/components/overrides/SiteTitle.astro',
 				ThemeSelect: './src/components/overrides/ThemeSelect.astro',
