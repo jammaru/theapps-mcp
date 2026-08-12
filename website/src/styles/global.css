@@ -116,6 +116,7 @@ header.header {
 
 .apps-header-search {
 	justify-content: flex-end;
+	align-items: center;
 	min-width: 0;
 }
 
@@ -123,15 +124,25 @@ header.header {
 @media (max-width: 49.99rem) {
 	header.header [data-apps-header] {
 		justify-content: flex-start;
+		align-items: center;
 		gap: 0.45rem;
 	}
 
 	header.header [data-apps-header] .apps-header-search {
 		margin-inline-start: auto;
+		align-items: center;
 	}
 
 	header.header [data-apps-header] .apps-splash-menu-btn {
 		margin-inline-start: 0;
+	}
+}
+
+@media (min-width: 50rem) {
+	.apps-header-search {
+		justify-content: stretch;
+		width: 100%;
+		align-items: center;
 	}
 }
 
@@ -595,13 +606,15 @@ site-search button[data-open-modal] kbd {
 @media (min-width: 50rem) {
   site-search > button,
   site-search button[data-open-modal] {
+    box-sizing: border-box !important;
     width: 100% !important;
     max-width: 22rem !important;
-    min-width: 12rem !important;
+    min-width: 0 !important;
     height: 2.5rem !important;
     min-height: 2.5rem !important;
-    padding: 0 0.5rem 0 0.85rem !important;
-    border-radius: 0.75rem !important;
+    margin: 0 !important;
+    padding: 0 0.5rem 0 0.75rem !important;
+    border-radius: 0.65rem !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: flex-start !important;
@@ -609,39 +622,51 @@ site-search button[data-open-modal] kbd {
     aspect-ratio: auto !important;
     font-size: 0.875rem !important;
     line-height: 1 !important;
+    vertical-align: middle;
   }
 
   site-search button[data-open-modal] > svg {
-    flex: 0 0 auto;
+    flex: 0 0 auto !important;
     width: 1rem !important;
     height: 1rem !important;
+    display: block !important;
+    margin: 0 !important;
   }
 
   site-search button[data-open-modal] > span {
-    display: block !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
     line-height: 1 !important;
     white-space: nowrap;
   }
 
   site-search button[data-open-modal] > kbd {
     display: inline-flex !important;
+    flex: 0 0 auto !important;
     align-items: center !important;
-    gap: 0.2rem !important;
-    height: 1.4rem !important;
-    margin-inline-start: auto !important;
+    justify-content: center !important;
+    gap: 0.25rem !important;
+    height: 1.5rem !important;
+    margin: 0 0 0 auto !important;
     padding: 0 0.4rem !important;
     border-radius: 0.35rem !important;
     background: var(--btn-ghost-bg) !important;
     border: 1px solid var(--border) !important;
     font-size: 0.7rem !important;
     line-height: 1 !important;
+    box-sizing: border-box !important;
   }
 
-  site-search button[data-open-modal] > kbd kbd {
+  site-search button[data-open-modal] > kbd > kbd {
+    display: inline !important;
+    margin: 0 !important;
     padding: 0 !important;
     border: 0 !important;
     background: transparent !important;
     font-size: inherit !important;
+    line-height: 1 !important;
   }
 }
 
