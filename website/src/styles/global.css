@@ -548,29 +548,21 @@ starlight-lang-select svg {
   opacity: 1 !important;
 }
 
+/* Search: mobile = icon circle; desktop = Starlight-like field */
 site-search > button,
 site-search button[data-open-modal] {
   background: var(--search-bg) !important;
   color: var(--search-fg) !important;
   border: 0 !important;
-  border-radius: 999px !important;
   opacity: 1 !important;
   box-shadow: none !important;
-  min-height: 2.35rem;
-  min-width: 2.35rem;
-  width: 2.35rem;
-  height: 2.35rem;
-  padding: 0 !important;
-  display: inline-grid !important;
-  place-items: center !important;
-  aspect-ratio: 1 / 1;
+  cursor: pointer;
 }
 
 site-search > button:hover,
 site-search button[data-open-modal]:hover,
 site-search > button:focus-visible,
 site-search button[data-open-modal]:focus-visible {
-  border-color: transparent !important;
   background: var(--panel) !important;
 }
 
@@ -580,8 +572,20 @@ site-search button[data-open-modal] kbd {
   opacity: 1 !important;
 }
 
-/* Icon-only on narrow screens — keep perfect circle */
 @media (max-width: 49.99rem) {
+  site-search > button,
+  site-search button[data-open-modal] {
+    width: 2.35rem !important;
+    height: 2.35rem !important;
+    min-width: 2.35rem !important;
+    min-height: 2.35rem !important;
+    padding: 0 !important;
+    border-radius: 999px !important;
+    display: inline-grid !important;
+    place-items: center !important;
+    aspect-ratio: 1 / 1;
+  }
+
   site-search button[data-open-modal] > span,
   site-search button[data-open-modal] > kbd {
     display: none !important;
@@ -591,23 +595,53 @@ site-search button[data-open-modal] kbd {
 @media (min-width: 50rem) {
   site-search > button,
   site-search button[data-open-modal] {
-    width: auto;
-    min-width: 12rem;
-    height: 2.5rem;
-    min-height: 2.5rem;
-    padding: 0 0.85rem !important;
-    border-radius: 0.85rem !important;
+    width: 100% !important;
+    max-width: 22rem !important;
+    min-width: 12rem !important;
+    height: 2.5rem !important;
+    min-height: 2.5rem !important;
+    padding: 0 0.5rem 0 0.85rem !important;
+    border-radius: 0.75rem !important;
     display: inline-flex !important;
-    place-items: unset !important;
-    aspect-ratio: auto;
-    gap: 0.5rem;
-    justify-content: flex-start;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0.5rem !important;
+    aspect-ratio: auto !important;
+    font-size: 0.875rem !important;
+    line-height: 1 !important;
+  }
+
+  site-search button[data-open-modal] > svg {
+    flex: 0 0 auto;
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+
+  site-search button[data-open-modal] > span {
+    display: block !important;
+    line-height: 1 !important;
+    white-space: nowrap;
   }
 
   site-search button[data-open-modal] > kbd {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.2rem !important;
+    height: 1.4rem !important;
+    margin-inline-start: auto !important;
+    padding: 0 0.4rem !important;
+    border-radius: 0.35rem !important;
     background: var(--btn-ghost-bg) !important;
-    border: 1px solid var(--border);
-    margin-inline-start: auto;
+    border: 1px solid var(--border) !important;
+    font-size: 0.7rem !important;
+    line-height: 1 !important;
+  }
+
+  site-search button[data-open-modal] > kbd kbd {
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    font-size: inherit !important;
   }
 }
 

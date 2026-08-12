@@ -4,7 +4,7 @@ import starlight from '@astrojs/starlight';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
-const site = process.env.SITE_URL || 'https://apps-mcp.pages.dev';
+const site = process.env.SITE_URL || 'https://theapps-mcp.pages.dev';
 
 const sidebar = [
 	{
@@ -82,7 +82,19 @@ export default defineConfig({
 			head: [
 				{
 					tag: 'meta',
-					attrs: { property: 'og:image', content: `${site}/og.png` },
+					attrs: { property: 'og:image', content: `${site}/og@2x.png` },
+				},
+				{
+					tag: 'meta',
+					attrs: { property: 'og:image:width', content: '2400' },
+				},
+				{
+					tag: 'meta',
+					attrs: { property: 'og:image:height', content: '1260' },
+				},
+				{
+					tag: 'meta',
+					attrs: { property: 'og:image:type', content: 'image/png' },
 				},
 				{
 					tag: 'meta',
@@ -90,7 +102,15 @@ export default defineConfig({
 				},
 				{
 					tag: 'meta',
-					attrs: { name: 'twitter:image', content: `${site}/og.png` },
+					attrs: { name: 'twitter:image', content: `${site}/og@2x.png` },
+				},
+				{
+					tag: 'link',
+					attrs: { rel: 'icon', type: 'image/png', sizes: '48x48', href: '/favicon.png' },
+				},
+				{
+					tag: 'link',
+					attrs: { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
 				},
 				{
 					tag: 'link',

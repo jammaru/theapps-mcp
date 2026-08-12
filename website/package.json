@@ -11,7 +11,7 @@
     "astro": "astro",
     "typecheck": "astro check",
     "lint": "astro check",
-    "deploy": "astro build && wrangler pages deploy dist --project-name=apps-mcp",
+    "deploy": "astro build && wrangler pages deploy dist --project-name=theapps-mcp",
     "preview:cf": "astro build && wrangler pages dev dist"
   },
   "dependencies": {

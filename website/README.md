@@ -22,6 +22,7 @@ Connect the `jammaru/theapps-mcp` repository in the Cloudflare Pages dashboard w
 
 | Setting | Value |
 |---|---|
+| Project name | `theapps-mcp` |
 | Production branch | `main` |
 | Root directory | `website` |
 | Framework preset | Astro |
@@ -29,7 +30,7 @@ Connect the `jammaru/theapps-mcp` repository in the Cloudflare Pages dashboard w
 | Build output directory | `dist` |
 | Environment variable | `NODE_VERSION=22` |
 
-Production: https://apps-mcp.pages.dev
+Production: https://theapps-mcp.pages.dev
 
 Manual deploy (optional):
 
