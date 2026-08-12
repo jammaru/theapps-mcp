@@ -110,7 +110,7 @@ export default defineConfig({
 					tag: 'link',
 					attrs: {
 						rel: 'stylesheet',
-						href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap',
+						href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@600;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap',
 					},
 				},
 			],

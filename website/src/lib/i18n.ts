@@ -35,7 +35,6 @@ export const copy = {
 		ctaLead: 'Docs で導入手順とツール一覧を確認できます。',
 		ctaDocs: 'ドキュメントへ',
 		starLine: '気に入ったら、Star してください！',
-		mit: 'Released under the MIT License.',
 		copyright: '© 2026 jammaru',
 	},
 	en: {
@@ -68,7 +67,6 @@ export const copy = {
 		ctaLead: 'Read the docs for setup and the full tool list.',
 		ctaDocs: 'Read the Docs',
 		starLine: 'If you like it, give me a star!',
-		mit: 'Released under the MIT License.',
 		copyright: '© 2026 jammaru',
 	},
 } as const;

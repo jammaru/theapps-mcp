@@ -2,7 +2,8 @@
 import LandingHero from '../LandingHero.astro';
 import Default from '@astrojs/starlight/components/Hero.astro';
 
-const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isHome = path === '/' || path === '/en';
 ---
 
 {
