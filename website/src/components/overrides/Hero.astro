@@ -1,0 +1,16 @@
+---
+import LandingHero from '../LandingHero.astro';
+import Default from '@astrojs/starlight/components/Hero.astro';
+
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+---
+
+{
+	isHome ? (
+		<LandingHero />
+	) : (
+		<Default>
+			<slot />
+		</Default>
+	)
+}

@@ -1,0 +1,45 @@
+---
+import CommandCopy from './CommandCopy.astro';
+import HeroLogo from './HeroLogo.astro';
+import { copy, resolveLocale } from '../lib/i18n';
+
+const locale = resolveLocale(Astro.currentLocale);
+const t = copy[locale];
+const docsHref = locale === 'en' ? '/en/docs/getting-started/' : '/docs/getting-started/';
+---
+
+<section class="apps-hero" aria-labelledby="apps-hero-title">
+	<div>
+		<p class="apps-kicker">{t.kicker}</p>
+		<h1 id="apps-hero-title" class="apps-brand">{t.title}</h1>
+		<p class="apps-lead">{t.lead}</p>
+		<div class="apps-actions">
+			<a class="apps-btn apps-btn-primary" href={docsHref}>{t.getStarted}</a>
+			<a
+				class="apps-btn apps-btn-ghost"
+				href="https://github.com/jammaru/theapps-mcp"
+				rel="noopener noreferrer"
+				target="_blank"
+			>
+				{t.github}
+			</a>
+		</div>
+		<div class="apps-cmd">
+			<CommandCopy
+				tabs={[
+					{
+						id: 'configure',
+						label: 'Configure',
+						command: 'npx -y theapps-mcp configure',
+					},
+					{
+						id: 'skills',
+						label: 'Skills',
+						command: 'npx skills add jammaru/theapps-mcp',
+					},
+				]}
+			/>
+		</div>
+	</div>
+	<HeroLogo />
+</section>

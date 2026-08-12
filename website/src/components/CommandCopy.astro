@@ -1,0 +1,80 @@
+---
+interface Tab {
+	id: string;
+	label: string;
+	command: string;
+}
+
+interface Props {
+	tabs: Tab[];
+}
+
+const { tabs } = Astro.props;
+const uid = `cmd-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class="cmd-box" data-command-copy>
+	<div class="cmd-tabs" role="tablist" aria-label="Install commands">
+		{
+			tabs.map((tab, index) => (
+				<button
+					type="button"
+					class="cmd-tab"
+					role="tab"
+					id={`${uid}-tab-${tab.id}`}
+					aria-selected={index === 0 ? 'true' : 'false'}
+					aria-controls={`${uid}-panel-${tab.id}`}
+					data-tab={tab.id}
+					data-command={tab.command}
+				>
+					{tab.label}
+				</button>
+			))
+		}
+	</div>
+	<div class="cmd-row">
+		<span class="cmd-prompt" aria-hidden="true">$</span>
+		<pre class="cmd-code" data-command-text role="tabpanel" id={`${uid}-panel-${tabs[0].id}`} aria-labelledby={`${uid}-tab-${tabs[0].id}`}>{tabs[0].command}</pre>
+		<button type="button" class="cmd-copy" data-copy aria-label="Copy command">Copy</button>
+	</div>
+</div>
+
+<script>
+	function setup(root: Element) {
+		const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-tab]'));
+		const text = root.querySelector<HTMLElement>('[data-command-text]');
+		const copy = root.querySelector<HTMLButtonElement>('[data-copy]');
+		if (!text || !copy || tabs.length === 0) return;
+
+		tabs.forEach((tab) => {
+			tab.addEventListener('click', () => {
+				tabs.forEach((t) => t.setAttribute('aria-selected', 'false'));
+				tab.setAttribute('aria-selected', 'true');
+				const command = tab.dataset.command ?? '';
+				text.textContent = command;
+				const panelId = tab.getAttribute('aria-controls');
+				if (panelId) text.id = panelId;
+				text.setAttribute('aria-labelledby', tab.id);
+			});
+		});
+
+		copy.addEventListener('click', async () => {
+			const value = text.textContent ?? '';
+			try {
+				await navigator.clipboard.writeText(value);
+				const prev = copy.textContent;
+				copy.textContent = 'Copied';
+				window.setTimeout(() => {
+					copy.textContent = prev;
+				}, 1200);
+			} catch {
+				copy.textContent = 'Failed';
+				window.setTimeout(() => {
+					copy.textContent = 'Copy';
+				}, 1200);
+			}
+		});
+	}
+
+	document.querySelectorAll('[data-command-copy]').forEach(setup);
+</script>

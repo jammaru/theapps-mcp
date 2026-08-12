@@ -1,0 +1,113 @@
+---
+import CommandCopy from './CommandCopy.astro';
+import StarCta from './StarCta.astro';
+import { copy, resolveLocale } from '../lib/i18n';
+
+const locale = resolveLocale(Astro.currentLocale);
+const t = copy[locale];
+const docsHref = locale === 'en' ? '/en/docs/getting-started/' : '/docs/getting-started/';
+
+const icons = {
+	bolt: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+	book: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
+	user: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+	card: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></svg>`,
+	ticket: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>`,
+	message: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+	shield: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>`,
+};
+---
+
+<div class="apps-landing">
+	<section class="apps-section" aria-labelledby="what-title">
+		<h2 id="what-title">{t.whatTitle}</h2>
+		<p class="section-lead">{t.whatLead}</p>
+		<div class="apps-bento apps-bento-2">
+			<article class="apps-tile">
+				<div class="icon" set:html={icons.bolt} />
+				<h3>{t.mcpTitle}</h3>
+				<p>{t.mcpBody}</p>
+			</article>
+			<article class="apps-tile">
+				<div class="icon" set:html={icons.book} />
+				<h3>{t.skillsTitle}</h3>
+				<p>{t.skillsBody}</p>
+			</article>
+		</div>
+	</section>
+
+	<section class="apps-section" aria-labelledby="features-title">
+		<h2 id="features-title">{t.featuresTitle}</h2>
+		<p class="section-lead">{t.featuresLead}</p>
+		<div class="apps-bento">
+			<article class="apps-tile span-3">
+				<div class="icon" set:html={icons.user} />
+				<h3>{t.f1}</h3>
+				<p>{t.f1b}</p>
+			</article>
+			<article class="apps-tile span-3">
+				<div class="icon" set:html={icons.card} />
+				<h3>{t.f2}</h3>
+				<p>{t.f2b}</p>
+			</article>
+			<article class="apps-tile span-2">
+				<div class="icon" set:html={icons.ticket} />
+				<h3>{t.f3}</h3>
+				<p>{t.f3b}</p>
+			</article>
+			<article class="apps-tile span-2">
+				<div class="icon" set:html={icons.message} />
+				<h3>{t.f4}</h3>
+				<p>{t.f4b}</p>
+			</article>
+			<article class="apps-tile span-2">
+				<div class="icon" set:html={icons.shield} />
+				<h3>{t.f5}</h3>
+				<p>{t.f5b}</p>
+			</article>
+		</div>
+	</section>
+
+	<section class="apps-section" aria-labelledby="install-title">
+		<h2 id="install-title">{t.installTitle}</h2>
+		<p class="section-lead">{t.installLead}</p>
+		<CommandCopy
+			tabs={[
+				{
+					id: 'setup',
+					label: 'Configure',
+					command: 'npx -y theapps-mcp configure',
+				},
+				{
+					id: 'skill',
+					label: 'Skills',
+					command: 'npx skills add jammaru/theapps-mcp',
+				},
+			]}
+		/>
+	</section>
+
+	<section class="apps-section" aria-labelledby="cta-title">
+		<div class="apps-cta">
+			<div>
+				<h2 id="cta-title" style="margin:0 0 0.4rem;">{t.ctaTitle}</h2>
+				<p class="section-lead" style="margin:0;">{t.ctaLead}</p>
+			</div>
+			<div class="apps-actions" style="margin:0;">
+				<a class="apps-btn apps-btn-primary" href={docsHref}>{t.ctaDocs}</a>
+				<a
+					class="apps-btn apps-btn-ghost"
+					href="https://github.com/jammaru/theapps-mcp"
+					rel="noopener noreferrer"
+					target="_blank"
+				>
+					GitHub
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<StarCta />
+
+	<p class="apps-mit">{t.mit}</p>
+</div>
