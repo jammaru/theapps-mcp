@@ -65,8 +65,6 @@ const ogOut = await sharp(base)
 	.png({ compressionLevel: 1, effort: 10 })
 	.toBuffer();
 
-await sharp(ogOut).toFile(path.join(publicDir, 'og@2x.png'));
-/* Keep og.png as the same hi-res asset for any hard-coded /og.png links */
 await sharp(ogOut).toFile(path.join(publicDir, 'og.png'));
 
 /* Preview SVG: embed the same hi-res mark so opening og.svg stays sharp */
@@ -83,7 +81,7 @@ const svgWithLogo = svg.replace(
 writeFileSync(path.join(publicDir, 'og.svg'), svgWithLogo);
 
 const meta = await sharp(ogOut).metadata();
-console.log(`generated og@2x.png / og.png ${meta.width}×${meta.height} (${ogOut.byteLength} bytes)`);
+console.log(`generated og.png ${meta.width}×${meta.height} (${ogOut.byteLength} bytes)`);
 
 for (const [name, size] of [
 	['favicon-32.png', 32],

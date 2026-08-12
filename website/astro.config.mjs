@@ -82,7 +82,7 @@ export default defineConfig({
 			head: [
 				{
 					tag: 'meta',
-					attrs: { property: 'og:image', content: `${site}/og@2x.png` },
+					attrs: { property: 'og:image', content: `${site}/og.png` },
 				},
 				{
 					tag: 'meta',
@@ -102,7 +102,7 @@ export default defineConfig({
 				},
 				{
 					tag: 'meta',
-					attrs: { name: 'twitter:image', content: `${site}/og@2x.png` },
+					attrs: { name: 'twitter:image', content: `${site}/og.png` },
 				},
 				{
 					tag: 'link',
