@@ -43,7 +43,8 @@ export default defineConfig({
 				'Unofficial MCP server and Agent Skills for Apps API (theapps.jp).',
 			favicon: '/favicon.svg',
 			logo: {
-				src: './src/assets/logo.svg',
+				light: './src/assets/logo-light.svg',
+				dark: './src/assets/logo-dark.svg',
 				alt: 'Apps-mcp',
 				replacesTitle: true,
 			},
@@ -117,6 +118,7 @@ export default defineConfig({
 				Hero: './src/components/overrides/Hero.astro',
 				SiteTitle: './src/components/overrides/SiteTitle.astro',
 				ThemeSelect: './src/components/overrides/ThemeSelect.astro',
+				LanguageSelect: './src/components/overrides/LanguageSelect.astro',
 			},
 		}),
 		sitemap(),

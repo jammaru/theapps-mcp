@@ -1,0 +1,86 @@
+---
+import config from 'virtual:starlight/user-config';
+
+function localizedPathname(locale: string | undefined): string {
+	const path = Astro.url.pathname;
+	const isEn = path === '/en' || path.startsWith('/en/');
+
+	if (locale === 'en') {
+		if (isEn) return path.endsWith('/') || path.includes('.') ? path : `${path}/`;
+		if (path === '/') return '/en/';
+		return path.startsWith('/') ? `/en${path}` : `/en/${path}`;
+	}
+
+	// root (日本語)
+	if (!isEn) return path;
+	const stripped = path.replace(/^\/en/, '') || '/';
+	return stripped === '' ? '/' : stripped;
+}
+
+const locales = Object.entries(config.locales ?? {}).map(([code, locale]) => ({
+	code,
+	label: locale!.label,
+	href: localizedPathname(code),
+	selected: code === Astro.locals.starlightRoute.locale,
+	short: code === 'en' ? 'EN' : 'JA',
+}));
+---
+
+{
+	config.isMultilingual && (
+		<starlight-lang-select class="apps-lang" data-lang-select>
+			<nav class="apps-lang-track" aria-label={Astro.locals.t('languageSelect.accessibleLabel')}>
+				{
+					locales.map((locale) => (
+						<a
+							class:list={['apps-lang-option', { 'is-active': locale.selected }]}
+							href={locale.href}
+							hreflang={locale.code === 'root' ? 'ja' : locale.code}
+							lang={locale.code === 'root' ? 'ja' : locale.code}
+							aria-current={locale.selected ? 'true' : undefined}
+						>
+							{locale.short}
+						</a>
+					))
+				}
+			</nav>
+			<label class="sr-only">
+				{Astro.locals.t('languageSelect.accessibleLabel')}
+				<select autocomplete="off">
+					{
+						locales.map((locale) => (
+							<option value={locale.href} selected={locale.selected}>
+								{locale.label}
+							</option>
+						))
+					}
+				</select>
+			</label>
+		</starlight-lang-select>
+	)
+}
+
+<script>
+	class StarlightLanguageSelect extends HTMLElement {
+		constructor() {
+			super();
+			const select = this.querySelector('select');
+			if (select) {
+				select.addEventListener('change', (e) => {
+					if (e.currentTarget instanceof HTMLSelectElement) {
+						window.location.pathname = e.currentTarget.value;
+					}
+				});
+				window.addEventListener('pageshow', (event) => {
+					if (!event.persisted) return;
+					const markupSelectedIndex =
+						select.querySelector<HTMLOptionElement>('option[selected]')?.index;
+					if (markupSelectedIndex !== select.selectedIndex) {
+						select.selectedIndex = markupSelectedIndex ?? 0;
+					}
+				});
+			}
+		}
+	}
+	customElements.define('starlight-lang-select', StarlightLanguageSelect);
+</script>

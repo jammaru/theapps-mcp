@@ -36,6 +36,7 @@ export const copy = {
 		ctaDocs: 'ドキュメントへ',
 		starLine: '気に入ったら、Star してください！',
 		mit: 'Released under the MIT License.',
+		copyright: '© 2026 jammaru',
 	},
 	en: {
 		kicker: 'Apps-mcp',
@@ -68,5 +69,6 @@ export const copy = {
 		ctaDocs: 'Read the Docs',
 		starLine: 'If you like it, give me a star!',
 		mit: 'Released under the MIT License.',
+		copyright: '© 2026 jammaru',
 	},
 } as const;
