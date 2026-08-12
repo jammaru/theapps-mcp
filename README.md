@@ -3,6 +3,9 @@
 **Unofficial** [Apps API](https://theapps.jp/api) 向けのツールキットです。  
 Cursor や Claude などの AI エージェントから、顧客照会・決済ページ作成・クーポン・Discord 連携などを扱えるようにします。
 
+- **Website**: https://apps-mcp.pages.dev
+- **Documentation**: https://apps-mcp.pages.dev/docs/getting-started/
+
 このリポジトリには次の **2つ** があります。
 
 - **MCP（Apps-mcp）** … 実際に Apps API を呼び出す実行役です。認証、HTTP、読み取り／書き込みのガードを担当します。エージェントの「ツール」として動きます。

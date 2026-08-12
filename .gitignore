@@ -31,3 +31,13 @@ skills-lock.json
 # npm pack artifacts
 *.tgz
 apps-api-skill.zip
+
+# Website (Astro)
+website/node_modules/
+website/dist/
+website/.astro/
+website/.dev.vars
+website/_research/
+website/_review/
+website/.env
+website/.env.*
