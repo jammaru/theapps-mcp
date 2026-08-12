@@ -140,7 +140,7 @@ header.header {
 
 @media (min-width: 50rem) {
 	.apps-header-search {
-		justify-content: stretch;
+		justify-content: flex-end;
 		width: 100%;
 		align-items: center;
 	}
@@ -607,12 +607,13 @@ site-search button[data-open-modal] kbd {
   site-search > button,
   site-search button[data-open-modal] {
     box-sizing: border-box !important;
-    width: 100% !important;
+    width: auto !important;
     max-width: 22rem !important;
-    min-width: 0 !important;
+    min-width: 12rem !important;
     height: 2.5rem !important;
     min-height: 2.5rem !important;
     margin: 0 !important;
+    margin-inline-start: auto !important;
     padding: 0 0.5rem 0 0.75rem !important;
     border-radius: 0.65rem !important;
     display: inline-flex !important;
