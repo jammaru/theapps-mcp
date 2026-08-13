@@ -23,18 +23,27 @@ const gaId = resolveGoogleAnalyticsId(analyticsId.id);
 			gtag('js', new Date());
 			gtag('config', gaId);
 
+			let started = false;
 			const boot = () => {
+				if (started) return;
+				started = true;
 				const script = document.createElement('script');
 				script.async = true;
 				script.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
 				document.head.appendChild(script);
 			};
 
-			if ('requestIdleCallback' in window) {
-				requestIdleCallback(boot, { timeout: 4000 });
-			} else {
-				window.addEventListener('load', boot);
+			const onInteract = () => boot();
+			for (const type of ['pointerdown', 'keydown', 'scroll']) {
+				window.addEventListener(type, onInteract, { once: true, passive: true });
 			}
+			window.addEventListener(
+				'load',
+				() => {
+					setTimeout(boot, 10000);
+				},
+				{ once: true },
+			);
 		</script>
 	)
 }
