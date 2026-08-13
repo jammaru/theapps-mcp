@@ -42,7 +42,7 @@ export default defineConfig({
 			title: 'Apps-mcp',
 			description:
 				'Unofficial MCP server and Agent Skills for Apps API (theapps.jp). Use it from Cursor, Claude Code, Codex, and similar agents.',
-			favicon: '/favicon.svg',
+			favicon: '/favicon.png',
 			logo: {
 				light: './src/assets/logo-light.svg',
 				dark: './src/assets/logo-dark.svg',
@@ -103,6 +103,10 @@ export default defineConfig({
 				{
 					tag: 'meta',
 					attrs: { name: 'twitter:image', content: `${site}/og.png` },
+				},
+				{
+					tag: 'link',
+					attrs: { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32.png' },
 				},
 				{
 					tag: 'link',
