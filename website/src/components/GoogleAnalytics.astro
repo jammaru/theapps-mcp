@@ -2,10 +2,14 @@
 /**
  * Optional GA4. Enabled only when PUBLIC_GOOGLE_ANALYTICS_ID is set at build time.
  * Forks without the env var send nothing to the original property.
+ *
+ * The ID is written by scripts/write-analytics-id.mjs from process.env so Cloudflare
+ * Pages + wrangler.jsonc still pick it up (dashboard plaintext vars are ignored).
  */
 import { resolveGoogleAnalyticsId } from '../lib/analytics';
+import analyticsId from '../lib/analytics-id.json';
 
-const gaId = resolveGoogleAnalyticsId(import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID);
+const gaId = resolveGoogleAnalyticsId(analyticsId.id);
 ---
 
 {

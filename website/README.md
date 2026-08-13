@@ -43,10 +43,12 @@ original property.
 PUBLIC_GOOGLE_ANALYTICS_ID=
 ```
 
-Production (Cloudflare Pages → Environment variables, Production) already has
-this set. Preview deployments, forks, and GitHub CI do not, so they send nothing
-to the original property. After changing the value, trigger a new production
-build — runtime-only env vars are not enough.
+Production uses a Cloudflare Pages **Secret** named
+`PUBLIC_GOOGLE_ANALYTICS_ID` (not a plaintext dashboard var). This project has
+`wrangler.jsonc`, so Pages ignores plaintext build env vars — that is why an
+earlier dashboard value never reached `astro build`. Preview, forks, and local
+builds without the secret send nothing. After changing the secret, trigger a
+new production build.
 
 ## Cloudflare Pages (Git)
 
@@ -61,7 +63,7 @@ Connect the `jammaru/theapps-mcp` repository in the Cloudflare Pages dashboard w
 | Build command | `npm run build` |
 | Build output directory | `dist` |
 | Environment variable | `NODE_VERSION=22` |
-| Environment variable | `PUBLIC_GOOGLE_ANALYTICS_ID` (optional, Production only) |
+| Secret (Production) | `PUBLIC_GOOGLE_ANALYTICS_ID` |
 
 Production: https://theapps-mcp.pages.dev
 

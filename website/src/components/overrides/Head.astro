@@ -5,8 +5,8 @@ import GoogleAnalytics from '../GoogleAnalytics.astro';
 ---
 
 <Default><slot /></Default>
-{/* Outfit is the header / hero wordmark. One latin file — safe to preload. */}
-<Font cssVariable="--font-outfit" preload={[{ weight: 700, subset: 'latin', style: 'normal' }]} />
+{/* LCP is body copy (Noto). Do not preload Outfit — it contends for Slow 4G. */}
+<Font cssVariable="--font-outfit" />
 <Font cssVariable="--font-ibm-plex-mono" />
 <Font cssVariable="--font-noto-sans-jp" preload />
 <Font cssVariable="--font-zen-kaku" />

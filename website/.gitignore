@@ -5,6 +5,7 @@ dist/
 
 # generated font subsets
 src/lib/font-glyphs.json
+src/lib/analytics-id.json
 src/assets/fonts/*.woff2
 
 # dependencies

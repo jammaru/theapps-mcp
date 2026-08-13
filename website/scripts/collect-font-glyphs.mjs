@@ -4,15 +4,14 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(root, 'src/lib/font-glyphs.json');
-const scanDirs = [
-	path.join(root, 'src'),
-	path.join(root, 'node_modules/@astrojs/starlight/translations'),
+const scanDirs = [path.join(root, 'src')];
+const translationFiles = [
+	path.join(root, 'node_modules/@astrojs/starlight/translations/en.json'),
+	path.join(root, 'node_modules/@astrojs/starlight/translations/ja.json'),
 ];
 
-const hiragana = Array.from({ length: 0x3096 - 0x3041 + 1 }, (_, i) => String.fromCodePoint(0x3041 + i)).join('');
-const katakana = Array.from({ length: 0x30ff - 0x30a0 + 1 }, (_, i) => String.fromCodePoint(0x30a0 + i)).join('');
 const latin = Array.from({ length: 126 - 32 + 1 }, (_, i) => String.fromCharCode(32 + i)).join('');
-const extras = '©—–…・、。「」『』（）【】〔〕〜ー？！：；＋＝＜＞％＆＊＃＠☆★→←↑↓';
+const extras = '©—–…·‘’“”„⌘・、。「」『』（）【】〔〕〜ー？！：；＋＝＜＞％＆＊＃＠☆★→←↑↓';
 
 async function walk(dir) {
 	const entries = await readdir(dir, { withFileTypes: true });
@@ -20,7 +19,11 @@ async function walk(dir) {
 	for (const entry of entries) {
 		const full = path.join(dir, entry.name);
 		if (entry.isDirectory()) files.push(...(await walk(full)));
-		else if (/\.(astro|md|mdx|ts|tsx|json)$/.test(entry.name) && !full.endsWith('font-glyphs.json')) {
+		else if (
+			/\.(astro|md|mdx|ts|tsx|json)$/.test(entry.name) &&
+			!entry.name.endsWith('.test.ts') &&
+			!full.endsWith('font-glyphs.json')
+		) {
 			files.push(full);
 		}
 	}
@@ -28,7 +31,9 @@ async function walk(dir) {
 }
 
 const files = (await Promise.all(scanDirs.map((dir) => walk(dir)))).flat();
-const set = new Set([...latin, ...hiragana, ...katakana, ...extras]);
+files.push(...translationFiles);
+
+const set = new Set([...latin, ...extras]);
 for (const file of files) {
 	const text = await readFile(file, 'utf8');
 	for (const ch of text) {

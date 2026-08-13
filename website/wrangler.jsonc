@@ -3,4 +3,6 @@
 	"name": "apps-mcp",
 	"compatibility_date": "2026-08-12",
 	"pages_build_output_dir": "./dist"
+	// Plaintext dashboard env vars are ignored while this file exists.
+	// Production GA must be a Pages Secret: PUBLIC_GOOGLE_ANALYTICS_ID
 }
