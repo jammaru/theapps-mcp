@@ -3,6 +3,10 @@ dist/
 # generated types
 .astro/
 
+# generated font subsets
+src/lib/font-glyphs.json
+src/assets/fonts/*.woff2
+
 # dependencies
 node_modules/
 
@@ -22,6 +26,8 @@ pnpm-debug.log*
 # local only
 _research/
 _review/
+.lighthouse/
+.lighthouseci/
 
 # macOS-specific files
 .DS_Store

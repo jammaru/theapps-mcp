@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
@@ -112,32 +112,12 @@ export default defineConfig({
 					tag: 'link',
 					attrs: { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
 				},
-				{
-					tag: 'link',
-					attrs: {
-						rel: 'preconnect',
-						href: 'https://fonts.googleapis.com',
-					},
-				},
-				{
-					tag: 'link',
-					attrs: {
-						rel: 'preconnect',
-						href: 'https://fonts.gstatic.com',
-						crossorigin: true,
-					},
-				},
-				{
-					tag: 'link',
-					attrs: {
-						rel: 'stylesheet',
-						href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@600;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap',
-					},
-				},
 			],
 			components: {
+				Head: './src/components/overrides/Head.astro',
 				Header: './src/components/overrides/Header.astro',
 				Hero: './src/components/overrides/Hero.astro',
+				Search: './src/components/overrides/Search.astro',
 				SiteTitle: './src/components/overrides/SiteTitle.astro',
 				ThemeSelect: './src/components/overrides/ThemeSelect.astro',
 				LanguageSelect: './src/components/overrides/LanguageSelect.astro',
@@ -148,4 +128,65 @@ export default defineConfig({
 	vite: {
 		plugins: [tailwindcss()],
 	},
+	fonts: [
+		{
+			name: 'Outfit',
+			cssVariable: '--font-outfit',
+			provider: fontProviders.google(),
+			weights: [700],
+			styles: ['normal'],
+			subsets: ['latin'],
+			formats: ['woff2'],
+			fallbacks: ['sans-serif'],
+			display: 'swap',
+		},
+		{
+			name: 'IBM Plex Mono',
+			cssVariable: '--font-ibm-plex-mono',
+			provider: fontProviders.google(),
+			weights: [400, 600],
+			styles: ['normal'],
+			subsets: ['latin'],
+			formats: ['woff2'],
+			fallbacks: ['monospace'],
+			display: 'swap',
+		},
+		{
+			name: 'Noto Sans JP',
+			cssVariable: '--font-noto-sans-jp',
+			provider: fontProviders.local(),
+			options: {
+				variants: [
+					{
+						src: ['./src/assets/fonts/noto-sans-jp.woff2'],
+						weight: '100 900',
+						style: 'normal',
+					},
+				],
+			},
+			fallbacks: ['sans-serif'],
+			display: 'swap',
+		},
+		{
+			name: 'Zen Kaku Gothic New',
+			cssVariable: '--font-zen-kaku',
+			provider: fontProviders.local(),
+			options: {
+				variants: [
+					{
+						src: ['./src/assets/fonts/zen-kaku-gothic-new-500.woff2'],
+						weight: 500,
+						style: 'normal',
+					},
+					{
+						src: ['./src/assets/fonts/zen-kaku-gothic-new-700.woff2'],
+						weight: 700,
+						style: 'normal',
+					},
+				],
+			},
+			fallbacks: ['sans-serif'],
+			display: 'swap',
+		},
+	],
 });

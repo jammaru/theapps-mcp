@@ -1,0 +1,13 @@
+---
+import Default from '@astrojs/starlight/components/Head.astro';
+import { Font } from 'astro:assets';
+import GoogleAnalytics from '../GoogleAnalytics.astro';
+---
+
+<Default><slot /></Default>
+{/* Outfit is the header / hero wordmark. One latin file — safe to preload. */}
+<Font cssVariable="--font-outfit" preload={[{ weight: 700, subset: 'latin', style: 'normal' }]} />
+<Font cssVariable="--font-ibm-plex-mono" />
+<Font cssVariable="--font-noto-sans-jp" preload />
+<Font cssVariable="--font-zen-kaku" />
+<GoogleAnalytics />

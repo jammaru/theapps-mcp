@@ -23,10 +23,10 @@
   --search-fg: #111827;
   --btn-ghost-bg: #f3f4f6;
   --btn-ghost-fg: #111827;
-  --font-display: "Outfit", sans-serif;
-  --font-jp-display: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-  --sl-font: "Noto Sans JP", sans-serif;
-  --sl-font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --font-display: var(--font-outfit), "Outfit", sans-serif;
+  --font-jp-display: var(--font-zen-kaku), "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+  --sl-font: var(--font-noto-sans-jp), "Noto Sans JP", sans-serif;
+  --sl-font-mono: var(--font-ibm-plex-mono), "IBM Plex Mono", ui-monospace, Menlo, monospace;
   --sl-color-accent: #374151;
   --sl-color-accent-high: #111827;
   --sl-color-accent-low: #f3f4f6;

@@ -52,7 +52,7 @@ const label = Astro.locals.t('themeSelect.accessibleLabel');
 		}
 	}
 
-	const getPreferredColorScheme = (): Theme =>
+	const getPreferredColorScheme = (): 'light' | 'dark' =>
 		matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 
 	function resolvedTheme(theme: Theme): 'light' | 'dark' {

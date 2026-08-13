@@ -1,0 +1,36 @@
+---
+/**
+ * Optional GA4. Enabled only when PUBLIC_GOOGLE_ANALYTICS_ID is set at build time.
+ * Forks without the env var send nothing to the original property.
+ */
+import { resolveGoogleAnalyticsId } from '../lib/analytics';
+
+const gaId = resolveGoogleAnalyticsId(import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID);
+---
+
+{
+	gaId && (
+		<script is:inline define:vars={{ gaId }}>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			window.gtag = gtag;
+			gtag('js', new Date());
+			gtag('config', gaId);
+
+			const boot = () => {
+				const script = document.createElement('script');
+				script.async = true;
+				script.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+				document.head.appendChild(script);
+			};
+
+			if ('requestIdleCallback' in window) {
+				requestIdleCallback(boot, { timeout: 4000 });
+			} else {
+				window.addEventListener('load', boot);
+			}
+		</script>
+	)
+}
