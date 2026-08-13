@@ -8,7 +8,7 @@ export const copy = {
 	ja: {
 		kicker: 'Apps-mcp',
 		title: 'AI エージェント向け Apps API ツールキット',
-		lead: 'Cursor や Claude から、顧客照会・決済ページ・クーポン・Discord 連携を扱う非公式 MCP と Skills です。',
+		lead: 'Cursor や Claude Code、Codex などから、顧客照会・決済ページ・クーポン・Discord 連携を扱う非公式 MCP と Skills です。',
 		getStarted: 'はじめる',
 		github: 'GitHub を見る',
 		installTitle: 'セットアップ',
@@ -40,7 +40,7 @@ export const copy = {
 	en: {
 		kicker: 'Apps-mcp',
 		title: 'Apps API toolkit for AI agents',
-		lead: 'An unofficial MCP server and Agent Skills for customers, payment pages, coupons, and Discord on Apps (theapps.jp).',
+		lead: 'An unofficial MCP server and Agent Skills for Cursor, Claude Code, Codex, and similar agents. Use it for customers, payment pages, coupons, and Discord on Apps (theapps.jp).',
 		getStarted: 'Get Started',
 		github: 'View on GitHub',
 		installTitle: 'Setup',

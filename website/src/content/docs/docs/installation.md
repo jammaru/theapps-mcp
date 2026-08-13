@@ -46,7 +46,7 @@ Claude Desktop は Release の [`apps-api-skill.zip`](https://github.com/jammaru
 
 ## 4. クライアントを再起動
 
-設定後、Cursor や Claude Desktop を再起動し、ツール `apps_auth_status` で接続確認してください。
+設定後、Cursor や Claude Code、Codex などを再起動し、ツール `apps_auth_status` で接続確認してください。
 
 Windows Store 版 Claude Desktop は設定ファイルのパスが異なります。`configure` が自動検出します。
 
@@ -90,5 +90,5 @@ Apps-mcp をセットアップしてください。
 2. ユーザーに Apps 管理画面のアプリID / アプリシークレットを用意してもらう（configure の対話入力で渡す）
 3. 実行: npx -y theapps-mcp configure
 4. 推奨: npx skills add jammaru/theapps-mcp
-5. Cursor / Claude の再起動を案内し、ツール apps_auth_status で接続確認する手順を伝える
+5. Cursor / Claude Code / Codex などの再起動を案内し、ツール apps_auth_status で接続確認する手順を伝える
 ```

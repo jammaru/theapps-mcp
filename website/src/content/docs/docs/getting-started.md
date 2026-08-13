@@ -3,7 +3,7 @@ title: はじめに
 description: Apps-mcp を使い始める最短ルート。認証、configure、Skills、接続確認まで。
 ---
 
-Apps-mcp は **非公式** の [Apps API](https://theapps.jp/api) 向けツールキットです。Cursor や Claude などの AI エージェントから、顧客照会・決済ページ・クーポン・Discord 連携などを扱えます。
+Apps-mcp は **非公式** の [Apps API](https://theapps.jp/api) 向けツールキットです。Cursor や Claude Code、Codex などの AI エージェントから、顧客照会・決済ページ・クーポン・Discord 連携などを扱えます。
 
 このリポジトリには次の **2つ** があります。
 
@@ -24,7 +24,7 @@ Apps-mcp は **非公式** の [Apps API](https://theapps.jp/api) 向けツー�
 
 1. [Installation](/docs/installation/) の手順で `configure` を実行する
 2. 推奨: Agent Skills を入れる
-3. Cursor / Claude を再起動する
+3. Cursor / Claude Code / Codex などを再起動する
 4. ツール `apps_auth_status` で接続を確認する
 5. 日本語で依頼する（例: 「買い切り決済ページの一覧を見せて」）
 

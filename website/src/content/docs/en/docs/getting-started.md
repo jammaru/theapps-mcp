@@ -3,7 +3,7 @@ title: Getting Started
 description: Fastest path to set up Apps-mcp.
 ---
 
-Apps-mcp is an **unofficial** toolkit for the [Apps API](https://theapps.jp/api). Use it from Cursor, Claude, and other agents for customers, payment pages, coupons, and Discord.
+Apps-mcp is an **unofficial** toolkit for the [Apps API](https://theapps.jp/api). Use it from Cursor, Claude Code, Codex, and similar agents for customers, payment pages, coupons, and Discord.
 
 This repository has two parts:
 

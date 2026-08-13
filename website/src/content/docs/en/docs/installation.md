@@ -23,7 +23,7 @@ npx skills add jammaru/theapps-mcp
 
 ## 4. Restart and verify
 
-Restart Cursor/Claude, then use `apps_auth_status`.
+Restart Cursor, Claude Code, Codex, or a similar client, then use `apps_auth_status`.
 
 ## Manual config
 

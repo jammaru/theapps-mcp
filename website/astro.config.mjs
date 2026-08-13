@@ -41,7 +41,7 @@ export default defineConfig({
 		starlight({
 			title: 'Apps-mcp',
 			description:
-				'Unofficial MCP server and Agent Skills for Apps API (theapps.jp).',
+				'Unofficial MCP server and Agent Skills for Apps API (theapps.jp). Use it from Cursor, Claude Code, Codex, and similar agents.',
 			favicon: '/favicon.svg',
 			logo: {
 				light: './src/assets/logo-light.svg',
