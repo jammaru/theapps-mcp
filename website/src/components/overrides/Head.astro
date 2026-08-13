@@ -5,9 +5,9 @@ import GoogleAnalytics from '../GoogleAnalytics.astro';
 ---
 
 <Default><slot /></Default>
-{/* LCP is body copy (Noto). Do not preload Outfit — it contends for Slow 4G. */}
+{/* After charset: preload LCP body (Noto) and H1 display (Zen 700). Do not put Font first — it delays charset. */}
 <Font cssVariable="--font-outfit" />
 <Font cssVariable="--font-ibm-plex-mono" />
 <Font cssVariable="--font-noto-sans-jp" preload />
-<Font cssVariable="--font-zen-kaku" />
+<Font cssVariable="--font-zen-kaku" preload={[{ weight: 700, style: 'normal' }]} />
 <GoogleAnalytics />

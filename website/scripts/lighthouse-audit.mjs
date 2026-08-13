@@ -79,7 +79,12 @@ preview.stdout.on('data', (d) => process.stdout.write(d));
 preview.stderr.on('data', (d) => process.stderr.write(d));
 
 const shutdown = () => {
-	if (!preview.killed) preview.kill();
+	if (!preview.pid) return;
+	if (process.platform === 'win32') {
+		spawn('taskkill', ['/PID', String(preview.pid), '/T', '/F'], { stdio: 'ignore' });
+		return;
+	}
+	preview.kill();
 };
 process.on('exit', shutdown);
 process.on('SIGINT', () => {

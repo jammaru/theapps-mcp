@@ -17,12 +17,6 @@ const sources = [
 		out: 'noto-sans-jp.woff2',
 	},
 	{
-		id: 'zen-kaku-500',
-		url: 'https://raw.githubusercontent.com/google/fonts/main/ofl/zenkakugothicnew/ZenKakuGothicNew-Medium.ttf',
-		file: 'ZenKakuGothicNew-Medium.ttf',
-		out: 'zen-kaku-gothic-new-500.woff2',
-	},
-	{
 		id: 'zen-kaku-700',
 		url: 'https://raw.githubusercontent.com/google/fonts/main/ofl/zenkakugothicnew/ZenKakuGothicNew-Bold.ttf',
 		file: 'ZenKakuGothicNew-Bold.ttf',

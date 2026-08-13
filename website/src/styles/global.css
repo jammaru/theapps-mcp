@@ -5,7 +5,7 @@
   --bg: #ffffff;
   --bg-soft: #f3f4f6;
   --fg: #111827;
-  --muted: #6b7280;
+  --muted: #4b5563;
   --border: #e5e7eb;
   --border-strong: #d1d5db;
   --accent: #374151;
@@ -1059,6 +1059,7 @@ body:has(.apps-landing) .hero {
   font-size: clamp(1.35rem, 2.4vw, 1.7rem);
   letter-spacing: 0.02em;
   line-height: 1.4;
+  font-weight: 700;
   color: var(--fg);
 }
 
@@ -1123,7 +1124,7 @@ body:has(.apps-landing) .hero {
 
 .apps-tile p {
   margin: 0;
-  color: var(--muted);
+  color: var(--sl-color-text);
   font-size: 0.94rem;
   line-height: 1.65;
   flex: 1;

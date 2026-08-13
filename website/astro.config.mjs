@@ -46,7 +46,7 @@ export default defineConfig({
 			logo: {
 				light: './src/assets/logo-light.svg',
 				dark: './src/assets/logo-dark.svg',
-				alt: 'Apps-mcp',
+				alt: '',
 				replacesTitle: true,
 			},
 			social: [
@@ -125,8 +125,16 @@ export default defineConfig({
 		}),
 		sitemap(),
 	],
+	// Inline only the small Starlight ui.css. Do not use 'always' — that
+	// inlined common.css too and ballooned HTML to ~129 KB (PSI 84).
+	build: {
+		inlineStylesheets: 'auto',
+	},
 	vite: {
 		plugins: [tailwindcss()],
+		build: {
+			assetsInlineLimit: 14 * 1024,
+		},
 	},
 	fonts: [
 		{
@@ -173,11 +181,6 @@ export default defineConfig({
 			provider: fontProviders.local(),
 			options: {
 				variants: [
-					{
-						src: ['./src/assets/fonts/zen-kaku-gothic-new-500.woff2'],
-						weight: 500,
-						style: 'normal',
-					},
 					{
 						src: ['./src/assets/fonts/zen-kaku-gothic-new-700.woff2'],
 						weight: 700,
