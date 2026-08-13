@@ -17,6 +17,20 @@ npm run typecheck
 npm test
 ```
 
+## Lighthouse (local)
+
+GitHub CI does not run Lighthouse. After website changes that can affect load
+(fonts, CSS, JS, layout), measure locally with Chrome installed:
+
+```bash
+npm run build
+npm run lighthouse
+```
+
+`npm run lhci` uses the same URLs and assertions in `lighthouserc.cjs`
+(Performance ≥ 85, Accessibility/SEO/Best Practices ≥ 90, CLS ≤ 0.1).
+Reports are written to `.lighthouse/` and `.lighthouseci/` (gitignored).
+
 ## Analytics (optional)
 
 Google Analytics 4 is **off by default**. It is enabled only when

@@ -12,6 +12,8 @@
     "typecheck": "astro check",
     "lint": "astro check",
     "test": "node --experimental-strip-types --test src/lib/analytics.test.ts",
+    "lighthouse": "node scripts/lighthouse-audit.mjs",
+    "lhci": "lhci autorun --config=lighthouserc.cjs",
     "deploy": "astro build && wrangler pages deploy dist --project-name=theapps-mcp",
     "preview:cf": "astro build && wrangler pages dev dist"
   },
@@ -26,6 +28,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@lhci/cli": "^0.15.1",
     "subset-font": "^2.5.0",
     "typescript": "^6.0.3"
   }
