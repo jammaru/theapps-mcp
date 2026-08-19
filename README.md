@@ -6,8 +6,6 @@ Cursor や Claude などの AI エージェントから、顧客照会・決済�
 - **Website**: https://theapps-mcp.pages.dev
 - **Documentation**: https://theapps-mcp.pages.dev/docs/getting-started/
 
-サイトの Google Analytics は任意です。`PUBLIC_GOOGLE_ANALYTICS_ID` が無いビルドでは無効になり、fork しても元サイトへは送信されません。詳細は [website/README.md](website/README.md) を参照してください。
-
 このリポジトリには次の **2つ** があります。
 
 - **MCP（Apps-mcp）** … 実際に Apps API を呼び出す実行役です。認証、HTTP、読み取り／書き込みのガードを担当します。エージェントの「ツール」として動きます。
