@@ -1,6 +1,6 @@
 ---
 name: apps-manage-coupons
-description: Create, inspect, update, or delete an Apps discount code, including percentage, fixed-amount, or 100-percent discounts and scoping to products or plans. Use when the user wants to run or maintain a discount campaign.
+description: Create, inspect, update, or delete an Apps coupon or discount code (クーポン, 割引コード), including percentage, fixed-amount, or 100-percent discounts and scoping to products or plans. Use when the user wants to run or maintain a discount campaign.
 ---
 
 # Manage Apps coupons
@@ -24,10 +24,12 @@ Read this skill before the first matching `apps_*` MCP call in each task. Read t
 
 ## Update and delete
 
-Fetch the coupon first. Respect immutable fields and usage-history restrictions in the reference. Preview the operation, explain revision or deletion behavior, and execute only after approval.
+Fetch with `apps_get_coupon` first. Respect immutable fields and usage-history restrictions in the reference. Preview `apps_update_coupon` or `apps_delete_coupon`, explain revision or deletion behavior, and execute only after approval.
 
-## Boundaries
+## Safety and boundaries
 
+- Writes need `APPS_MCP_ALLOW_WRITE=true`. Do not ask the user to paste that value in chat; point them to `configure` or the MCP env.
+- Preview with `dry_run: true`, explain the pending effect, then execute with `confirm: true` only after approval.
 - Creating a coupon does not automatically attach it to a single page; scope comes from `payment_type` and `product_ids`.
 - Do not claim that a coupon is usable on a page unless the returned scope includes that page.
 - Do not include purchaser or customer records in the result.

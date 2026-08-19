@@ -1,6 +1,6 @@
 ---
 name: apps-connect
-description: Connect Apps (theapps.jp) to a supported MCP client, configure Apps-mcp, check authentication, or troubleshoot missing Apps credentials and tools. Use for setup and connection requests, not for managing payments or plans after the connection works.
+description: Connect Apps (theapps.jp) to a supported MCP client, configure Apps-mcp, check authentication, or troubleshoot missing Apps credentials and tools. Use for setup and connection requests such as Apps-mcpのセットアップ, 接続確認, or when Appsのツールが表示されない, not for managing payments or plans after the connection works.
 ---
 
 # Connect Apps-mcp
@@ -19,12 +19,13 @@ Read this skill before the first matching `apps_*` MCP call in each task. Once s
 4. Register the MCP server for the selected client when prompted.
 5. Tell the user to reload the MCP client if it does not detect the new server immediately.
 6. Call `apps_auth_status` and report only whether credentials are configured.
+7. If token errors persist, call `apps_clear_token_cache` and retry `apps_auth_status`. Use `apps_help` (`topic=setup|tools|skill`) when the next skill is unclear.
 
 ## Safety
 
 - Treat the app ID, app secret, and access token as secrets.
 - Do not print configuration files that contain credential values.
-- Keep writes disabled unless the user needs create, update, or delete operations.
+- Keep writes disabled unless the user needs create, update, or delete operations. Writes require `APPS_MCP_ALLOW_WRITE=true`; do not ask the user to paste that value in chat.
 - Apps API connects to `https://api.theapps.jp`; it has no separate API sandbox.
 
 ## Result

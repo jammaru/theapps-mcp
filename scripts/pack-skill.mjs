@@ -42,15 +42,28 @@ if (skillNames.length === 0) {
   process.exit(1);
 }
 
+function frontmatterField(block, key) {
+  const folded = block.match(new RegExp(`^${key}:\\s*>-?\\s*\\r?\\n((?:[ \\t].*\\r?\\n?)*)`, "m"));
+  if (folded) {
+    const joined = folded[1]
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .join(" ");
+    if (joined) return joined;
+  }
+  return block.match(new RegExp(`^${key}:\\s*(.+)$`, "m"))?.[1]?.trim();
+}
+
 function skillSummary(skillName) {
   const text = readFileSync(join(skillsRoot, skillName, "SKILL.md"), "utf8");
   const block = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!block) {
     throw new Error(`Missing YAML frontmatter in skills/${skillName}/SKILL.md`);
   }
-  const name = block[1].match(/^name:\s*(.+)$/m)?.[1]?.trim();
-  const description = block[1].match(/^description:\s*(.+)$/m)?.[1]?.trim();
-  if (!name || !description) {
+  const name = frontmatterField(block[1], "name");
+  const description = frontmatterField(block[1], "description");
+  if (!name || !description || description === ">-" || description === ">") {
     throw new Error(`skills/${skillName}/SKILL.md must declare name and description`);
   }
   return { name, description };

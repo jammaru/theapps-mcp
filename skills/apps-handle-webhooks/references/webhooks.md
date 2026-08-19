@@ -45,6 +45,8 @@ Require an absolute timestamp difference of at most 300 seconds and compare each
 
 Do not parse and reserialize JSON before verification. Reject verification failures with HTTP 400.
 
+`apps_verify_webhook_signature` checks one delivery. Required inputs: `raw_body` (exact UTF-8 body), `signature_header` (`Apps-Signature`), and `webhook_secret` (often `whsec_...`). Optional: `webhook_id_header`, `tolerance_seconds` (default 300). Never log or paste the secret into chat.
+
 ## Idempotency and identifiers
 
 Retries and manual resends use a new timestamp and signature. Deduplicate with body `id` or `Apps-Webhook-Id`. For payment lookup, use the top-level `payment_id` from `payment` or `refund`, never the delivery `id`.

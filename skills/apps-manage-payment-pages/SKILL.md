@@ -1,6 +1,6 @@
 ---
 name: apps-manage-payment-pages
-description: Create, inspect, update, or delete an Apps payment page for a one-time product, recurring subscription, or limited-count installment plan. Use when the user wants to publish or maintain a checkout page and receive its application URL.
+description: Create, inspect, update, or delete an Apps payment page for a one-time product, recurring subscription, or limited-count installment plan. Use when the user wants to publish or maintain a checkout page (決済ページ, 一回払い, 月額プラン, 申込URL), not for checking whether a transaction succeeded.
 ---
 
 # Manage Apps payment pages
@@ -32,7 +32,7 @@ Do not choose a family from the price or name alone. Use the intended billing be
 
 ## Update
 
-1. Fetch the existing plan.
+1. Fetch the existing plan (`apps_get_product`, `apps_get_paid_plan`, or `apps_get_installment_plan`).
 2. Send only fields that should change.
 3. Do not change immutable fields. For installment plans, do not change `price` or `billing_cycle`.
 4. Preview with `dry_run: true`, explain the difference, then execute with `confirm: true` after approval.
@@ -41,8 +41,13 @@ Do not choose a family from the price or name alone. Use the intended billing be
 
 Fetch the plan, identify the application URL that will stop working, preview the delete, and execute only after explicit approval. Treat deletion as irreversible.
 
+## Purchaser and subscriber lists
+
+Use `apps_list_product_purchasers`, `apps_list_paid_plan_subscribers`, or `apps_list_installment_plan_subscribers` only when the user asks for enrollment. Summarize counts or the requested fields. Do not save or reproduce raw rows.
+
 ## Safety and result
 
+- Writes need `APPS_MCP_ALLOW_WRITE=true`. Do not ask the user to paste that value in chat; point them to `configure` or the MCP env.
+- Preview with `dry_run: true`, explain the pending effect, then execute with `confirm: true` only after approval.
 - Apps API has no separate sandbox; all writes target the connected account.
-- Never include purchaser or subscriber records in the result.
 - Report exactly what changed, the plan family, mode, identifier, and application URL. Do not claim that the page accepts payments until the returned configuration supports that conclusion.

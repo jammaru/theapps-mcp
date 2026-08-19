@@ -1,6 +1,6 @@
 ---
 name: apps-manage-registration-pages
-description: Create, inspect, update, or delete an Apps registration page for email, Discord, or LINE sign-up, including approval or formation conditions. Use when the user wants an opt-in or registration application URL rather than a paid checkout page.
+description: Create, inspect, update, or delete an Apps registration page for email, Discord, or LINE sign-up, including approval or formation conditions. Use when the user wants an opt-in or registration application URL (登録ページ, メール登録, 承認制) rather than a paid checkout page.
 ---
 
 # Manage Apps registration pages
@@ -24,14 +24,16 @@ Read this skill before the first matching `apps_*` MCP call in each task. Read t
 
 ## Update and delete
 
-- Fetch the current plan before changing it and send only changed keys.
-- Preview every update or delete with `dry_run: true`.
+- Fetch with `apps_get_advance_plan` before changing a plan and send only changed keys.
+- Preview every update or delete (`apps_update_advance_plan` / `apps_delete_advance_plan`) with `dry_run: true`.
 - Before deletion, identify the application URL that will stop working and execute only after explicit approval.
 
 ## Contractor lists
 
 Use `apps_list_advance_plan_contractors` only when the user requests enrollment status. Summarize counts or the requested record and omit unrelated personal fields. Do not save or reproduce the raw list.
 
-## Result
+## Safety and result
 
-Report the registration channel, approval behavior, plan identifier, application URL, and exact changed settings.
+- Writes need `APPS_MCP_ALLOW_WRITE=true`. Do not ask the user to paste that value in chat; point them to `configure` or the MCP env.
+- Preview with `dry_run: true`, explain the pending effect, then execute with `confirm: true` only after approval.
+- Report the registration channel, approval behavior, plan identifier, application URL, and exact changed settings.

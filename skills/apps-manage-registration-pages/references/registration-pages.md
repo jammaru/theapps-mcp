@@ -15,7 +15,7 @@ The minimum create fields are:
 - `plan_name`
 - `language`: `ja`, `en`, or `pt`
 
-`contract_type=discord` requires `discord_rule`. `contract_type=line` requires a `line` object with the fields required by the MCP schema.
+`contract_type=discord` requires `discord_rule`. `contract_type=line` requires `line.channel_id` and `line.channel_secret`.
 
 ## WaitingList
 
@@ -23,7 +23,7 @@ When approval or formation conditions are enabled, add `waiting_list` with `type
 
 - `1`: manual approval
 - `2`: automatic approval after the configured interval
-- `3`: formation conditions
+- `3`: formation conditions. Include only official formation fields; extra keys pass through.
 
 When the feature is unused, omit the entire `waiting_list` object. Do not send `{ "type": 0 }` as a substitute for omission on registration-page requests.
 

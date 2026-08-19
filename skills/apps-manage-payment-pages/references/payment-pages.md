@@ -24,6 +24,8 @@ The official API marks `platform` optional and immutable after creation. Apps-mc
 
 `stripe_env_id` is required on creation and immutable on update. Values used by Apps are `"0"` for live payments and `"1"` for test-mode payments. This mode does not change the API base URL or create a separate account sandbox.
 
+Optional `discord_rule` attaches automatic Discord access after payment. Create the role with `apps-manage-discord` first, then put its ID here.
+
 ## Update restrictions
 
 - `stripe_env_id` and `platform` cannot be changed after creation.
@@ -34,10 +36,11 @@ The official API marks `platform` optional and immutable after creation. Apps-mc
 
 WaitingList is supported for products and installment plans, not recurring `/v1/client/paid` plans.
 
-- When `waiting_list` is present for an installment plan, `type` is required.
+- When `waiting_list` is sent, `type` is required.
 - For installment `type=2`, `interval` is also required.
 - `type` values: `0` off, `1` manual approval, `2` automatic approval after `interval` hours, `3` formation conditions.
+- For `type=3`, include only the formation fields the official API documents (deadline, minimum participants, and related mail flags). Extra keys pass through; do not invent names.
 
 ## Responses
 
-Create and get responses can contain `url_application`. Return that URL instead of constructing one. Purchaser and subscriber endpoints return personal records; do not include raw rows in normal summaries.
+Create and get responses can contain `url_application`. Return that URL instead of constructing one. Purchaser and subscriber list tools return personal records; summarize only when the user asked for enrollment.

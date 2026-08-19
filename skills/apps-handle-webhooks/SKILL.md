@@ -1,6 +1,6 @@
 ---
 name: apps-handle-webhooks
-description: Design, implement, review, or troubleshoot an Apps Webhook receiver, verify Apps-Signature, prevent duplicate processing, or extract payment_id and customer_id from Apps events. Use for event-driven integrations and Webhook handler code.
+description: Design, implement, review, or troubleshoot an Apps Webhook receiver, verify Apps-Signature, prevent duplicate processing, or extract payment_id and customer_id from Apps events. Use for event-driven integrations and Webhook handler code (Webhook受信, 決済通知, 二重処理).
 ---
 
 # Handle Apps Webhooks
