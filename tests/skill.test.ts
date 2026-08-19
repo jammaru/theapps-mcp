@@ -1,8 +1,9 @@
 import { describe, expect, test } from "bun:test";
-import { existsSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { existsSync, readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { APPS_TOOL_SKILLS, toolSkillHint } from "../src/lib/skill-hint.ts";
-import { APPS_SKILLS } from "../src/lib/skills.ts";
+import { APPS_SKILLS, APPS_SKILLS_DESKTOP_ZIP } from "../src/lib/skills.ts";
 import { registerAuthTools } from "../src/tools/auth.ts";
 import { TOOL_CATALOG, type ToolName } from "../src/tools/catalog.ts";
 import { registerCustomerPaymentTools } from "../src/tools/customer-payment.ts";
@@ -146,10 +147,50 @@ describe("goal-oriented Apps skills", () => {
     }
   });
 
-  test("release packaging discovers all workflow skills", async () => {
-    const script = await Bun.file(join(root, "scripts", "pack-skill.mjs")).text();
-    expect(script).toContain('join(root, "skills")');
-    expect(script).toContain("readdirSync");
-    expect(script).toContain("-skill.zip");
+  test("release packaging puts every workflow skill in one zip", () => {
+    const result = spawnSync("node", [join(root, "scripts", "pack-skill.mjs")], {
+      encoding: "utf8",
+    });
+    expect(result.status, result.stderr || result.stdout).toBe(0);
+
+    const zipPath = join(root, "theapps-mcp-skills.zip");
+    expect(existsSync(zipPath)).toBe(true);
+    expect(APPS_SKILLS_DESKTOP_ZIP).toContain("theapps-mcp-skills.zip");
+
+    for (const { name } of expected) {
+      expect(existsSync(join(root, `${name}-skill.zip`))).toBe(false);
+    }
+
+    const listing = spawnSync(
+      "python3",
+      [
+        "-c",
+        "import zipfile,sys; print('\\n'.join(zipfile.ZipFile(sys.argv[1]).namelist()))",
+        zipPath,
+      ],
+      { encoding: "utf8" },
+    );
+    expect(listing.status).toBe(0);
+    const files = listing.stdout.split("\n").filter(Boolean);
+    expect(files).toContain("SKILL.md");
+    expect(files).toContain("VERSION.md");
+    for (const item of expected) {
+      expect(files).toContain(`${item.name}/SKILL.md`);
+    }
+
+    const versionText = spawnSync(
+      "python3",
+      [
+        "-c",
+        "import zipfile,sys; print(zipfile.ZipFile(sys.argv[1]).read(sys.argv[2]).decode())",
+        zipPath,
+        "VERSION.md",
+      ],
+      { encoding: "utf8" },
+    );
+    const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8")) as { version: string };
+    expect(versionText.stdout).toContain(`theapps-mcp version: ${pkg.version}`);
+
+    rmSync(zipPath, { force: true });
   });
 });

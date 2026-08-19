@@ -31,3 +31,5 @@ export const APPS_SKILLS = [
 
 export const APPS_SKILLS_INSTALL = "npx skills add jammaru/theapps-mcp";
 export const APPS_SKILLS_RELEASE = "https://github.com/jammaru/theapps-mcp/releases/latest";
+export const APPS_SKILLS_DESKTOP_ZIP =
+  "https://github.com/jammaru/theapps-mcp/releases/latest/download/theapps-mcp-skills.zip";

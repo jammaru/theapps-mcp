@@ -53,7 +53,7 @@ npx -y theapps-mcp configure
 npx skills add jammaru/theapps-mcp
 ```
 
-Claude Desktop は [Releases](https://github.com/jammaru/theapps-mcp/releases/latest) から、使うワークフローのSkill zipをアップロードしてください。
+Claude Desktop は [theapps-mcp-skills.zip](https://github.com/jammaru/theapps-mcp/releases/latest/download/theapps-mcp-skills.zip) を1つアップロードしてください。全ワークフローSkillが入ります。
 
 再設定:
 
@@ -262,7 +262,7 @@ gh skill install jammaru/theapps-mcp apps-manage-payment-pages
 
 ### Claude Desktop
 
-「カスタマイズ」→「スキル」から、[最新Release](https://github.com/jammaru/theapps-mcp/releases/latest)に添付された、使うワークフローのSkill zipをアップロードしてください。
+「カスタマイズ」→「スキル」から、[theapps-mcp-skills.zip](https://github.com/jammaru/theapps-mcp/releases/latest/download/theapps-mcp-skills.zip) を1つアップロードしてください。接続・決済確認・ページ管理・クーポン・Discord・Webhook のSkillがすべて入ります。
 
 ### 中身
 

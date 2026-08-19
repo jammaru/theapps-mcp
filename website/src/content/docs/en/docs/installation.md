@@ -21,6 +21,8 @@ npx -y theapps-mcp configure
 npx skills add jammaru/theapps-mcp
 ```
 
+Claude Desktop: upload [theapps-mcp-skills.zip](https://github.com/jammaru/theapps-mcp/releases/latest/download/theapps-mcp-skills.zip) once. It includes every workflow skill.
+
 ## 4. Restart and verify
 
 Restart Cursor, Claude Code, Codex, or a similar client, then use `apps_auth_status`.
