@@ -44,7 +44,7 @@ GitHub CLI（v2.90.0 以降）:
 gh skill install jammaru/theapps-mcp apps-manage-payment-pages
 ```
 
-Claude Desktop は [最新Release](https://github.com/jammaru/theapps-mcp/releases/latest)から、使うワークフローのSkill zipをアップロードしてください。
+Claude Desktop は [theapps-mcp-skills.zip](https://github.com/jammaru/theapps-mcp/releases/latest/download/theapps-mcp-skills.zip) を1つアップロードしてください。全ワークフローSkillが含まれます。
 
 ## 4. クライアントを再起動
 

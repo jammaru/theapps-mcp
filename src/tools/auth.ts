@@ -4,7 +4,12 @@ import type { AppsAuth } from "../client/auth.ts";
 import type { AppsConfig } from "../config.ts";
 import { ok, runTool } from "../lib/result.ts";
 import { toolSkillHint } from "../lib/skill-hint.ts";
-import { APPS_SKILLS, APPS_SKILLS_INSTALL, APPS_SKILLS_RELEASE } from "../lib/skills.ts";
+import {
+  APPS_SKILLS,
+  APPS_SKILLS_DESKTOP_ZIP,
+  APPS_SKILLS_INSTALL,
+  APPS_SKILLS_RELEASE,
+} from "../lib/skills.ts";
 import { readHints, writeHints } from "../lib/write-guard.ts";
 import { TOOL_CATALOG } from "./catalog.ts";
 
@@ -39,6 +44,7 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
           configure: "npx -y theapps-mcp configure",
           skill_install: APPS_SKILLS_INSTALL,
           skill_release: APPS_SKILLS_RELEASE,
+          skill_desktop_zip: APPS_SKILLS_DESKTOP_ZIP,
           docs: "https://theapps.jp/api/setup",
           note: "Never paste secrets into chat or GitHub.",
         });
@@ -56,6 +62,7 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
         return ok({
           install: APPS_SKILLS_INSTALL,
           release: APPS_SKILLS_RELEASE,
+          desktop_zip: APPS_SKILLS_DESKTOP_ZIP,
           role: "Goal-oriented workflows that combine Apps-mcp tools safely.",
           skills: APPS_SKILLS,
         });
@@ -67,6 +74,7 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
         skills: APPS_SKILLS,
         skill_install: APPS_SKILLS_INSTALL,
         skill_release: APPS_SKILLS_RELEASE,
+        skill_desktop_zip: APPS_SKILLS_DESKTOP_ZIP,
         tip: "Read the skill matching the user's goal before the first domain apps_* call. Preview production-account writes with dry_run before confirm.",
       });
     },

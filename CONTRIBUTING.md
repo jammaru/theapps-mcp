@@ -66,7 +66,7 @@ npm version patch   # or minor / major
 git push origin main --follow-tags
 ```
 
-3. The **Release** workflow publishes to npm via OIDC, packs one zip per workflow skill, and creates the GitHub Release with those assets.
+3. The **Release** workflow publishes to npm via OIDC, packs `theapps-mcp-skills.zip` (every workflow skill in one archive), and creates the GitHub Release with that asset.
 
 Locally pack the skill zip:
 

@@ -30,7 +30,8 @@ skills-lock.json
 
 # npm pack artifacts
 *.tgz
-apps-api-skill.zip
+*-skill.zip
+theapps-mcp-skills.zip
 
 # Website (Astro)
 website/node_modules/

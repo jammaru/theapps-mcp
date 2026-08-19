@@ -1,6 +1,7 @@
 import { chmodSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import prompts from "prompts";
+import { APPS_SKILLS_DESKTOP_ZIP, APPS_SKILLS_INSTALL } from "../lib/skills.ts";
 import {
   buildAppsMcpEntry,
   claudeCodeConfigPath,
@@ -144,6 +145,6 @@ export async function configure(argv: string[] = process.argv.slice(2)): Promise
 
   console.log("\n完了です。MCP クライアントを再起動してください。");
   console.log("動作確認: ツール apps_auth_status を実行");
-  console.log("手順スキル（推奨）: npx skills add jammaru/theapps-mcp");
-  console.log("Claude Desktop 向け Skills: https://github.com/jammaru/theapps-mcp/releases/latest");
+  console.log(`手順スキル（推奨）: ${APPS_SKILLS_INSTALL}`);
+  console.log(`Claude Desktop 向け zip（全Skill入り）: ${APPS_SKILLS_DESKTOP_ZIP}`);
 }
