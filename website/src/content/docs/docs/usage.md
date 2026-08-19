@@ -8,7 +8,7 @@ description: セットアップ後の使い方、dry_run / confirm、依頼例�
 ## 依頼例
 
 - 「Apps の決済ページ（1回払い）一覧を見せて」
-- 「テスト環境で『単発セミナー』3000円の決済ページを作って。先に dry_run して」
+- 「テストモード決済用に『単発セミナー』3000円の決済ページを作って。実アカウントへの書き込み前に dry_run して」
 - 「この customer_id の顧客情報を確認して: …」
 - 「登録ページの一覧を出して」
 
@@ -30,8 +30,8 @@ Apps API は **本番のみ**（Sandbox なし）です。
 3. 内容を説明し、ユーザー確認後に `confirm: true` で実行
 4. DELETE は戻せない前提で確認する
 
-## Skills を読む
+## 目的に合うSkillを使う
 
-スキル名は `apps-api` です。`apps_*` を呼ぶ前にスキルを読み、書き込み前は `recipes/` と `references/` も読む想定です。
+SkillsはAPI全体の説明書ではなく、利用者の目的ごとのワークフローです。決済確認、決済ページ、登録ページ、割引コード、Discord、Webhookなどから、依頼に合うSkillが選ばれます。
 
-ソース: [`skills/apps-api/`](https://github.com/jammaru/theapps-mcp/tree/main/skills/apps-api)
+ソース: [`skills/`](https://github.com/jammaru/theapps-mcp/tree/main/skills)

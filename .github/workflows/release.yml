@@ -70,7 +70,7 @@ jobs:
             npm publish --access public --provenance
           fi
 
-      - name: Pack Agent Skill zip
+      - name: Pack Agent Skill zips
         run: node ./scripts/pack-skill.mjs
 
       - name: Create GitHub Release
@@ -78,23 +78,22 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           VERSION="$(node -p "require('./package.json').version")"
+          SKILL_ZIPS=(apps-*-skill.zip)
           if gh release view "v$VERSION" >/dev/null 2>&1; then
-            echo "GitHub Release v$VERSION already exists — upload skill zip if missing"
-            if ! gh release view "v$VERSION" --json assets --jq '.assets[].name' | grep -qx 'apps-api-skill.zip'; then
-              gh release upload "v$VERSION" apps-api-skill.zip --clobber
-            fi
+            echo "GitHub Release v$VERSION already exists — refresh skill zips"
+            gh release upload "v$VERSION" "${SKILL_ZIPS[@]}" --clobber
           else
             NOTES="$(cat <<EOF
           ## Install
           - npm: https://www.npmjs.com/package/theapps-mcp/v/${VERSION}
-          - Claude Desktop: upload the attached \`apps-api-skill.zip\`
+          - Claude Desktop: upload the attached zip for each workflow you use
           - Coding agents: \`npx skills add jammaru/theapps-mcp\`
           EOF
           )"
             # strip common indent from heredoc
             NOTES="$(printf '%s\n' "$NOTES" | sed -e 's/^          //')"
             gh release create "v$VERSION" \
-              apps-api-skill.zip \
+              "${SKILL_ZIPS[@]}" \
               --title "v$VERSION" \
               --notes "$NOTES" \
               --generate-notes \

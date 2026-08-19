@@ -18,6 +18,7 @@
     "dev": "bun --watch run src/index.ts",
     "build": "bun run scripts/build.ts",
     "pack:skill": "node ./scripts/pack-skill.mjs",
+    "pack:skills": "node ./scripts/pack-skill.mjs",
     "prepare": "node ./scripts/prepare.mjs",
     "prepublishOnly": "bun run check && bun run typecheck && bun test && bun run build",
     "typecheck": "tsc --noEmit",

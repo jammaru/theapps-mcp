@@ -8,7 +8,7 @@ Apps-mcp is an **unofficial** toolkit for the [Apps API](https://theapps.jp/api)
 This repository has two parts:
 
 - **MCP (Apps-mcp)** — executes Apps API calls with auth, HTTP, and write guards
-- **Agent Skills (apps-api)** — recipes and required fields for stable workflows
+- **Agent Skills** — goal-oriented workflows for payment checks, payment pages, registration pages, coupons, Discord, and Webhooks
 
 Auth uses **App ID / App Secret** from the Apps admin console (not OAuth).
 

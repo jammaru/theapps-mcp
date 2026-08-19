@@ -129,7 +129,10 @@ function refineWaitingList(
 
 const productBase = z.looseObject({
   product_name: z.string().min(1),
-  stripe_env_id: z.string().min(1).describe('Environment: "0" production, "1" test'),
+  stripe_env_id: z
+    .string()
+    .min(1)
+    .describe('Payment mode: "0" live, "1" test. Both write to the connected Apps account.'),
   price: z.number().int(),
   platform: platformObject,
   language: language.optional(),
@@ -156,7 +159,10 @@ export const productUpdateBody = bodySchema(
 
 const paidBase = z.looseObject({
   plan_name: z.string().min(1),
-  stripe_env_id: z.string().min(1).describe('Environment: "0" production, "1" test'),
+  stripe_env_id: z
+    .string()
+    .min(1)
+    .describe('Payment mode: "0" live, "1" test. Both write to the connected Apps account.'),
   price: z.number().int(),
   billing_cycle: paidBillingCycle,
   platform: platformObject,
@@ -183,7 +189,10 @@ export const paidUpdateBody = bodySchema(
 
 const installmentBase = z.looseObject({
   plan_name: z.string().min(1),
-  stripe_env_id: z.string().min(1).describe('Environment: "0" production, "1" test'),
+  stripe_env_id: z
+    .string()
+    .min(1)
+    .describe('Payment mode: "0" live, "1" test. Both write to the connected Apps account.'),
   price: z.number().int(),
   billing_cycle: installmentBillingCycle,
   platform: platformObject,
@@ -218,7 +227,10 @@ const couponPaymentTypes = z
   .describe("0 stripe-sub, 1 one-time, 4 paid, 5 installment, 14 stripe-billing; 8 unsupported");
 
 const couponBase = z.looseObject({
-  stripe_env_id: z.string().min(1).describe('Environment: "0" production, "1" test'),
+  stripe_env_id: z
+    .string()
+    .min(1)
+    .describe('Payment mode: "0" live, "1" test. Both write to the connected Apps account.'),
   coupon_name: z.string().min(1),
   coupon_code: z.string().min(1),
   coupon_type: z

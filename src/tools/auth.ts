@@ -3,7 +3,8 @@ import * as z from "zod/v4";
 import type { AppsAuth } from "../client/auth.ts";
 import type { AppsConfig } from "../config.ts";
 import { ok, runTool } from "../lib/result.ts";
-import { APPS_SKILL_HINT, APPS_SKILL_NAME } from "../lib/skill-hint.ts";
+import { toolSkillHint } from "../lib/skill-hint.ts";
+import { APPS_SKILLS, APPS_SKILLS_INSTALL, APPS_SKILLS_RELEASE } from "../lib/skills.ts";
 import { readHints, writeHints } from "../lib/write-guard.ts";
 import { TOOL_CATALOG } from "./catalog.ts";
 
@@ -11,7 +12,8 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
   server.registerTool(
     "apps_help",
     {
-      description: `Apps-mcp help: setup, safety, tool catalog, and skill guidance. Prefer this before destructive writes. ${APPS_SKILL_HINT}`,
+      description:
+        "Apps-mcp bootstrap help: setup, safety, tool catalog, and the goal-specific skill to read before using another apps_* tool.",
       inputSchema: z.object({
         topic: z
           .enum(["overview", "setup", "safety", "tools", "skill"])
@@ -35,9 +37,8 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
             "APPS_MCP_ALLOW_CUSTOM_BASE_URL",
           ],
           configure: "npx -y theapps-mcp configure",
-          skill_install: `npx skills add jammaru/theapps-mcp`,
-          skill_zip:
-            "https://github.com/jammaru/theapps-mcp/releases/latest/download/apps-api-skill.zip",
+          skill_install: APPS_SKILLS_INSTALL,
+          skill_release: APPS_SKILLS_RELEASE,
           docs: "https://theapps.jp/api/setup",
           note: "Never paste secrets into chat or GitHub.",
         });
@@ -48,48 +49,25 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
           sandbox: false,
           writes_require: ["APPS_MCP_ALLOW_WRITE=true", "confirm=true"],
           prefer: "dry_run=true before confirm=true",
-          skill: APPS_SKILL_NAME,
+          skills: APPS_SKILLS.map(({ name }) => name),
         });
       }
       if (selected === "skill") {
         return ok({
-          name: APPS_SKILL_NAME,
-          install: "npx skills add jammaru/theapps-mcp",
-          install_zip:
-            "https://github.com/jammaru/theapps-mcp/releases/latest/download/apps-api-skill.zip",
-          role: "End-user playbooks and field references for accurate Apps-mcp usage.",
-          when: "Read apps-api SKILL.md before the first apps_* call in a task. Soft tool-description hints are not a substitute.",
-          read_first: [
-            "SKILL.md",
-            "recipes/lookup.md",
-            "recipes/create-payment-page.md",
-            "recipes/create-registration-page.md",
-            "recipes/create-coupon.md",
-            "recipes/discord.md",
-            "recipes/webhook.md",
-            "recipes/write-safely.md",
-          ],
-          references: [
-            "references/safety.md",
-            "references/payment-pages.md",
-            "references/waiting-list.md",
-            "references/advance-plan.md",
-            "references/coupon.md",
-            "references/customer-payment.md",
-            "references/webhook.md",
-            "references/discord.md",
-          ],
+          install: APPS_SKILLS_INSTALL,
+          release: APPS_SKILLS_RELEASE,
+          role: "Goal-oriented workflows that combine Apps-mcp tools safely.",
+          skills: APPS_SKILLS,
         });
       }
       return ok({
         name: "Apps-mcp",
         api_base: "https://api.theapps.jp",
         docs: "https://theapps.jp/api",
-        skill: APPS_SKILL_NAME,
-        skill_install: "npx skills add jammaru/theapps-mcp",
-        skill_zip:
-          "https://github.com/jammaru/theapps-mcp/releases/latest/download/apps-api-skill.zip",
-        tip: "Before any apps_* call, read the apps-api skill. apps_help topic=skill lists recipes/references. Prefer dry_run before writes.",
+        skills: APPS_SKILLS,
+        skill_install: APPS_SKILLS_INSTALL,
+        skill_release: APPS_SKILLS_RELEASE,
+        tip: "Read the skill matching the user's goal before the first domain apps_* call. Preview production-account writes with dry_run before confirm.",
       });
     },
   );
@@ -97,7 +75,7 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
   server.registerTool(
     "apps_auth_status",
     {
-      description: `Show whether Apps API credentials are configured (never prints secrets). ${APPS_SKILL_HINT}`,
+      description: `Show whether Apps API credentials are configured without returning secrets. ${toolSkillHint("apps_auth_status")}`,
       inputSchema: z.object({}),
       annotations: readHints,
     },
@@ -105,14 +83,14 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
       ok({
         ...auth.status(),
         note: "Secrets are never returned. Production API only (no sandbox).",
-        skill: APPS_SKILL_NAME,
+        skills: APPS_SKILLS.map(({ name }) => name),
       }),
   );
 
   server.registerTool(
     "apps_clear_token_cache",
     {
-      description: "Clear the in-memory access token cache so the next call refreshes the token.",
+      description: `Clear the in-memory access token cache so the next call refreshes the token. ${toolSkillHint("apps_clear_token_cache")}`,
       inputSchema: z.object({}),
       annotations: {
         ...writeHints,

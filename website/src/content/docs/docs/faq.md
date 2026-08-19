@@ -33,7 +33,7 @@ npx skills add jammaru/theapps-mcp
 
 ## Claude Desktop で Skills を入れるには？
 
-Release の [`apps-api-skill.zip`](https://github.com/jammaru/theapps-mcp/releases/latest/download/apps-api-skill.zip) をアップロードしてください。
+[最新Release](https://github.com/jammaru/theapps-mcp/releases/latest)から、使うワークフローのSkill zipをアップロードしてください。
 
 ## ライセンスは？
 

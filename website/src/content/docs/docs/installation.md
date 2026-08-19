@@ -38,11 +38,13 @@ npx skills add jammaru/theapps-mcp
 
 GitHub CLI（v2.90.0 以降）:
 
+必要なSkill名を指定します。例:
+
 ```bash
-gh skill install jammaru/theapps-mcp apps-api
+gh skill install jammaru/theapps-mcp apps-manage-payment-pages
 ```
 
-Claude Desktop は Release の [`apps-api-skill.zip`](https://github.com/jammaru/theapps-mcp/releases/latest/download/apps-api-skill.zip) をアップロードしてください。
+Claude Desktop は [最新Release](https://github.com/jammaru/theapps-mcp/releases/latest)から、使うワークフローのSkill zipをアップロードしてください。
 
 ## 4. クライアントを再起動
 

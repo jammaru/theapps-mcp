@@ -94,7 +94,7 @@ function safeEqualHex(a: string, b: string): boolean {
 }
 
 /**
- * Verify Apps Webhook HMAC-SHA256 per https://theapps.jp/api/webhook
+ * Verify Apps Webhook HMAC-SHA256 per https://theapps.jp/api/webhook-config
  *
  * Signed payload is `{t}.{rawBody}` (raw bytes as UTF-8 string, before JSON parse).
  * Deduplicate deliveries with body.id / Apps-Webhook-Id, not the signature value.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Apps payment pages"
+  short_description: "Publish and maintain Apps checkout pages"
+  default_prompt: "Use $apps-manage-payment-pages to create this Apps payment page and return its application URL."
