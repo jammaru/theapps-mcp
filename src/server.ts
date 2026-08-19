@@ -8,7 +8,7 @@ import { registerDiscordTools } from "./tools/discord.ts";
 import { registerPlanResources } from "./tools/plans.ts";
 
 export const SERVER_NAME = "Apps-mcp";
-export const SERVER_VERSION = "0.2.1";
+export const SERVER_VERSION = "0.2.2";
 
 export type AppsRuntime = {
   config: AppsConfig;
