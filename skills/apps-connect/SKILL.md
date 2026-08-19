@@ -7,6 +7,10 @@ description: Connect Apps (theapps.jp) to a supported MCP client, configure Apps
 
 Set up the local Apps-mcp connection without exposing credentials.
 
+## When to load this skill
+
+Read this skill before the first matching `apps_*` MCP call in each task. Once setup succeeds, switch to the skill for the user's next goal instead of treating this as an API-wide guide.
+
 ## Workflow
 
 1. Confirm Node.js 20 or later and `npx` are available.

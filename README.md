@@ -278,7 +278,7 @@ gh skill install jammaru/theapps-mcp apps-manage-payment-pages
 
 ソース: [`skills/`](./skills/)
 
-各Skillのdescriptionが利用者の目的に基づいて発火します。`apps_help`（`topic=skill`）でも一覧を確認できます。
+各Skillのdescriptionが利用者の目的に基づいて発火します。各ドメインMCPツールのdescriptionにも対応するSkill名が入り、タスク内の最初の呼び出し前にそのSkillを読むよう案内します。`apps_help`（`topic=skill`）はSkillを特定するためのブートストラップです。
 
 ## 開発
 

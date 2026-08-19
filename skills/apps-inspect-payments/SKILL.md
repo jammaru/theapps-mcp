@@ -9,6 +9,10 @@ Retrieve the smallest amount of Apps data needed to answer a payment or customer
 
 Read [references/identifiers.md](references/identifiers.md) when an ID is supplied or its type is unclear.
 
+## When to load this skill
+
+Read this skill before the first matching `apps_*` MCP call in each task. It supplies the payment-family and identifier decisions that must happen before selecting a lookup tool.
+
 ## Workflow
 
 1. Call `apps_auth_status`.

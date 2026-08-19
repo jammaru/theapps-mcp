@@ -7,6 +7,10 @@ description: Create, inspect, update, or delete an Apps discount code, including
 
 Create and maintain discount codes with an explicit payment scope. Read [references/coupons.md](references/coupons.md) before constructing a body.
 
+## When to load this skill
+
+Read this skill before the first matching `apps_*` MCP call in each task. Read the linked reference before every create, update, or delete operation.
+
 ## Create
 
 1. Call `apps_auth_status` and `apps_list_coupons` to detect code collisions.

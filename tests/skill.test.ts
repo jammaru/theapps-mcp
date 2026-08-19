@@ -1,7 +1,13 @@
 import { describe, expect, test } from "bun:test";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
+import { APPS_TOOL_SKILLS, toolSkillHint } from "../src/lib/skill-hint.ts";
 import { APPS_SKILLS } from "../src/lib/skills.ts";
+import { registerAuthTools } from "../src/tools/auth.ts";
+import { TOOL_CATALOG, type ToolName } from "../src/tools/catalog.ts";
+import { registerCustomerPaymentTools } from "../src/tools/customer-payment.ts";
+import { registerDiscordTools } from "../src/tools/discord.ts";
+import { registerPlanResources } from "../src/tools/plans.ts";
 
 const root = join(import.meta.dir, "..");
 const skillsRoot = join(root, "skills");
@@ -70,7 +76,7 @@ describe("goal-oriented Apps skills", () => {
       const frontmatter = skill.slice(0, frontmatterEnd);
       expect(frontmatter).toContain(`name: ${item.name}`);
       expect(frontmatter).toContain("description:");
-      expect(frontmatter.toLowerCase()).not.toContain("before calling any apps_");
+      expect(skill).toContain("Read this skill before the first matching `apps_*` MCP call");
 
       const metadata = await Bun.file(metadataPath).text();
       expect(metadata).toContain(`$${item.name}`);
@@ -111,18 +117,33 @@ describe("goal-oriented Apps skills", () => {
     expect(webhooks).toContain("exact raw request body");
   });
 
-  test("does not force every tool call through one skill", async () => {
-    const sources = await Promise.all(
-      [
-        "src/tools/auth.ts",
-        "src/tools/customer-payment.ts",
-        "src/tools/plans.ts",
-        "src/tools/discord.ts",
-      ].map((path) => Bun.file(join(root, path)).text()),
-    );
-    const source = sources.join("\n").toLowerCase();
-    expect(source).not.toContain("before calling any apps_*");
-    expect(source).not.toContain("apps_skill_hint");
+  test("routes every domain MCP tool to its goal-specific skill", () => {
+    const descriptions = new Map<ToolName, string>();
+    const server = {
+      registerTool(name: ToolName, definition: { description?: string }) {
+        descriptions.set(name, definition.description ?? "");
+      },
+    };
+
+    registerAuthTools(server as never, {} as never, {} as never);
+    registerCustomerPaymentTools(server as never, {} as never);
+    registerPlanResources(server as never, {} as never, {} as never);
+    registerDiscordTools(server as never, {} as never, {} as never);
+
+    expect([...descriptions.keys()].sort()).toEqual([...TOOL_CATALOG].sort());
+    expect(descriptions.get("apps_help")).toContain("bootstrap");
+
+    for (const toolName of TOOL_CATALOG) {
+      if (toolName === "apps_help") continue;
+      const route = APPS_TOOL_SKILLS[toolName];
+      if (route !== "current-goal") {
+        expect(
+          APPS_SKILLS.some((skill) => skill.name === route),
+          toolName,
+        ).toBe(true);
+      }
+      expect(descriptions.get(toolName), toolName).toContain(toolSkillHint(toolName));
+    }
   });
 
   test("release packaging discovers all workflow skills", async () => {

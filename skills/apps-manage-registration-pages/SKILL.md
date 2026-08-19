@@ -7,6 +7,10 @@ description: Create, inspect, update, or delete an Apps registration page for em
 
 Create or maintain `/v1/advance` registration plans. Read [references/registration-pages.md](references/registration-pages.md) before constructing a body.
 
+## When to load this skill
+
+Read this skill before the first matching `apps_*` MCP call in each task. Read the linked reference before every create, update, or delete operation.
+
 ## Create
 
 1. Call `apps_auth_status` and `apps_list_advance_plans`.

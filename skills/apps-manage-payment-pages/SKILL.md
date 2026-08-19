@@ -7,6 +7,10 @@ description: Create, inspect, update, or delete an Apps payment page for a one-t
 
 Build the requested checkout page using the correct Apps plan family. Read [references/payment-pages.md](references/payment-pages.md) before constructing a create or update body.
 
+## When to load this skill
+
+Read this skill before the first matching `apps_*` MCP call in each task. Read the linked reference before every create, update, or delete operation.
+
 ## Choose the plan family
 
 - One-time payment: `apps_*_product`

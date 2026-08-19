@@ -7,6 +7,10 @@ description: Design, implement, review, or troubleshoot an Apps Webhook receiver
 
 Build a receiver that verifies the exact request body, responds quickly, and processes each delivery idempotently. Read [references/webhooks.md](references/webhooks.md) before implementing or reviewing a handler.
 
+## When to load this skill
+
+Read this skill before the first matching `apps_*` MCP call in each task. In particular, load it before `apps_verify_webhook_signature`; the tool performs one check, while this workflow supplies the receiver, secret-handling, and idempotency context.
+
 ## Workflow
 
 1. Identify the events and downstream action required by the user.

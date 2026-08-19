@@ -7,6 +7,10 @@ description: Create, inspect, update, or delete Discord roles and channels throu
 
 Manage roles and channels through the Apps Discord API. Read [references/discord.md](references/discord.md) before writing permissions or connecting a resource to a plan.
 
+## When to load this skill
+
+Read this skill before the first matching `apps_*` MCP call in each task. Read the linked reference before every create, update, or delete operation.
+
 ## Workflow
 
 1. Call `apps_auth_status`.

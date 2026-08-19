@@ -10,6 +10,7 @@ import {
 } from "../lib/body-schemas.ts";
 import { fail, runTool } from "../lib/result.ts";
 import { confirmSchema } from "../lib/schemas.ts";
+import { toolSkillHint } from "../lib/skill-hint.ts";
 import { destructiveHints, guardWrite, readHints, writeHints } from "../lib/write-guard.ts";
 
 export function registerDiscordTools(
@@ -20,8 +21,7 @@ export function registerDiscordTools(
   server.registerTool(
     "apps_get_discord_role",
     {
-      description:
-        "GET /v1/discord/guilds/{guild_id}/roles/{role_id} — get one Discord role through Apps.",
+      description: `GET /v1/discord/guilds/{guild_id}/roles/{role_id} — get one Discord role through Apps. ${toolSkillHint("apps_get_discord_role")}`,
       inputSchema: z.object({
         guild_id: z.string().min(1),
         role_id: z.string().min(1),
@@ -39,8 +39,7 @@ export function registerDiscordTools(
   server.registerTool(
     "apps_create_discord_role",
     {
-      description:
-        "POST /v1/discord/guilds/{guild_id}/roles — create a Discord role. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. Body: name required.",
+      description: `POST /v1/discord/guilds/{guild_id}/roles — create a Discord role. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. Body: name required. ${toolSkillHint("apps_create_discord_role")}`,
       inputSchema: z.object({
         guild_id: z.string().min(1),
         body: discordRoleCreateBody,
@@ -62,8 +61,7 @@ export function registerDiscordTools(
   server.registerTool(
     "apps_update_discord_role",
     {
-      description:
-        "PUT /v1/discord/guilds/{guild_id}/roles/{role_id} — update a Discord role. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true.",
+      description: `PUT /v1/discord/guilds/{guild_id}/roles/{role_id} — update a Discord role. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${toolSkillHint("apps_update_discord_role")}`,
       inputSchema: z.object({
         guild_id: z.string().min(1),
         role_id: z.string().min(1),
@@ -86,8 +84,7 @@ export function registerDiscordTools(
   server.registerTool(
     "apps_delete_discord_role",
     {
-      description:
-        "DELETE /v1/discord/guilds/{guild_id}/roles/{role_id} (HTTP 204). Destructive. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true.",
+      description: `DELETE /v1/discord/guilds/{guild_id}/roles/{role_id} (HTTP 204). Destructive. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${toolSkillHint("apps_delete_discord_role")}`,
       inputSchema: z.object({
         guild_id: z.string().min(1),
         role_id: z.string().min(1),
@@ -109,8 +106,7 @@ export function registerDiscordTools(
   server.registerTool(
     "apps_get_discord_channel",
     {
-      description:
-        "GET /v1/discord/guilds/{guild_id}/channels/{channel_id} — get one Discord channel through Apps.",
+      description: `GET /v1/discord/guilds/{guild_id}/channels/{channel_id} — get one Discord channel through Apps. ${toolSkillHint("apps_get_discord_channel")}`,
       inputSchema: z.object({
         guild_id: z.string().min(1),
         channel_id: z.string().min(1),
@@ -128,8 +124,7 @@ export function registerDiscordTools(
   server.registerTool(
     "apps_create_discord_channel",
     {
-      description:
-        "POST /v1/discord/guilds/{guild_id}/channels — create a channel (parent_id for category). Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. Body: type and name required.",
+      description: `POST /v1/discord/guilds/{guild_id}/channels — create a channel (parent_id for category). Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. Body: type and name required. ${toolSkillHint("apps_create_discord_channel")}`,
       inputSchema: z.object({
         guild_id: z.string().min(1),
         body: discordChannelCreateBody,
@@ -155,8 +150,7 @@ export function registerDiscordTools(
   server.registerTool(
     "apps_update_discord_channel",
     {
-      description:
-        "PUT /v1/discord/guilds/{guild_id}/channels/{channel_id} — update a Discord channel. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true.",
+      description: `PUT /v1/discord/guilds/{guild_id}/channels/{channel_id} — update a Discord channel. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${toolSkillHint("apps_update_discord_channel")}`,
       inputSchema: z.object({
         guild_id: z.string().min(1),
         channel_id: z.string().min(1),
@@ -179,8 +173,7 @@ export function registerDiscordTools(
   server.registerTool(
     "apps_delete_discord_channel",
     {
-      description:
-        "DELETE /v1/discord/guilds/{guild_id}/channels/{channel_id} (HTTP 204). Destructive. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true.",
+      description: `DELETE /v1/discord/guilds/{guild_id}/channels/{channel_id} (HTTP 204). Destructive. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${toolSkillHint("apps_delete_discord_channel")}`,
       inputSchema: z.object({
         guild_id: z.string().min(1),
         channel_id: z.string().min(1),

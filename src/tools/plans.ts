@@ -17,7 +17,9 @@ import {
 } from "../lib/body-schemas.ts";
 import { fail, runTool } from "../lib/result.ts";
 import { confirmSchema } from "../lib/schemas.ts";
+import { toolSkillHint } from "../lib/skill-hint.ts";
 import { destructiveHints, guardWrite, readHints, writeHints } from "../lib/write-guard.ts";
+import type { ToolName } from "./catalog.ts";
 
 type CrudResource = {
   /** Tool name prefix without apps_ e.g. advance_plan */
@@ -72,11 +74,16 @@ export function registerCrudResource(
   resource: CrudResource,
 ): void {
   const { name, label, basePath, idParam } = resource;
+  const listToolName = `apps_list_${name}s` as Exclude<ToolName, "apps_help">;
+  const getToolName = `apps_get_${name}` as Exclude<ToolName, "apps_help">;
+  const createToolName = `apps_create_${name}` as Exclude<ToolName, "apps_help">;
+  const updateToolName = `apps_update_${name}` as Exclude<ToolName, "apps_help">;
+  const deleteToolName = `apps_delete_${name}` as Exclude<ToolName, "apps_help">;
 
   server.registerTool(
-    `apps_list_${name}s`,
+    listToolName,
     {
-      description: `GET ${basePath} — list ${label}. ${resource.listDescription}`,
+      description: `GET ${basePath} — list ${label}. ${resource.listDescription} ${toolSkillHint(listToolName)}`,
       inputSchema: z.object({}),
       annotations: readHints,
     },
@@ -84,9 +91,9 @@ export function registerCrudResource(
   );
 
   server.registerTool(
-    `apps_get_${name}`,
+    getToolName,
     {
-      description: `GET ${basePath}/{${idParam}} — get one ${label}.`,
+      description: `GET ${basePath}/{${idParam}} — get one ${label}. ${toolSkillHint(getToolName)}`,
       inputSchema: z.object({
         [idParam]: z.string().min(1),
       }),
@@ -99,9 +106,9 @@ export function registerCrudResource(
   );
 
   server.registerTool(
-    `apps_create_${name}`,
+    createToolName,
     {
-      description: `POST ${basePath} — create ${label}. Production-account write, including when stripe_env_id="1". Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${resource.createDescription}`,
+      description: `POST ${basePath} — create ${label}. Production-account write, including when stripe_env_id="1". Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${resource.createDescription} ${toolSkillHint(createToolName)}`,
       inputSchema: writeInput(resource.createBody),
       annotations: writeHints,
     },
@@ -121,9 +128,9 @@ export function registerCrudResource(
   );
 
   server.registerTool(
-    `apps_update_${name}`,
+    updateToolName,
     {
-      description: `PUT ${basePath}/{${idParam}} — update ${label}. Production-account write. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true.`,
+      description: `PUT ${basePath}/{${idParam}} — update ${label}. Production-account write. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${toolSkillHint(updateToolName)}`,
       inputSchema: idWriteInput(idParam, resource.updateBody),
       annotations: writeHints,
     },
@@ -143,9 +150,9 @@ export function registerCrudResource(
   );
 
   server.registerTool(
-    `apps_delete_${name}`,
+    deleteToolName,
     {
-      description: `DELETE ${basePath}/{${idParam}} — delete ${label}. Destructive production-account write. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true.`,
+      description: `DELETE ${basePath}/{${idParam}} — delete ${label}. Destructive production-account write. Requires APPS_MCP_ALLOW_WRITE=true and confirm=true. ${toolSkillHint(deleteToolName)}`,
       inputSchema: idConfirmInput(idParam),
       annotations: destructiveHints,
     },
@@ -165,10 +172,11 @@ export function registerCrudResource(
 
   if (resource.listChildren) {
     const child = resource.listChildren;
+    const childToolName = `apps_list_${name}_${child.toolSuffix}` as Exclude<ToolName, "apps_help">;
     server.registerTool(
-      `apps_list_${name}_${child.toolSuffix}`,
+      childToolName,
       {
-        description: `GET ${basePath}/{${idParam}}/${child.pathSuffix} — ${child.description} Response can contain personal data; return only fields needed for the user's request.`,
+        description: `GET ${basePath}/{${idParam}}/${child.pathSuffix} — ${child.description} Response can contain personal data; return only fields needed for the user's request. ${toolSkillHint(childToolName)}`,
         inputSchema: z.object({
           [idParam]: z.string().min(1),
         }),

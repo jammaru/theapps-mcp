@@ -3,6 +3,7 @@ import * as z from "zod/v4";
 import type { AppsAuth } from "../client/auth.ts";
 import type { AppsConfig } from "../config.ts";
 import { ok, runTool } from "../lib/result.ts";
+import { toolSkillHint } from "../lib/skill-hint.ts";
 import { APPS_SKILLS, APPS_SKILLS_INSTALL, APPS_SKILLS_RELEASE } from "../lib/skills.ts";
 import { readHints, writeHints } from "../lib/write-guard.ts";
 import { TOOL_CATALOG } from "./catalog.ts";
@@ -12,7 +13,7 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
     "apps_help",
     {
       description:
-        "Apps-mcp help: setup, safety, tool catalog, and goal-oriented skill guidance. Prefer this before destructive writes.",
+        "Apps-mcp bootstrap help: setup, safety, tool catalog, and the goal-specific skill to read before using another apps_* tool.",
       inputSchema: z.object({
         topic: z
           .enum(["overview", "setup", "safety", "tools", "skill"])
@@ -66,7 +67,7 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
         skills: APPS_SKILLS,
         skill_install: APPS_SKILLS_INSTALL,
         skill_release: APPS_SKILLS_RELEASE,
-        tip: "Use the skill matching the user's goal. Preview production-account writes with dry_run before confirm.",
+        tip: "Read the skill matching the user's goal before the first domain apps_* call. Preview production-account writes with dry_run before confirm.",
       });
     },
   );
@@ -74,7 +75,7 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
   server.registerTool(
     "apps_auth_status",
     {
-      description: "Show whether Apps API credentials are configured without returning secrets.",
+      description: `Show whether Apps API credentials are configured without returning secrets. ${toolSkillHint("apps_auth_status")}`,
       inputSchema: z.object({}),
       annotations: readHints,
     },
@@ -89,7 +90,7 @@ export function registerAuthTools(server: McpServer, config: AppsConfig, auth: A
   server.registerTool(
     "apps_clear_token_cache",
     {
-      description: "Clear the in-memory access token cache so the next call refreshes the token.",
+      description: `Clear the in-memory access token cache so the next call refreshes the token. ${toolSkillHint("apps_clear_token_cache")}`,
       inputSchema: z.object({}),
       annotations: {
         ...writeHints,
