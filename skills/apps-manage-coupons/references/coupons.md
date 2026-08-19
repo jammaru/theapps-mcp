@@ -4,12 +4,14 @@ Official source: https://theapps.jp/api/endpoints
 
 ## Required decisions
 
+- `coupon_name` and `coupon_code`
 - `stripe_env_id`: `"0"` live payments, `"1"` test-mode payments; immutable after creation
 - `coupon_type`: `0` percentage, `1` fixed amount
 - `rate`: required for percentage coupons
 - `price`: required for fixed-amount coupons
 - `coupon_term`: `-1` every charge, `0` first charge only, or a positive month count
 - `payment_type`: target payment family
+- `initial_cost_coupon` is not allowed when `payment_type` is `1` or `5`
 
 ## Payment scope
 

@@ -6,7 +6,7 @@ Official source: https://theapps.jp/api/discord
 
 Role paths use `/v1/discord/guilds/{guild_id}/roles[/{role_id}]`.
 
-Create and update bodies can contain:
+Create requires `name`. Update may send:
 
 - `name`
 - `position`
@@ -18,10 +18,8 @@ Deletion returns HTTP 204.
 
 Channel paths use `/v1/discord/guilds/{guild_id}/channels[/{channel_id}]`.
 
-Create and update bodies can contain:
+Create requires `type` and `name`. Update may also send:
 
-- `type`: Discord channel type
-- `name`
 - `topic`
 - `role` and `user`: permission entries
 - `parent_id`: parent category ID

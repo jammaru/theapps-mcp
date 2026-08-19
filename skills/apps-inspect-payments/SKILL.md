@@ -1,6 +1,6 @@
 ---
 name: apps-inspect-payments
-description: Inspect Apps customers or payment records, check whether a one-time, recurring, or installment payment succeeded, list recent payments, or resolve a Webhook payment_id/customer_id. Use for transaction investigation and customer lookup, not for editing payment pages.
+description: Inspect Apps customers or payment records, check whether a one-time, recurring, or installment payment succeeded, list recent payments, or resolve a Webhook payment_id/customer_id. Use for transaction investigation (決済が成功したか, 定期課金, 取引照会) and customer lookup, not for creating or editing a 決済ページ.
 ---
 
 # Inspect Apps payments
@@ -16,7 +16,7 @@ Read this skill before the first matching `apps_*` MCP call in each task. It sup
 ## Workflow
 
 1. Call `apps_auth_status`.
-2. Identify whether the request concerns a customer, a transaction, or a payment-page configuration.
+2. If the request is about payment-page or plan configuration rather than a transaction, switch to `apps-manage-payment-pages`.
 3. Select the payment family from the user's wording, a known plan type, or Webhook `plan.payment_type`:
    - One-time: `apps_list_charges` / `apps_get_charge`
    - Recurring: `apps_list_paid_payments` / `apps_get_paid_payment`
@@ -34,4 +34,4 @@ Return the payment family, status, amount and time when present, the identifier 
 
 - Do not claim that a payment executed, refunded, or canceled unless the returned data establishes it.
 - Apps-mcp does not provide customer-list search, payment execution, refund, or cancellation tools.
-- Use payment-page tools only when the user asks about plan configuration rather than transaction status.
+- Do not call product / paid / installment plan tools from this skill. Page configuration belongs to `apps-manage-payment-pages`.
