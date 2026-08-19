@@ -1,0 +1,4 @@
+interface:
+  display_name: "Handle Apps Webhooks"
+  short_description: "Build secure, idempotent Apps Webhooks"
+  default_prompt: "Use $apps-handle-webhooks to implement a secure Apps Webhook receiver for these events."

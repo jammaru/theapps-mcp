@@ -1,0 +1,4 @@
+interface:
+  display_name: "Inspect Apps payments"
+  short_description: "Check Apps payments and customers"
+  default_prompt: "Use $apps-inspect-payments to investigate this Apps payment and summarize its status."

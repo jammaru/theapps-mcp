@@ -66,10 +66,10 @@ npm version patch   # or minor / major
 git push origin main --follow-tags
 ```
 
-3. The **Release** workflow publishes to npm via OIDC, packs `apps-api-skill.zip`, and creates the GitHub Release with that asset.
+3. The **Release** workflow publishes to npm via OIDC, packs one zip per workflow skill, and creates the GitHub Release with those assets.
 
 Locally pack the skill zip:
 
 ```bash
-bun run pack:skill   # or: node ./scripts/pack-skill.mjs
+bun run pack:skills   # or: node ./scripts/pack-skill.mjs
 ```

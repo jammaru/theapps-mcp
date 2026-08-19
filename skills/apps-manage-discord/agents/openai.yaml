@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Apps Discord"
+  short_description: "Manage Discord access through Apps"
+  default_prompt: "Use $apps-manage-discord to create the Discord role needed by this Apps flow."

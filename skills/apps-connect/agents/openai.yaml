@@ -1,0 +1,4 @@
+interface:
+  display_name: "Connect Apps-mcp"
+  short_description: "Connect and verify Apps-mcp safely"
+  default_prompt: "Use $apps-connect to connect Apps to my MCP client and verify the setup."

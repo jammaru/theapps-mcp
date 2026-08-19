@@ -2,7 +2,6 @@ import type { McpServer } from "@modelcontextprotocol/server";
 import * as z from "zod/v4";
 import type { AppsClient } from "../client/http.ts";
 import { runTool } from "../lib/result.ts";
-import { APPS_SKILL_HINT } from "../lib/skill-hint.ts";
 import { verifyAppsWebhookSignature } from "../lib/webhook-signature.ts";
 import { readHints } from "../lib/write-guard.ts";
 
@@ -19,7 +18,8 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
   server.registerTool(
     "apps_list_charges",
     {
-      description: `GET /v1/charge — list one-time (product) payments. Returns { items, has_more, mode, error }. Response may include PII; do not log raw rows. ${APPS_SKILL_HINT}`,
+      description:
+        "GET /v1/charge — list one-time (product) payments. Returns { items, has_more, mode, error }. Response can contain personal data; return only fields needed for the user's request.",
       inputSchema: paymentListQuerySchema,
       annotations: readHints,
     },
@@ -29,7 +29,8 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
   server.registerTool(
     "apps_get_charge",
     {
-      description: `GET /v1/charge/{payment_id} — one-time payment details. payment_id is from Webhook payment-success, not admin UI display id. ${APPS_SKILL_HINT}`,
+      description:
+        "GET /v1/charge/{payment_id} — one-time payment details. payment_id is the top-level ID from a Webhook payment event, not the Webhook delivery id or an admin UI display id.",
       inputSchema: z.object({
         payment_id: z.string().min(1),
       }),
@@ -42,7 +43,8 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
   server.registerTool(
     "apps_list_paid_payments",
     {
-      description: `GET /v1/paid — list subscription payments. Distinct from /v1/client/paid plan APIs. Returns { items, has_more, mode, error }. Response may include PII; do not log raw rows. ${APPS_SKILL_HINT}`,
+      description:
+        "GET /v1/paid — list subscription payments. Distinct from /v1/client/paid plan APIs. Returns { items, has_more, mode, error }. Response can contain personal data; return only fields needed for the user's request.",
       inputSchema: paymentListQuerySchema,
       annotations: readHints,
     },
@@ -52,7 +54,8 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
   server.registerTool(
     "apps_get_paid_payment",
     {
-      description: `GET /v1/paid/{payment_id} — subscription payment details. Distinct from /v1/client/paid plan APIs. payment_id is from Webhook payment-success. ${APPS_SKILL_HINT}`,
+      description:
+        "GET /v1/paid/{payment_id} — subscription payment details. Distinct from /v1/client/paid plan APIs. payment_id is the top-level ID from a Webhook payment event.",
       inputSchema: z.object({
         payment_id: z.string().min(1),
       }),
@@ -65,7 +68,8 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
   server.registerTool(
     "apps_list_installments_payments",
     {
-      description: `GET /v1/installments — list installment payments. Distinct from /v1/client/installments plan APIs. Returns { items, has_more, mode, error }. Response may include PII; do not log raw rows. ${APPS_SKILL_HINT}`,
+      description:
+        "GET /v1/installments — list installment payments. Distinct from /v1/client/installments plan APIs. Returns { items, has_more, mode, error }. Response can contain personal data; return only fields needed for the user's request.",
       inputSchema: paymentListQuerySchema,
       annotations: readHints,
     },
@@ -75,7 +79,8 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
   server.registerTool(
     "apps_get_installments_payment",
     {
-      description: `GET /v1/installments/{payment_id} — installment payment details. payment_id is from Webhook payment-success. ${APPS_SKILL_HINT}`,
+      description:
+        "GET /v1/installments/{payment_id} — installment payment details. payment_id is the top-level ID from a Webhook payment event.",
       inputSchema: z.object({
         payment_id: z.string().min(1),
       }),
@@ -88,7 +93,8 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
   server.registerTool(
     "apps_get_customer",
     {
-      description: `GET /v1/customer/{customer_id} — fetch customer info. ${APPS_SKILL_HINT}`,
+      description:
+        "GET /v1/customer/{customer_id} — fetch customer info. Return only fields needed for the user's request.",
       inputSchema: z.object({
         customer_id: z.string().min(1),
       }),
@@ -101,7 +107,8 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
   server.registerTool(
     "apps_verify_webhook_signature",
     {
-      description: `Verify Apps Webhook HMAC-SHA256 (Apps-Signature). Use the raw body string before JSON parse. Never log webhook_secret. Deduplicate with Apps-Webhook-Id / body.id. ${APPS_SKILL_HINT}`,
+      description:
+        "Verify Apps Webhook HMAC-SHA256 (Apps-Signature). Use the exact raw body before JSON parsing, never expose webhook_secret, and deduplicate with Apps-Webhook-Id or body.id rather than the signature.",
       inputSchema: z.object({
         raw_body: z
           .string()

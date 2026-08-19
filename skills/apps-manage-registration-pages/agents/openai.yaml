@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Apps registration pages"
+  short_description: "Build Apps opt-in and registration flows"
+  default_prompt: "Use $apps-manage-registration-pages to create this Apps registration page and return its application URL."

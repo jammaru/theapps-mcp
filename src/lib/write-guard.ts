@@ -15,7 +15,7 @@ export function guardWrite(
       blocked: true,
       message:
         `Write blocked: "${action}". Set APPS_MCP_ALLOW_WRITE=true to enable create/update/delete tools. ` +
-        "This API talks to production (no sandbox).",
+        "Apps API has no separate sandbox; test-mode payment settings still write to the connected account.",
     };
   }
 
@@ -28,7 +28,7 @@ export function guardWrite(
       blocked: true,
       message:
         `Write blocked: "${action}" requires confirm=true (and optionally dry_run=true first). ` +
-        "Production data may be created, changed, or deleted.",
+        "Data in the connected Apps account may be created, changed, or deleted.",
     };
   }
 

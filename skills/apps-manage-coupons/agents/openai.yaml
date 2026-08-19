@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Apps coupons"
+  short_description: "Create and maintain Apps discount campaigns"
+  default_prompt: "Use $apps-manage-coupons to create this Apps discount code with the correct product scope."

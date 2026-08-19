@@ -11,7 +11,7 @@ Cursor や Claude などの AI エージェントから、顧客照会・決済�
 このリポジトリには次の **2つ** があります。
 
 - **MCP（Apps-mcp）** … 実際に Apps API を呼び出す実行役です。認証、HTTP、読み取り／書き込みのガードを担当します。エージェントの「ツール」として動きます。
-- **Agent Skills（apps-api）** … 使い方の手順書です。どのツールを使うか、必須フィールド、よくある作業の流れ、注意点をエージェントに渡します。MCP だけでは迷いやすい作成・更新を、Skills があると安定させやすくなります。
+- **Agent Skills** … 「決済を確認する」「決済ページを作る」「Webhookを実装する」など、利用者の目的ごとのワークフローです。MCPツールの選択、実行順、判断点、返す結果をエージェントに渡します。
 
 認証は OAuth ではなく、Apps 管理画面の **アプリID / アプリシークレット** です。  
 ローカルで動かして、自分の資格情報だけを MCP クライアントに渡す使い方がいちばん簡単です。
@@ -53,7 +53,7 @@ npx -y theapps-mcp configure
 npx skills add jammaru/theapps-mcp
 ```
 
-Claude Desktop は Release の [apps-api-skill.zip](https://github.com/jammaru/theapps-mcp/releases/latest/download/apps-api-skill.zip) をアップロードしてください。
+Claude Desktop は [Releases](https://github.com/jammaru/theapps-mcp/releases/latest) から、使うワークフローのSkill zipをアップロードしてください。
 
 再設定:
 
@@ -87,7 +87,7 @@ Windows Store 版 Claude Desktop は設定ファイルのパスが異なりま�
 セットアップ後は、普通に日本語で依頼すれば大丈夫です。例:
 
 - 「Apps の決済ページ（1回払い）一覧を見せて」
-- 「テスト環境で『単発セミナー』3000円の決済ページを作って。先に dry_run して」
+- 「テストモード決済用に『単発セミナー』3000円の決済ページを作って。実アカウントへの書き込み前に dry_run して」
 - 「この customer_id の顧客情報を確認して: …」
 - 「登録ページの一覧を出して」
 
@@ -239,12 +239,12 @@ Apps API は **本番のみ**（Sandbox なし）です。
 
 - 決済ページ API は `/v1/client/...`
 - `payment_id` は Webhook 決済成功イベント由来（管理画面の表示IDや通知の `id` ではない）
-- Webhook 署名・イベント: https://theapps.jp/api/webhook
-- WaitingList（登録ページ / 毎月払いなど）: Skills の `references/waiting-list.md`
+- Webhook 署名・イベント: https://theapps.jp/api/webhook-config
+- Webhook データ構造: https://theapps.jp/api/webhook-schema
 
 ## Agent Skills（利用者向け）
 
-MCP は実行、スキルは「どのツール・どのフィールド・どの順番か」を案内します。
+MCP は認証・データ取得・書き込みガード・実行を担当し、Skills は利用者の目的を達成するためのツール順序、判断点、結果形式を案内します。
 
 ### コーディングエージェント（Cursor / Claude Code など）
 
@@ -254,23 +254,31 @@ npx skills add jammaru/theapps-mcp
 
 GitHub CLI（v2.90.0 以降）でも入れられます。
 
+必要なSkill名を指定します。例:
+
 ```bash
-gh skill install jammaru/theapps-mcp apps-api
+gh skill install jammaru/theapps-mcp apps-manage-payment-pages
 ```
 
 ### Claude Desktop
 
-「カスタマイズ」→「スキル」から、Release の `apps-api-skill.zip` をアップロードしてください。
-
-- [最新版をダウンロード (apps-api-skill.zip)](https://github.com/jammaru/theapps-mcp/releases/latest/download/apps-api-skill.zip)
-- バージョン履歴: [Releases](https://github.com/jammaru/theapps-mcp/releases)
+「カスタマイズ」→「スキル」から、[最新Release](https://github.com/jammaru/theapps-mcp/releases/latest)に添付された、使うワークフローのSkill zipをアップロードしてください。
 
 ### 中身
 
-スキル名は `apps-api` です。`apps_*` を呼ぶ前にこのスキルを読み、書き込み前は `recipes/` と `references/` も読む想定です。  
-ソース: [`skills/apps-api/`](./skills/apps-api/)
+| Skill | 目的 |
+|---|---|
+| `apps-connect` | Apps-mcpの接続と認証確認 |
+| `apps-inspect-payments` | 顧客・決済の調査 |
+| `apps-manage-payment-pages` | 決済ページの作成・変更・削除 |
+| `apps-manage-registration-pages` | 登録ページの作成・変更・削除 |
+| `apps-manage-coupons` | 割引コードの作成・管理 |
+| `apps-manage-discord` | Apps経由のDiscordロール・チャンネル管理 |
+| `apps-handle-webhooks` | Webhook受信・署名検証・重複防止 |
 
-各ツール説明にも「先にスキルを読む」ヒントを付けています。迷ったら `apps_help`（`topic=skill`）で索引を返せます。
+ソース: [`skills/`](./skills/)
+
+各Skillのdescriptionが利用者の目的に基づいて発火します。`apps_help`（`topic=skill`）でも一覧を確認できます。
 
 ## 開発
 

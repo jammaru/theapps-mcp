@@ -1,85 +1,134 @@
 import { describe, expect, test } from "bun:test";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { APPS_SKILL_HINT, APPS_SKILL_NAME } from "../src/lib/skill-hint.ts";
+import { APPS_SKILLS } from "../src/lib/skills.ts";
 
-const skillRoot = join(import.meta.dir, "..", "skills", "apps-api");
+const root = join(import.meta.dir, "..");
+const skillsRoot = join(root, "skills");
 
-describe("end-user apps-api skill", () => {
-  test("skill package has entry and playbooks", () => {
-    expect(APPS_SKILL_NAME).toBe("apps-api");
-    expect(APPS_SKILL_HINT).toContain(APPS_SKILL_NAME);
+const expected = [
+  {
+    name: "apps-connect",
+    direct: "Apps-mcpをセットアップして",
+    indirect: "Appsのツールが表示されない",
+    notFor: "決済ページを作成する",
+  },
+  {
+    name: "apps-inspect-payments",
+    direct: "この決済が成功したか確認して",
+    indirect: "昨日の定期課金を調べたい",
+    notFor: "月額ページを作成する",
+  },
+  {
+    name: "apps-manage-payment-pages",
+    direct: "一回払いの決済ページを作って",
+    indirect: "月額プランの申込URLが欲しい",
+    notFor: "取引の成功状態を調べる",
+  },
+  {
+    name: "apps-manage-registration-pages",
+    direct: "メール登録ページを作って",
+    indirect: "承認制の無料申込URLが欲しい",
+    notFor: "有料チェックアウトを作る",
+  },
+  {
+    name: "apps-manage-coupons",
+    direct: "20%オフのコードを作って",
+    indirect: "キャンペーン割引を商品だけに適用したい",
+    notFor: "商品の価格を直接変更する",
+  },
+  {
+    name: "apps-manage-discord",
+    direct: "Apps経由でDiscordロールを作って",
+    indirect: "登録者に付けるロールを準備したい",
+    notFor: "Appsと無関係なDiscord管理",
+  },
+  {
+    name: "apps-handle-webhooks",
+    direct: "AppsのWebhook受信を実装して",
+    indirect: "決済通知を二重処理しないようにしたい",
+    notFor: "決済ページを一覧表示する",
+  },
+] as const;
 
-    const required = [
-      "SKILL.md",
-      "references/safety.md",
-      "references/endpoints.md",
-      "references/customer-payment.md",
-      "references/payment-pages.md",
-      "references/waiting-list.md",
-      "references/advance-plan.md",
-      "references/coupon.md",
-      "references/discord.md",
-      "references/webhook.md",
-      "recipes/write-safely.md",
-      "recipes/lookup.md",
-      "recipes/create-payment-page.md",
-      "recipes/create-registration-page.md",
-      "recipes/create-coupon.md",
-      "recipes/discord.md",
-      "recipes/webhook.md",
-    ];
+describe("goal-oriented Apps skills", () => {
+  test("exports the same skill inventory used by apps_help", () => {
+    expect(APPS_SKILLS.map(({ name }) => name)).toEqual(expected.map(({ name }) => name));
+  });
 
-    for (const rel of required) {
-      expect(existsSync(join(skillRoot, rel))).toBe(true);
+  test("each skill is self-contained and has UI metadata", async () => {
+    for (const item of expected) {
+      const skillRoot = join(skillsRoot, item.name);
+      const skillPath = join(skillRoot, "SKILL.md");
+      const metadataPath = join(skillRoot, "agents", "openai.yaml");
+
+      expect(existsSync(skillPath), item.name).toBe(true);
+      expect(existsSync(metadataPath), item.name).toBe(true);
+
+      const skill = await Bun.file(skillPath).text();
+      const frontmatterEnd = skill.indexOf("---", 3);
+      const frontmatter = skill.slice(0, frontmatterEnd);
+      expect(frontmatter).toContain(`name: ${item.name}`);
+      expect(frontmatter).toContain("description:");
+      expect(frontmatter.toLowerCase()).not.toContain("before calling any apps_");
+
+      const metadata = await Bun.file(metadataPath).text();
+      expect(metadata).toContain(`$${item.name}`);
     }
   });
 
-  test("SKILL.md is end-user oriented and installable", async () => {
-    const text = await Bun.file(join(skillRoot, "SKILL.md")).text();
-    expect(text).toContain("name: apps-api");
-    expect(text).toContain("npx skills add jammaru/theapps-mcp");
-    expect(text).toContain("recipes/");
-    expect(text).toContain("apps_auth_status");
-    expect(text).toContain("いつ読むか");
-    expect(text).toContain("apps_*");
-    expect(text).toContain("apps_list_charges");
-    expect(text).toContain("waiting-list.md");
-    expect(text).toContain("webhook.md");
-    expect(text.toLowerCase()).not.toContain("contributor");
-    expect(text.toLowerCase()).not.toContain("開発者向け");
+  test("documents representative activation and exclusion requests", () => {
+    for (const item of expected) {
+      expect(item.direct.length).toBeGreaterThan(8);
+      expect(item.indirect.length).toBeGreaterThan(8);
+      expect(item.notFor.length).toBeGreaterThan(8);
+    }
   });
 
-  test("skill hint and description push agents to read before MCP use", async () => {
-    expect(APPS_SKILL_HINT.toLowerCase()).toContain("before calling");
-    expect(APPS_SKILL_HINT).toContain(APPS_SKILL_NAME);
-
-    const text = await Bun.file(join(skillRoot, "SKILL.md")).text();
-    const frontmatter = text.slice(0, text.indexOf("---", 3));
-    expect(frontmatter).toContain("apps_*");
-    expect(frontmatter).toMatch(/必ずこのスキルを最初に読む|read the apps-api skill/i);
+  test("removes the API-wide umbrella skill", () => {
+    expect(existsSync(join(skillsRoot, "apps-api", "SKILL.md"))).toBe(false);
   });
 
-  test("skill is not published in the npm package files", async () => {
-    const pkg = JSON.parse(await Bun.file(join(import.meta.dir, "..", "package.json")).text()) as {
-      files: string[];
-    };
-    expect(pkg.files).not.toContain("skills/");
-    expect(existsSync(join(skillRoot, "SKILL.md"))).toBe(true);
-    expect(existsSync(join(import.meta.dir, "..", "scripts", "pack-skill.mjs"))).toBe(true);
+  test("keeps current Apps API invariants in the relevant workflows", async () => {
+    const payment = await Bun.file(
+      join(skillsRoot, "apps-manage-payment-pages", "SKILL.md"),
+    ).text();
+    expect(payment).toContain("not an API sandbox");
+    expect(payment).toContain("/v1/client/...");
+
+    const identifiers = await Bun.file(
+      join(skillsRoot, "apps-inspect-payments", "references", "identifiers.md"),
+    ).text();
+    expect(identifiers).toContain("Webhook `id`");
+    expect(identifiers).toContain("`payment_id`");
+
+    const webhooks = await Bun.file(
+      join(skillsRoot, "apps-handle-webhooks", "references", "webhooks.md"),
+    ).text();
+    expect(webhooks).toContain("https://theapps.jp/api/webhook-config");
+    expect(webhooks).toContain("https://theapps.jp/api/webhook-schema");
+    expect(webhooks).toContain("300 seconds");
+    expect(webhooks).toContain("exact raw request body");
   });
 
-  test("waiting-list and webhook references cover Aug 2026 rules", async () => {
-    const waiting = await Bun.file(join(skillRoot, "references/waiting-list.md")).text();
-    expect(waiting).toContain("type");
-    expect(waiting).toContain("interval");
-    expect(waiting).toContain("オブジェクト自体を送らない");
+  test("does not force every tool call through one skill", async () => {
+    const sources = await Promise.all(
+      [
+        "src/tools/auth.ts",
+        "src/tools/customer-payment.ts",
+        "src/tools/plans.ts",
+        "src/tools/discord.ts",
+      ].map((path) => Bun.file(join(root, path)).text()),
+    );
+    const source = sources.join("\n").toLowerCase();
+    expect(source).not.toContain("before calling any apps_*");
+    expect(source).not.toContain("apps_skill_hint");
+  });
 
-    const webhook = await Bun.file(join(skillRoot, "references/webhook.md")).text();
-    expect(webhook).toContain("HMAC-SHA256");
-    expect(webhook).toContain("Apps-Webhook-Id");
-    expect(webhook).toContain("apps_verify_webhook_signature");
-    expect(webhook).toContain("application");
-    expect(webhook).toContain("canceled");
+  test("release packaging discovers all workflow skills", async () => {
+    const script = await Bun.file(join(root, "scripts", "pack-skill.mjs")).text();
+    expect(script).toContain('join(root, "skills")');
+    expect(script).toContain("readdirSync");
+    expect(script).toContain("-skill.zip");
   });
 });
