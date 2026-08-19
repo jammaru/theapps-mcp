@@ -59,7 +59,7 @@ Windows Store 版 Claude Desktop は設定ファイルのパスが異なりま�
   "mcpServers": {
     "apps": {
       "command": "npx",
-      "args": ["-y", "theapps-mcp"],
+      "args": ["-y", "theapps-mcp@latest"],
       "env": {
         "APPS_APP_ID": "your-app-id",
         "APPS_APP_SECRET": "your-app-secret"
@@ -68,6 +68,8 @@ Windows Store 版 Claude Desktop は設定ファイルのパスが異なりま�
   }
 }
 ```
+
+`theapps-mcp@latest` なので、MCP クライアントを再起動すると npm の最新版を取ります。
 
 書き込みを許可する場合のみ（Apps API は **本番のみ**）:
 

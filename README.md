@@ -102,7 +102,7 @@ Agent がツールを選びます。書き込みは既定でオフなので、�
   "mcpServers": {
     "apps": {
       "command": "npx",
-      "args": ["-y", "theapps-mcp"],
+      "args": ["-y", "theapps-mcp@latest"],
       "env": {
         "APPS_APP_ID": "your-app-id",
         "APPS_APP_SECRET": "your-app-secret"
@@ -111,6 +111,8 @@ Agent がツールを選びます。書き込みは既定でオフなので、�
   }
 }
 ```
+
+`theapps-mcp@latest` なので、MCP クライアントを再起動すると npm の最新版を取ります。
 
 ### 書き込みを許可する場合のみ
 

@@ -3,6 +3,7 @@ import { mkdirSync, mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
+  APPS_MCP_NPX_SPEC,
   buildAppsMcpEntry,
   claudeDesktopConfigPath,
   formatConfigureStdoutSnippets,
@@ -20,9 +21,10 @@ describe("buildAppsMcpEntry", () => {
       appSecret: "secret",
       allowWrite: true,
     });
+    expect(APPS_MCP_NPX_SPEC).toBe("theapps-mcp@latest");
     expect(entry).toEqual({
       command: "npx",
-      args: ["-y", "theapps-mcp"],
+      args: ["-y", APPS_MCP_NPX_SPEC],
       env: {
         APPS_APP_ID: "id",
         APPS_APP_SECRET: "secret",
@@ -99,7 +101,7 @@ describe("formatMcpSnippet / redact", () => {
   test("redact and placeholder cover APPS_ACCESS_TOKEN", () => {
     const entry = {
       command: "npx",
-      args: ["-y", "theapps-mcp"],
+      args: ["-y", "theapps-mcp@latest"],
       env: {
         APPS_ACCESS_TOKEN: "static-live-token-value",
       },

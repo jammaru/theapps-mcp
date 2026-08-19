@@ -39,7 +39,7 @@ npx -y theapps-mcp configure --force
   "mcpServers": {
     "apps": {
       "command": "npx",
-      "args": ["-y", "theapps-mcp"],
+      "args": ["-y", "theapps-mcp@latest"],
       "env": {
         "APPS_APP_ID": "your-app-id",
         "APPS_APP_SECRET": "your-app-secret"
@@ -48,6 +48,8 @@ npx -y theapps-mcp configure --force
   }
 }
 ```
+
+`theapps-mcp@latest` なので、MCP クライアントを再起動すると npm の最新版を取ります。
 
 ## HTTP モード（開発者向け）
 
