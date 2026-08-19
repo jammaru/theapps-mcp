@@ -75,6 +75,9 @@ export function cursorMcpConfigPath(): string {
   return join(homedir(), ".cursor", "mcp.json");
 }
 
+/** Package spec written into client MCP config. `@latest` so a client restart picks up new npm releases. */
+export const APPS_MCP_NPX_SPEC = "theapps-mcp@latest";
+
 export function buildAppsMcpEntry(options: {
   appId: string;
   appSecret: string;
@@ -89,7 +92,7 @@ export function buildAppsMcpEntry(options: {
   }
   return {
     command: "npx",
-    args: ["-y", "theapps-mcp"],
+    args: ["-y", APPS_MCP_NPX_SPEC],
     env,
   };
 }

@@ -34,7 +34,7 @@ Restart Cursor, Claude Code, Codex, or a similar client, then use `apps_auth_sta
   "mcpServers": {
     "apps": {
       "command": "npx",
-      "args": ["-y", "theapps-mcp"],
+      "args": ["-y", "theapps-mcp@latest"],
       "env": {
         "APPS_APP_ID": "your-app-id",
         "APPS_APP_SECRET": "your-app-secret"
@@ -43,3 +43,5 @@ Restart Cursor, Claude Code, Codex, or a similar client, then use `apps_auth_sta
   }
 }
 ```
+
+`theapps-mcp@latest` means a client restart picks up the current npm release.
