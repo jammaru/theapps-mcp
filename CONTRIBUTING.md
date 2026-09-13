@@ -57,9 +57,10 @@ npm install
 npm test
 ```
 
-CI keeps installing Bun 1.3.11 via `oven-sh/setup-bun`. The flake uses whatever
-Bun nixpkgs-unstable currently ships (usually a nearby patch). Do not add a
-second copy of Biome or TypeScript to the flake; those come from `bun install`.
+`package.json#packageManager` and `oven-sh/setup-bun` pin Bun 1.3.13, matching
+`pkgs.bun` in the locked flake. After `nix flake update`, if Bun's version
+changes, bump those pins in the same PR. Do not add a second copy of Biome or
+TypeScript to the flake; those come from `bun install`.
 
 Refresh the Nix toolchain with `nix flake update` (commit `flake.lock`). Format
 Nix files with `nix fmt`.
