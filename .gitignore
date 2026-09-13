@@ -10,6 +10,13 @@ bin/theapps-mcp.js
 .env
 .env.*
 !.env.example
+!.envrc
+
+# Nix / direnv
+.direnv/
+result
+result-*
+
 
 # IDE / OS
 .DS_Store

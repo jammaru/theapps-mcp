@@ -9,7 +9,7 @@ Issues and pull requests are welcome.
 - Website changes: `cd website`; `npm run typecheck`; `npm test`; `npm run build`; `npm run lighthouse`
 - Do not commit secrets (`APPS_APP_ID`, `APPS_APP_SECRET`, tokens)
 - Prefer clear names and short docs over clever abstractions
-- CI runs `bun run check`, `bun run typecheck`, `bun test`, and `bun run build` on PRs
+- CI runs `bun run check`, `bun run typecheck`, `bun test`, and `bun run build` on PRs, plus a Nix flake job
 - Do not commit `bin/theapps-mcp.js` (built on publish / locally as needed)
 
 ## Development
@@ -26,6 +26,43 @@ End users install with Node only:
 ```bash
 npx -y theapps-mcp configure
 ```
+
+### Nix (optional)
+
+Nix is optional and does not replace Bun or npm. The flake pins **toolchains**
+(Bun, Node 22, `nixfmt`); JavaScript packages stay in `bun.lock` and
+`website/package-lock.json`.
+
+Linux, macOS, and Windows (WSL2) are supported. Native Windows without WSL is
+not.
+
+```bash
+# https://nixos.org/download/  or  https://docs.determinate.systems/
+nix develop
+bun install
+bun test
+```
+
+With [direnv](https://direnv.net/) (and optionally [nix-direnv](https://github.com/nix-community/nix-direnv)):
+
+```bash
+direnv allow
+```
+
+Website work still uses Node 22 inside the same shell:
+
+```bash
+cd website
+npm install
+npm test
+```
+
+CI keeps installing Bun 1.3.11 via `oven-sh/setup-bun`. The flake uses whatever
+Bun nixpkgs-unstable currently ships (usually a nearby patch). Do not add a
+second copy of Biome or TypeScript to the flake; those come from `bun install`.
+
+Refresh the Nix toolchain with `nix flake update` (commit `flake.lock`). Format
+Nix files with `nix fmt`.
 
 ## Release
 

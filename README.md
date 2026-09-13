@@ -294,6 +294,8 @@ bun run typecheck
 bun run build
 ```
 
+Nix は任意です。`nix develop`（または direnv）で Bun と Node 22 を揃えられます。手順は [CONTRIBUTING.md](./CONTRIBUTING.md) を参照してください。
+
 ```bash
 bun run src/index.ts configure
 bun run src/index.ts --http   # Bun のみ / 既定は loopback
