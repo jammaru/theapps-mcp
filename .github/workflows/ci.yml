@@ -39,3 +39,23 @@ jobs:
 
       - name: Smoke CLI (Node)
         run: node bin/theapps-mcp.js help
+
+  nix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check flake.lock
+        uses: DeterminateSystems/flake-checker-action@v13
+
+      - uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: Evaluate flake
+        run: nix flake check --print-build-logs
+
+      - name: Check Nix formatting
+        run: nix develop --command treefmt --ci
+
+      - name: Smoke toolchain
+        run: nix develop --command bash -lc 'bun --version && node --version'
+

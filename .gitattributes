@@ -1,0 +1,3 @@
+*.nix text eol=lf
+.envrc text eol=lf
+flake.lock text eol=lf
