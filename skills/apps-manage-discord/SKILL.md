@@ -30,7 +30,7 @@ Role create requires `name`. Channel create requires `type` and `name`.
 
 ## Apps plan automation
 
-These tools manage Discord resources. A payment or registration plan's `discord_rule` controls automatic behavior during sign-up or payment. When the user wants automated access, first ensure the target role exists, then use the relevant payment-page or registration-page workflow to add its ID to `discord_rule`.
+These tools manage Discord resources. A payment or registration plan's `discord_rule` controls automatic behavior during sign-up or payment. When the user wants automated access, first ensure the target role exists, then use the relevant payment-page or registration-page workflow to add its ID to `discord_rule`. For formation-condition plans, a waiting-list application grant needs a matching cancellation-time rule or the role stays after withdrawal. Do not invent DiscordRule `trigger` strings that the official API table does not list.
 
 ## Safety
 

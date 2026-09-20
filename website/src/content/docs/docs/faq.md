@@ -23,6 +23,16 @@ description: Apps-mcp についてのよくある質問。
 
 ありません。本番 API のみです。
 
+## Cursor で Apps MCP がエラーになる
+
+`npx -y github:jammaru/theapps-mcp` は使わないでください。git には起動用の `bin/` が無いので、ツール発見に失敗します。
+
+```bash
+npx -y theapps-mcp configure
+```
+
+Windows では `configure` が `cmd /c npx -y theapps-mcp@latest` を書きます。設定後は MCP サーバーを再読み込みし、`apps_auth_status` で確認してください。
+
 ## Skills は必須ですか？
 
 必須ではありませんが、作成・更新の安定のために強く推奨します。

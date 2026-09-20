@@ -82,6 +82,7 @@ export function buildAppsMcpEntry(options: {
   appId: string;
   appSecret: string;
   allowWrite: boolean;
+  platform?: NodeJS.Platform;
 }): McpServerEntry {
   const env: Record<string, string> = {
     APPS_APP_ID: options.appId,
@@ -89,6 +90,16 @@ export function buildAppsMcpEntry(options: {
   };
   if (options.allowWrite) {
     env.APPS_MCP_ALLOW_WRITE = "true";
+  }
+  const platform = options.platform ?? process.platform;
+  // Windows: spawn() cannot run npx.cmd directly. github: installs also fail
+  // because the git checkout has no prebuilt bin.
+  if (platform === "win32") {
+    return {
+      command: "cmd",
+      args: ["/c", "npx", "-y", APPS_MCP_NPX_SPEC],
+      env,
+    };
   }
   return {
     command: "npx",

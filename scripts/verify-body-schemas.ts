@@ -141,6 +141,7 @@ const accepts: Array<[string, unknown]> = [
         price: 100,
         language: "ja",
         platform: { stripe: true },
+        notes: [{ name: "管理番号", require: false }],
       },
       dry_run: true,
     },
@@ -155,6 +156,8 @@ const accepts: Array<[string, unknown]> = [
         language: "ja",
         platform: { stripe: true },
         billing_cycle: { interval: "month", count: 1 },
+        notes: [{ name: "管理番号", require: false }],
+        contracted_units: { accept: true, max: 5 },
       },
       dry_run: true,
     },
@@ -191,7 +194,12 @@ const accepts: Array<[string, unknown]> = [
   [
     "apps_create_advance_plan",
     {
-      body: { contract_type: "email", plan_name: smokeName, language: "ja" },
+      body: {
+        contract_type: "email",
+        plan_name: smokeName,
+        language: "ja",
+        notes: [{ name: "管理番号", require: false }],
+      },
       dry_run: true,
     },
   ],
@@ -226,6 +234,7 @@ try {
       language: "ja",
       platform: { stripe: true },
       meta_conversion_api: {},
+      notes: [{ name: "管理番号", require: false }],
     },
     confirm: true,
   });
@@ -241,6 +250,20 @@ try {
     record("live create product", false, textOf(createOut).slice(0, 300));
   } else {
     record("live create product", true, `product_id=${created.product_id}`);
+    const got = await call("apps_get_product", { product_id: created.product_id });
+    const gotParsed = JSON.parse(textOf(got)) as {
+      error?: unknown;
+      url_application?: string;
+      product?: { notes?: unknown };
+    };
+    const notesOk = Array.isArray(gotParsed.product?.notes) && gotParsed.product.notes.length >= 1;
+    const url = gotParsed.url_application ?? "";
+    const remarkUrl = url.includes("?") ? `${url}&remark_1=ABC-001` : `${url}?remark_1=ABC-001`;
+    record(
+      "live product notes+remark URL",
+      notesOk && url.startsWith("https://") && remarkUrl.includes("remark_1="),
+      notesOk ? "notes echoed; remark_1 appendable" : "notes missing on GET",
+    );
     const upd = await call("apps_update_product", {
       product_id: created.product_id,
       body: {

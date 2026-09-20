@@ -69,7 +69,22 @@ Windows Store 版 Claude Desktop は設定ファイルのパスが異なりま�
 }
 ```
 
-`theapps-mcp@latest` なので、MCP クライアントを再起動すると npm の最新版を取ります。
+`theapps-mcp@latest` なので、MCP クライアントを再起動すると npm の最新版を取ります。`github:jammaru/theapps-mcp` は使わないでください（git には起動用の `bin/` が入っていません）。
+
+Windows で `npx` のまま起動に失敗する場合:
+
+```json
+{
+  "command": "cmd",
+  "args": ["/c", "npx", "-y", "theapps-mcp@latest"],
+  "env": {
+    "APPS_APP_ID": "your-app-id",
+    "APPS_APP_SECRET": "your-app-secret"
+  }
+}
+```
+
+`configure` は Windows ではこの `cmd /c` 形式を書き込みます。
 
 書き込みを許可する場合のみ（Apps API は **本番のみ**）:
 

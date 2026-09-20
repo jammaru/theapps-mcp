@@ -29,3 +29,5 @@ Each permission entry requires `id` and can include `allow` and `deny` arrays. A
 ## Plan automation boundary
 
 The Discord resource API creates and maintains roles and channels. `discord_rule` on a payment or registration plan controls automatic actions associated with an application. Creating a role alone does not connect it to a plan.
+
+Official DiscordRule `trigger` values are `auto` (at application, automatic), `manual` (at application, after registration), and `cancel` (cancellation). A live GET of a recurring plan in this project also returned `error` (payment-error timing). Formation-condition (`waiting_list.type=3`) plans can also set administration-screen timings for waiting-list application and waiting-list cancellation. Those extra waiting-list trigger strings are not listed in the Apps API DiscordRule table and were not present on sampled plans; do not invent names. If a role is granted at waiting-list application, add a matching cancellation-time rule or the role remains after the application is withdrawn.

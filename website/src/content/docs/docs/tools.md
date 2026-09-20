@@ -99,5 +99,6 @@ description: Apps-mcp が提供する MCP ツール一覧。
 
 - 決済ページ API は `/v1/client/...`
 - `payment_id` は Webhook 決済成功イベント由来（管理画面の表示 ID や通知の `id` ではない）
-- 決済実行・返金・解約 REST は公開範囲では未提供
+- 決済実行・返金・解約・一括繰り上げ決済 REST は公開範囲では未提供
 - WaitingList 未使用時は登録ページで `waiting_list` を送らない
+- 申込 URL の備考初期値は返された `url_application` に `remark_n`（1始まり）を付ける。定期払いの口数初期値は `quantity=`
