@@ -44,4 +44,6 @@ Restart Cursor, Claude Code, Codex, or a similar client, then use `apps_auth_sta
 }
 ```
 
-`theapps-mcp@latest` means a client restart picks up the current npm release.
+`theapps-mcp@latest` means a client restart picks up the current npm release. Do not use `github:jammaru/theapps-mcp`.
+
+On Windows, if `npx` fails to spawn, use `"command": "cmd"` and `"args": ["/c", "npx", "-y", "theapps-mcp@latest"]`. `configure` writes that shape on Windows.

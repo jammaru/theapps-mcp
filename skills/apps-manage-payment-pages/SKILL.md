@@ -28,7 +28,7 @@ Do not choose a family from the price or name alone. Use the intended billing be
 5. Call the create tool with `dry_run: true`.
 6. Check the method, `/v1/client/...` path, body, payment mode, price, and billing cycle. Explain the pending effect.
 7. Call the same tool with `confirm: true` only after the user approves that preview.
-8. Return the created identifier, `url_application` when present, and a concise settings summary.
+8. Return the created identifier, `url_application` when present, and a concise settings summary. If the user wants prefilled remarks or recurring unit count, append `remark_n` / `quantity` to that URL instead of reconstructing it.
 
 ## Update
 

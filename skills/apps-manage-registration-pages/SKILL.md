@@ -20,7 +20,7 @@ Read this skill before the first matching `apps_*` MCP call in each task. Read t
 5. Omit `waiting_list` entirely when the feature is not used.
 6. Call `apps_create_advance_plan` with `dry_run: true`.
 7. Explain the path, channel, and registration behavior. Execute with `confirm: true` only after approval.
-8. Return `plan_id`, `url_application`, and a concise summary.
+8. Return `plan_id`, `url_application`, and a concise summary. If the user wants prefilled remarks, append `remark_n` to that URL instead of reconstructing it.
 
 ## Update and delete
 

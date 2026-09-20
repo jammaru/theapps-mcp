@@ -33,5 +33,6 @@ Return the payment family, status, amount and time when present, the identifier 
 ## Boundaries
 
 - Do not claim that a payment executed, refunded, or canceled unless the returned data establishes it.
-- Apps-mcp does not provide customer-list search, payment execution, refund, or cancellation tools.
+- Apps-mcp does not provide customer-list search, payment execution, refund, cancellation, or lump-sum early-repayment tools.
+- Upcoming charges shown as scheduled (「予定」) on the administration contract screen are not a documented Apps API filter. Use the matching payment list/get tools for recorded payments.
 - Do not call product / paid / installment plan tools from this skill. Page configuration belongs to `apps-manage-payment-pages`.

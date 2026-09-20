@@ -77,6 +77,23 @@ const lineObject = z
   })
   .describe("LINE channel settings");
 
+/** Remark fields. Plan-edit order is 1-based URL param remark_n (notes[0] → remark_1). */
+const notesArray = z
+  .array(z.unknown())
+  .describe(
+    "Remark fields (Note[]: name, require). Application URLs can prefill with remark_n=value (n is 1-based; notes[0] is remark_1).",
+  );
+
+const contractedUnitsObject = z
+  .looseObject({
+    accept: z.boolean().optional(),
+    max: z.number().int().optional(),
+    allow_repeat_contract: z.boolean().optional(),
+  })
+  .describe(
+    "Contracted unit count. Recurring application URLs can prefill with quantity= when accept is true.",
+  );
+
 /** WaitingList — when present, type is required (advance / installment APIs). */
 const waitingListObject = z
   .looseObject({
@@ -137,6 +154,7 @@ const productBase = z.looseObject({
   platform: platformObject,
   language: language.optional(),
   waiting_list: waitingListObject.optional(),
+  notes: notesArray.optional(),
 });
 
 export const productCreateBody = bodySchema(
@@ -167,6 +185,9 @@ const paidBase = z.looseObject({
   billing_cycle: paidBillingCycle,
   platform: platformObject,
   language: language.optional(),
+  notes: notesArray.optional(),
+  contracted_units: contractedUnitsObject.optional(),
+  use_phone_number: z.boolean().optional(),
 });
 
 export const paidCreateBody = bodySchema(
@@ -198,6 +219,7 @@ const installmentBase = z.looseObject({
   platform: platformObject,
   language: language.optional(),
   waiting_list: waitingListObject.optional(),
+  notes: notesArray.optional(),
 });
 
 export const installmentCreateBody = bodySchema(
@@ -339,6 +361,7 @@ const advanceBase = z.looseObject({
   discord_rule: z.unknown().optional(),
   line: lineObject.optional(),
   waiting_list: waitingListObject.optional(),
+  notes: notesArray.optional(),
 });
 
 function refineAdvanceBody(

@@ -199,6 +199,25 @@ describe("goal-oriented Apps skills", () => {
     expect(discord).toContain("apps_create_discord_role");
     expect(discord).toContain("apps_create_discord_channel");
 
+    const paymentRef = await Bun.file(
+      join(skillsRoot, "apps-manage-payment-pages", "references", "payment-pages.md"),
+    ).text();
+    expect(paymentRef).toContain("remark_n");
+    expect(paymentRef).toContain("quantity=");
+    expect(paymentRef).toContain("do not invent");
+
+    const registrationRef = await Bun.file(
+      join(skillsRoot, "apps-manage-registration-pages", "references", "registration-pages.md"),
+    ).text();
+    expect(registrationRef).toContain("remark_n");
+
+    const discordRef = await Bun.file(
+      join(skillsRoot, "apps-manage-discord", "references", "discord.md"),
+    ).text();
+    expect(discordRef).toContain("waiting-list");
+    expect(discordRef).toContain("do not invent");
+    expect(discordRef).not.toContain("add a matching cancellation-time rule");
+
     const webhooks = await Bun.file(
       join(skillsRoot, "apps-handle-webhooks", "references", "webhooks.md"),
     ).text();

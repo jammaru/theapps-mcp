@@ -60,6 +60,14 @@ describe("product body schemas", () => {
     expect(data.waiting_list).toEqual({ type: 1 });
   });
 
+  test("keeps notes extras for remark_n URL prefills", () => {
+    const data = expectOk(productCreateBody, {
+      ...minimal,
+      notes: [{ name: "管理番号", require: false }],
+    }) as Record<string, unknown>;
+    expect(data.notes).toEqual([{ name: "管理番号", require: false }]);
+  });
+
   test("rejects create missing platform or all-false platform", () => {
     expectFail(productCreateBody, { ...minimal, platform: undefined }, "platform");
     const { platform: _p, ...noPlatform } = minimal;
@@ -96,6 +104,7 @@ describe("paid / installment body schemas", () => {
       language: "ja",
       platform: { stripe: true },
       billing_cycle: { interval: "month", count: 1 },
+      contracted_units: { accept: true, max: 5 },
     });
     expectFail(
       paidCreateBody,

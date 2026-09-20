@@ -9,6 +9,7 @@ Ask in natural language. The agent picks tools.
 
 - “List one-time payment pages”
 - “Create a 3000 JPY product. dry_run first”
+- “Prefill the checkout URL remark field with a tracking code”
 - “Look up this customer_id”
 
 ## Read first

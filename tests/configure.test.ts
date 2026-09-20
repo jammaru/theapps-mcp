@@ -20,6 +20,7 @@ describe("buildAppsMcpEntry", () => {
       appId: "id",
       appSecret: "secret",
       allowWrite: true,
+      platform: "darwin",
     });
     expect(APPS_MCP_NPX_SPEC).toBe("theapps-mcp@latest");
     expect(entry).toEqual({
@@ -33,11 +34,24 @@ describe("buildAppsMcpEntry", () => {
     });
   });
 
+  test("uses cmd /c npx on Windows so spawn can start the server", () => {
+    const entry = buildAppsMcpEntry({
+      appId: "id",
+      appSecret: "secret",
+      allowWrite: false,
+      platform: "win32",
+    });
+    expect(entry.command).toBe("cmd");
+    expect(entry.args).toEqual(["/c", "npx", "-y", "theapps-mcp@latest"]);
+    expect(entry.args?.join(" ")).not.toContain("github:");
+  });
+
   test("omits write env when disabled", () => {
     const entry = buildAppsMcpEntry({
       appId: "id",
       appSecret: "secret",
       allowWrite: false,
+      platform: "linux",
     });
     expect(entry.env).toEqual({
       APPS_APP_ID: "id",
