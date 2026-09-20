@@ -215,6 +215,8 @@ describe("goal-oriented Apps skills", () => {
       join(skillsRoot, "apps-manage-discord", "references", "discord.md"),
     ).text();
     expect(discordRef).toContain("waiting-list");
+    expect(discordRef).toContain("do not invent");
+    expect(discordRef).not.toContain("add a matching cancellation-time rule");
 
     const webhooks = await Bun.file(
       join(skillsRoot, "apps-handle-webhooks", "references", "webhooks.md"),

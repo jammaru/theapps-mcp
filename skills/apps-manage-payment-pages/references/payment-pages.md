@@ -70,7 +70,7 @@ WaitingList is documented on products and installment plans, not recurring `/v1/
 
 Formation-condition plans show pending (approval-waiting) applicant counts in parentheses next to the contract count in the administration list. The parenthesis is omitted when the pending count is 0. Do not invent a list-response field if the API payload does not include it.
 
-Official DiscordRule `trigger` values are `auto`, `manual`, and `cancel`. A live GET of a recurring plan also returned `error` (payment-error timing). Formation-condition plans can also set administration-screen timings for waiting-list application and waiting-list cancellation. Those extra waiting-list trigger strings are not listed in the Apps API DiscordRule table; do not invent names. If a role is granted at waiting-list application, add a matching cancellation rule or the role remains after the application is withdrawn.
+Official DiscordRule `trigger` values are `auto`, `manual`, and `cancel` (契約解約 / contract cancellation). A live GET of a recurring plan also returned `error` (payment-error timing); do not send `error` unless a GET of that plan already shows it. Formation-condition plans can set waiting-list application and waiting-list withdrawal timings in the administration screen. Those extra waiting-list trigger strings are not listed in the Apps API DiscordRule table; do not invent names. Official `cancel` is not waiting-list withdrawal. If a role should be granted at waiting-list application and removed on withdrawal, tell the user to set both timings in the Apps administration screen — MCP has no documented REST key for them, and without the admin withdrawal rule the role remains.
 
 ## Responses
 
