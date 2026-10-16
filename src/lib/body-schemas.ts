@@ -142,6 +142,36 @@ function refineWaitingList(
   }
 }
 
+/**
+ * CardAttribute — checkout card input fields. The Apps API accepts integers (0/1/2)
+ * and booleans on write, but returns booleans on read, so accept both to keep GET→PUT
+ * echoes valid. Nested values stay optional; omitted keys keep the Apps defaults.
+ */
+const cardAttributeValue = z
+  .union([z.boolean(), z.number().int()])
+  .describe("Integers 0/1/2 on write; the API returns booleans on read");
+
+const cardAttributeObject = z
+  .looseObject({
+    card_name: cardAttributeValue.optional(),
+    card_address_country: cardAttributeValue.optional(),
+    card_address_zip: cardAttributeValue.optional(),
+    card_address_line: cardAttributeValue.optional(),
+  })
+  .describe("CardAttribute — card input settings for the checkout form");
+
+/**
+ * Customer-input form settings shared by Product / Paid / InstallmentPaid bodies.
+ * `disable_company_name` hides the company-name field (Apps 会社名非表示).
+ */
+const paymentPageFormSettings = {
+  disable_company_name: z
+    .boolean()
+    .optional()
+    .describe("true hides the company-name input on the checkout form"),
+  card_attribute: cardAttributeObject.optional(),
+};
+
 // --- Product ---
 
 const productBase = z.looseObject({
@@ -155,6 +185,7 @@ const productBase = z.looseObject({
   language: language.optional(),
   waiting_list: waitingListObject.optional(),
   notes: notesArray.optional(),
+  ...paymentPageFormSettings,
 });
 
 export const productCreateBody = bodySchema(
@@ -188,6 +219,7 @@ const paidBase = z.looseObject({
   notes: notesArray.optional(),
   contracted_units: contractedUnitsObject.optional(),
   use_phone_number: z.boolean().optional(),
+  ...paymentPageFormSettings,
 });
 
 export const paidCreateBody = bodySchema(
@@ -220,6 +252,7 @@ const installmentBase = z.looseObject({
   language: language.optional(),
   waiting_list: waitingListObject.optional(),
   notes: notesArray.optional(),
+  ...paymentPageFormSettings,
 });
 
 export const installmentCreateBody = bodySchema(

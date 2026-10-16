@@ -290,6 +290,66 @@ describe("installment waiting_list", () => {
   });
 });
 
+describe("payment-page form settings", () => {
+  test("accepts company-name and card-attribute settings and keeps them", () => {
+    const data = expectOk(productCreateBody, {
+      product_name: "単発講座",
+      stripe_env_id: "1",
+      price: 3000,
+      platform: { stripe: true },
+      disable_company_name: true,
+      card_attribute: { card_name: 2, card_address_country: 2 },
+    }) as Record<string, unknown>;
+    expect(data.disable_company_name).toBe(true);
+    expect(data.card_attribute).toEqual({ card_name: 2, card_address_country: 2 });
+  });
+
+  test("card_attribute stays loose for undocumented keys", () => {
+    const data = expectOk(paidCreateBody, {
+      plan_name: "月額",
+      stripe_env_id: "1",
+      price: 1980,
+      platform: { stripe: true },
+      billing_cycle: { interval: "month" },
+      card_attribute: { card_address_line: 1, future_flag: true },
+    }) as Record<string, unknown>;
+    expect(data.card_attribute).toEqual({ card_address_line: 1, future_flag: true });
+  });
+
+  test("accepts the boolean card_attribute shape the API returns on read", () => {
+    const echo = {
+      card_address_country: true,
+      card_address_line: false,
+      card_address_zip: false,
+      card_name: false,
+    };
+    const data = expectOk(productUpdateBody, {
+      product_name: "renamed",
+      card_attribute: echo,
+    }) as Record<string, unknown>;
+    expect(data.card_attribute).toEqual(echo);
+  });
+
+  test("rejects wrong types for the new settings", () => {
+    expectFail(
+      paidCreateBody,
+      {
+        plan_name: "月額",
+        stripe_env_id: "1",
+        price: 1980,
+        platform: { stripe: true },
+        billing_cycle: { interval: "month" },
+        disable_company_name: "yes",
+      },
+      "disable_company_name",
+    );
+  });
+
+  test("installment update can set card_attribute alone", () => {
+    expectOk(installmentUpdateBody, { card_attribute: { card_address_country: 1 } });
+  });
+});
+
 describe("discord body schemas", () => {
   test("role create requires name", () => {
     expectOk(discordRoleCreateBody, { name: "vip", position: 1, permissions: [] });

@@ -59,6 +59,15 @@ Lump-sum early repayment of remaining installments is an administration-screen a
 
 Official `BillingCycle` includes `trial_end` (unix time). The product UI requires immediate billing for a free-trial period. Repeat applications can skip the trial (match by phone or email) in the administration screen; phone matching requires `use_phone_number` to be required. Official Paid / BillingCycle docs do not list that skip-trial key; do not invent names.
 
+## Checkout form settings
+
+Product, recurring, and installment create/update bodies share these customer-input settings:
+
+- `disable_company_name: true` hides the company-name field on the form. The Apps admin screen can also mark the field required, but the public API object only exposes the hide/optional choice.
+- `card_attribute` selects card input fields: `card_name`, `card_address_country`, `card_address_zip`, `card_address_line`. Write integers (`0` hidden, `1` optional, `2` required); the API returns booleans on read and accepts both, so echoing a fetched value back is safe. Apps defaults apply when omitted. Use it when the user asks about billing-address country or required card fields; the Stripe form can accept non-Japanese billing addresses.
+
+Report exports (for example a canceled-subscriber CSV) and per-customer billing-amount changes are admin-screen features; the public API exposes no endpoints for them.
+
 ## WaitingList
 
 WaitingList is documented on products and installment plans, not recurring `/v1/client/paid` plans. Do not send `waiting_list` on paid-plan requests unless the official endpoint docs add it.
