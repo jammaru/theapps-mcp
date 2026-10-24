@@ -34,7 +34,8 @@ Optional `notes` is the remark-field list (`name`, `require`). After a plan has 
 
 - `stripe_env_id` and `platform` cannot be changed after creation.
 - Installment `price` and `billing_cycle` cannot be changed.
-- Fetch before updating and submit only changed keys.
+- Product `PUT` requires `product_name`, `price`, and `language` even when only one field changes; a flags-only body returns 400.
+- Fetch before updating and submit only changed keys, plus the fields the endpoint requires on update.
 
 ## One-click purchase and order numbers
 
@@ -44,7 +45,7 @@ Optional `notes` is the remark-field list (`name`, `require`). After a plan has 
 - Enabling it requires `allow_duplicate: true`, at least one card platform (`stripe` or `univapay`), and no `waiting_list`. The API rejects other combinations with 400; apps-mcp applies the same checks on create.
 - `keep_order_no` is effective only when `use_one_click` is true. It makes the plan keep the `order_no` from the purchase URL and settle only one purchase per order number.
 - Disabling `use_one_click` stops one-click purchases for every customer of that plan. The saved card belongs to the seller and payment processor, not to one plan.
-- On update, omitting both `use_one_click` and `keep_order_no` keeps their current values. Fetch the plan first, then send only the flags to change.
+- On update, omitting both `use_one_click` and `keep_order_no` keeps their current values. Product `PUT` still requires `product_name`, `price`, and `language`, so include them when toggling either flag.
 
 With `keep_order_no` enabled, pass the order number on the purchase URL:
 

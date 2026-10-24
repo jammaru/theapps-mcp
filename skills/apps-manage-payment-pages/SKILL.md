@@ -34,9 +34,9 @@ Do not choose a family from the price or name alone. Use the intended billing be
 ## Update
 
 1. Fetch the existing plan (`apps_get_product`, `apps_get_paid_plan`, or `apps_get_installment_plan`).
-2. Send only fields that should change.
+2. Send only fields that should change, plus fields the API requires on update. Product `PUT` requires `product_name`, `price`, and `language`.
 3. Do not change immutable fields. For installment plans, do not change `price` or `billing_cycle`.
-4. For one-click settings, fetch the plan first and omit `use_one_click` / `keep_order_no` when they should stay as they are. Disabling one-click affects every customer of that plan.
+4. For one-click settings, include the required Product fields and omit `use_one_click` / `keep_order_no` when they should stay as they are. Disabling one-click affects every customer of that plan.
 5. Preview with `dry_run: true`, explain the difference, then execute with `confirm: true` after approval.
 
 ## Delete
