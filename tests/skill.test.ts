@@ -207,6 +207,7 @@ describe("goal-oriented Apps skills", () => {
     expect(paymentRef).toContain("use_one_click");
     expect(paymentRef).toContain("keep_order_no");
     expect(paymentRef).toContain("order_no");
+    expect(paymentRef).toContain("product_name");
     expect(paymentRef).toContain("do not invent");
 
     const registrationRef = await Bun.file(

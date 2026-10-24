@@ -3,7 +3,7 @@
  *
  * Design:
  * - Create: required / conditionally-required top-level fields (skill + smoke practice)
- * - Update: all known fields optional; extras kept (partial updates must work)
+ * - Update: known fields optional (Product PUT also requires product_name, price, language); extras kept
  * - Nested objects (mail_*, discord_rule internals, etc.) stay loose — full official
  *   mirrors would reject valid API payloads
  * - Unknown keys are preserved via z.looseObject (do not strip extras before POST/PUT)
@@ -265,12 +265,30 @@ export const productCreateBody = bodySchema(
     ),
 );
 
+function refineProductUpdateRequired(
+  body: { product_name?: string; price?: number; language?: string },
+  ctx: z.RefinementCtx,
+): void {
+  for (const field of ["product_name", "price", "language"] as const) {
+    if (body[field] === undefined) {
+      ctx.addIssue({
+        code: "custom",
+        path: [field],
+        message: `${field} is required on Product update (the Apps API returns 400 when omitted)`,
+      });
+    }
+  }
+}
+
 export const productUpdateBody = bodySchema(
   productBase
     .partial()
-    .superRefine((body, ctx) => refineOneClick(body, ctx, "update"))
+    .superRefine((body, ctx) => {
+      refineOneClick(body, ctx, "update");
+      refineProductUpdateRequired(body, ctx);
+    })
     .describe(
-      "Product update body — send only fields to change; stripe_env_id/platform are immutable upstream",
+      "Product update body — product_name, price, language required on update; stripe_env_id/platform are immutable upstream",
     ),
 );
 

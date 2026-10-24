@@ -103,15 +103,20 @@ describe("product body schemas", () => {
   });
 
   test("update accepts one-click flags without the full plan state", () => {
-    expectOk(productUpdateBody, { use_one_click: true });
-    expectOk(productUpdateBody, { keep_order_no: true });
-    expectOk(productUpdateBody, { use_one_click: false });
+    const base = { product_name: "renamed", price: 3000, language: "ja" as const };
+    expectOk(productUpdateBody, { ...base, use_one_click: true });
+    expectOk(productUpdateBody, { ...base, keep_order_no: true });
+    expectOk(productUpdateBody, { ...base, use_one_click: false });
     expectFail(
       productUpdateBody,
-      { allow_duplicate: false, use_one_click: true },
+      { ...base, allow_duplicate: false, use_one_click: true },
       "allow_duplicate",
     );
-    expectFail(productUpdateBody, { use_one_click: false, keep_order_no: true }, "keep_order_no");
+    expectFail(
+      productUpdateBody,
+      { ...base, use_one_click: false, keep_order_no: true },
+      "keep_order_no",
+    );
   });
 
   test("rejects create missing platform or all-false platform", () => {
@@ -127,15 +132,18 @@ describe("product body schemas", () => {
     expectFail(productCreateBody, { ...minimal, stripe_env_id: undefined }, "stripe_env_id");
   });
 
-  test("update allows partial body", () => {
-    expectOk(productUpdateBody, { product_name: "renamed" });
-    expectOk(productUpdateBody, {});
+  test("update allows partial body with required Product fields", () => {
+    expectOk(productUpdateBody, { product_name: "renamed", price: 3000, language: "ja" });
+    expectFail(productUpdateBody, {}, "product_name");
+    expectFail(productUpdateBody, { product_name: "renamed" }, "price");
+    expectFail(productUpdateBody, { product_name: "renamed", price: 3000 }, "language");
   });
 
   test("update treats top-level null as omitted (GET echo)", () => {
     expectOk(productUpdateBody, {
       product_name: "renamed",
-      language: null,
+      price: 3000,
+      language: "ja",
       label: null,
     });
   });
@@ -371,6 +379,8 @@ describe("payment-page form settings", () => {
     };
     const data = expectOk(productUpdateBody, {
       product_name: "renamed",
+      price: 3000,
+      language: "ja",
       card_attribute: echo,
     }) as Record<string, unknown>;
     expect(data.card_attribute).toEqual(echo);
