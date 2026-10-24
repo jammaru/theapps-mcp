@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { McpServer } from "@modelcontextprotocol/server";
 import { AppsAuth } from "./client/auth.ts";
 import { AppsClient } from "./client/http.ts";
@@ -8,7 +9,20 @@ import { registerDiscordTools } from "./tools/discord.ts";
 import { registerPlanResources } from "./tools/plans.ts";
 
 export const SERVER_NAME = "Apps-mcp";
-export const SERVER_VERSION = "0.2.4";
+
+/** Read the package version so the published bin matches package.json without manual bumps. */
+function readServerVersion(): string {
+  try {
+    const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as {
+      version?: unknown;
+    };
+    return typeof pkg.version === "string" ? pkg.version : "0.0.0";
+  } catch {
+    return "0.0.0";
+  }
+}
+
+export const SERVER_VERSION = readServerVersion();
 
 export type AppsRuntime = {
   config: AppsConfig;
