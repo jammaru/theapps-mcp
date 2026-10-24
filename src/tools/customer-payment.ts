@@ -19,7 +19,7 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
   server.registerTool(
     "apps_list_charges",
     {
-      description: `GET /v1/charge — list one-time (product) payments. Returns { items, has_more, mode, error }. Response can contain personal data; return only fields needed for the user's request. ${toolSkillHint("apps_list_charges")}`,
+      description: `GET /v1/charge — list one-time (product) payments. Returns { items, has_more, mode, error }. payment.order_no is the order number supplied on the purchase URL when the plan keeps order numbers; it is not a payment_id. Response can contain personal data; return only fields needed for the user's request. ${toolSkillHint("apps_list_charges")}`,
       inputSchema: paymentListQuerySchema,
       annotations: readHints,
     },
@@ -29,7 +29,7 @@ export function registerCustomerPaymentTools(server: McpServer, client: AppsClie
   server.registerTool(
     "apps_get_charge",
     {
-      description: `GET /v1/charge/{payment_id} — one-time payment details. payment_id is the top-level ID from a Webhook payment event, not the Webhook delivery id or an admin UI display id. ${toolSkillHint("apps_get_charge")}`,
+      description: `GET /v1/charge/{payment_id} — one-time payment details. payment_id is the top-level ID from a Webhook payment event, not the Webhook delivery id or an admin UI display id. A returned order_no is the merchant order number, not payment_id. ${toolSkillHint("apps_get_charge")}`,
       inputSchema: z.object({
         payment_id: z.string().min(1),
       }),

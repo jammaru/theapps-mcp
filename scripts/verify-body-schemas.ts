@@ -77,6 +77,20 @@ const rejects: Array<[string, unknown, string]> = [
     "platform",
   ],
   [
+    "apps_create_product",
+    {
+      body: {
+        product_name: "x",
+        stripe_env_id: "1",
+        price: 100,
+        platform: { stripe: true },
+        use_one_click: true,
+      },
+      dry_run: true,
+    },
+    "allow_duplicate",
+  ],
+  [
     "apps_create_paid_plan",
     {
       body: { plan_name: "x", stripe_env_id: "1", price: 100, platform: { stripe: true } },
@@ -142,6 +156,9 @@ const accepts: Array<[string, unknown]> = [
         language: "ja",
         platform: { stripe: true },
         notes: [{ name: "管理番号", require: false }],
+        allow_duplicate: true,
+        use_one_click: true,
+        keep_order_no: true,
       },
       dry_run: true,
     },

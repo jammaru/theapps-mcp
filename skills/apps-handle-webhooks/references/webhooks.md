@@ -50,3 +50,12 @@ Do not parse and reserialize JSON before verification. Reject verification failu
 ## Idempotency and identifiers
 
 Retries and manual resends use a new timestamp and signature. Deduplicate with body `id` or `Apps-Webhook-Id`. For payment lookup, use the top-level `payment_id` from `payment` or `refund`, never the delivery `id`.
+
+## Order numbers
+
+`payment.order_no` is present when the purchaser opened the URL with a valid `order_no` on a one-time plan that keeps order numbers. It is the seller's order key, not an Apps payment identifier.
+
+- Reconcile seller-side orders by their own order number plus the plan; `order_no` is not globally unique.
+- A repeated purchase with the same order number on the same plan settles once. Successful order numbers stay used after a refund, and failed payments can retry the same number.
+- Bank transfer and PayPal purchases store and report `order_no` but do not block duplicates.
+- The customer can edit `order_no` in the URL, so verify the Webhook value against the seller's order data.

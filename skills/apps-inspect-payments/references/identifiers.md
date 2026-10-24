@@ -11,6 +11,7 @@ Official sources:
 - `payment_id` identifies an Apps payment record. In Webhooks it is a top-level field on `payment` and `refund` events.
 - Webhook `id` and the `Apps-Webhook-Id` header identify the delivery for deduplication. They are not `payment_id`.
 - A number displayed in the Apps administration screen is not necessarily the API `payment_id`.
+- `order_no` is the seller's order number, not an Apps identifier. It appears in one-time `payment` records and the product purchaser list when the purchase URL carried one. It is optional, the customer can edit it, and it is only unique within a plan; do not use it as a lookup key for `apps_get_charge`.
 
 When a valid `payment_id` is unavailable, use the matching list tool to locate a candidate. Do not invent cursors or offsets: the public documentation does not define pagination parameters beyond the supported list response and optional MCP `limit`.
 

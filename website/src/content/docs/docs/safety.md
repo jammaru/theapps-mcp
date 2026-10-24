@@ -38,10 +38,12 @@ Sandbox はありません。`stripe_env_id: "1"`などのテストモード設�
 - Sandbox があるかのように案内する
 - 未公開 API（決済実行・返金・解約 REST、一括繰り上げ決済、顧客一覧検索、Webhook CRUD API など）を存在する前提で呼ぶ
 - 管理画面の表示 ID を `payment_id` として使う（Webhook の通知 `id` も `payment_id` ではない）
+- `order_no`（販売者側の注文番号）を `payment_id` や決済の一意キーとして扱う
 - `/v1/apps/...` パスで決済ページを叩く
 - 登録ページで使わない `waiting_list` を `type: 0` 付きで送る（オブジェクトごと省略する）
 - 公式エンドポイント表にない分割スケジュールや DiscordRule `trigger` のキー名を捏造する
-- `url_application` のパスを組み立て直す（返す URL に `remark_n` / `quantity` を付ける）
+- `url_application` のパスを組み立て直す（返す URL に `remark_n` / `quantity` / `order_no` を付ける）
+- `use_one_click` を `allow_duplicate: true`・カード決済・`waiting_list` なしの条件を満たさずに有効化する
 
 ## 信頼できるクライアントで使う
 

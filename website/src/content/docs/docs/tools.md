@@ -102,4 +102,5 @@ description: Apps-mcp が提供する MCP ツール一覧。
 - 決済実行・返金・解約・一括繰り上げ決済 REST は公開範囲では未提供
 - レポートの CSV 出力（解約顧客一覧など）と顧客ごとの請求額変更は管理画面の機能で、公開 API にエンドポイントはない
 - WaitingList 未使用時は登録ページで `waiting_list` を送らない
+- 1回払いプランの `use_one_click` は `allow_duplicate: true` とカード決済（Stripe／UnivaPay）が前提。`keep_order_no` と購入URLの `order_no` で二重購入を防げる
 - 申込 URL の備考初期値は返された `url_application` に `remark_n`（1始まり）を付ける。定期払いの口数初期値は `quantity=`

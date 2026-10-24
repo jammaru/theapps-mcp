@@ -186,11 +186,80 @@ const productBase = z.looseObject({
   waiting_list: waitingListObject.optional(),
   notes: notesArray.optional(),
   ...paymentPageFormSettings,
+  allow_duplicate: z
+    .boolean()
+    .optional()
+    .describe("Allow repeat purchases by the same email. Required when use_one_click is true."),
+  use_one_click: z
+    .boolean()
+    .optional()
+    .describe(
+      "One-click purchase for repeat buyers. Requires allow_duplicate=true and a card platform (stripe or univapay); cannot be combined with waiting_list.",
+    ),
+  keep_order_no: z
+    .boolean()
+    .optional()
+    .describe(
+      "Keep the purchase-URL order_no to block duplicate orders. Only effective when use_one_click is true.",
+    ),
 });
+
+type OneClickBody = {
+  use_one_click?: boolean;
+  keep_order_no?: boolean;
+  allow_duplicate?: boolean;
+  platform?: Record<string, boolean>;
+  waiting_list?: { type?: number };
+};
+
+/**
+ * One-click purchase prerequisites (Apps 3.4.15).
+ * Create has the whole body; update may omit prerequisites the stored plan already satisfies.
+ */
+function refineOneClick(body: OneClickBody, ctx: z.RefinementCtx, mode: "create" | "update"): void {
+  if (body.use_one_click === true) {
+    if (mode === "create" ? body.allow_duplicate !== true : body.allow_duplicate === false) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["allow_duplicate"],
+        message: "allow_duplicate must be true when use_one_click is true",
+      });
+    }
+    if (body.platform && body.platform.stripe !== true && body.platform.univapay !== true) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["platform"],
+        message: "use_one_click requires a card platform (stripe or univapay)",
+      });
+    }
+    const waitingListType = body.waiting_list?.type;
+    if (typeof waitingListType === "number" && waitingListType !== 0) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["waiting_list"],
+        message: "use_one_click cannot be enabled when waiting_list is used",
+      });
+    }
+  }
+
+  if (
+    body.keep_order_no === true &&
+    (mode === "create" ? body.use_one_click !== true : body.use_one_click === false)
+  ) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["keep_order_no"],
+      message: "keep_order_no requires use_one_click=true",
+    });
+  }
+}
 
 export const productCreateBody = bodySchema(
   productBase
-    .superRefine(requirePlatform)
+    .superRefine((body, ctx) => {
+      requirePlatform(body, ctx);
+      refineOneClick(body, ctx, "create");
+    })
     .describe(
       "Product create body — product_name, stripe_env_id, price, platform (>=1 true) required",
     ),
@@ -199,6 +268,7 @@ export const productCreateBody = bodySchema(
 export const productUpdateBody = bodySchema(
   productBase
     .partial()
+    .superRefine((body, ctx) => refineOneClick(body, ctx, "update"))
     .describe(
       "Product update body — send only fields to change; stripe_env_id/platform are immutable upstream",
     ),
