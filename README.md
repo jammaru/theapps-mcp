@@ -87,6 +87,8 @@ Windows Store 版 Claude Desktop は設定ファイルのパスが異なりま�
 - 「Apps の決済ページ（1回払い）一覧を見せて」
 - 「テストモード決済用に『単発セミナー』3000円の決済ページを作って。実アカウントへの書き込み前に dry_run して」
 - 「この決済URLの備考欄に管理番号を入れて顧客に渡せる形にして」
+- 「この1回払いページで、2回目以降はワンクリックで買えるようにして」
+- 「この購入URLに注文番号 A-001 を付けて、二重購入を防げるようにして」
 - 「この customer_id の顧客情報を確認して: …」
 - 「登録ページの一覧を出して」
 
@@ -242,6 +244,7 @@ Apps API は **本番のみ**（Sandbox なし）です。
 
 - 決済ページ API は `/v1/client/...`
 - `payment_id` は Webhook 決済成功イベント由来（管理画面の表示IDや通知の `id` ではない）
+- 1回払いプランの `use_one_click`（`allow_duplicate: true` とカード決済が前提）と `keep_order_no`、購入URLの `order_no`（半角英数字・`_`・`.`・`-`、64文字まで）で二重購入を防げる。`order_no` は決済情報・Webhook・購入者一覧に入る
 - 申込 URL の備考初期値は返された `url_application` に `remark_n`（1始まり）を付ける。定期払いの口数初期値は `quantity=`
 - Webhook 署名・イベント: https://theapps.jp/api/webhook-config
 - Webhook データ構造: https://theapps.jp/api/webhook-schema

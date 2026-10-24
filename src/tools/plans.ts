@@ -219,13 +219,13 @@ export function registerPlanResources(
     idParam: "product_id",
     listDescription: "One-time payment page plans.",
     createDescription:
-      "Body is Product object (product_name, stripe_env_id, price, platform with ≥1 true required on create).",
+      "Body is Product object (product_name, stripe_env_id, price, platform with ≥1 true required on create). Set allow_duplicate + use_one_click for one-click purchases; keep_order_no keeps the purchase-URL order_no.",
     createBody: productCreateBody,
     updateBody: productUpdateBody,
     listChildren: {
       toolSuffix: "purchasers",
       pathSuffix: "purchaser",
-      description: "list purchasers.",
+      description: "list purchasers; each record includes order_no when the purchase carried one.",
     },
   });
 

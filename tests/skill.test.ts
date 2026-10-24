@@ -204,6 +204,9 @@ describe("goal-oriented Apps skills", () => {
     ).text();
     expect(paymentRef).toContain("remark_n");
     expect(paymentRef).toContain("quantity=");
+    expect(paymentRef).toContain("use_one_click");
+    expect(paymentRef).toContain("keep_order_no");
+    expect(paymentRef).toContain("order_no");
     expect(paymentRef).toContain("do not invent");
 
     const registrationRef = await Bun.file(
@@ -227,6 +230,8 @@ describe("goal-oriented Apps skills", () => {
     expect(webhooks).toContain("exact raw request body");
     expect(webhooks).toContain("raw_body");
     expect(webhooks).toContain("whsec_");
+    expect(webhooks).toContain("order_no");
+    expect(identifiers).toContain("order_no");
   });
 
   test("routes every domain MCP tool to its goal-specific skill", () => {

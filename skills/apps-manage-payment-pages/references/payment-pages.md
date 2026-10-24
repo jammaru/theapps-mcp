@@ -36,6 +36,24 @@ Optional `notes` is the remark-field list (`name`, `require`). After a plan has 
 - Installment `price` and `billing_cycle` cannot be changed.
 - Fetch before updating and submit only changed keys.
 
+## One-click purchase and order numbers
+
+`use_one_click` lets a repeat customer pay with one click: the card saved at first purchase (with consent) is reused after the customer logs in. Return the same purchase URL; do not build a separate one-click URL.
+
+- One-time card payments only (Stripe / UnivaPay). Recurring, installment, bank transfer, and PayPal purchases are out of scope.
+- Enabling it requires `allow_duplicate: true`, at least one card platform (`stripe` or `univapay`), and no `waiting_list`. The API rejects other combinations with 400; apps-mcp applies the same checks on create.
+- `keep_order_no` is effective only when `use_one_click` is true. It makes the plan keep the `order_no` from the purchase URL and settle only one purchase per order number.
+- Disabling `use_one_click` stops one-click purchases for every customer of that plan. The saved card belongs to the seller and payment processor, not to one plan.
+- On update, omitting both `use_one_click` and `keep_order_no` keeps their current values. Fetch the plan first, then send only the flags to change.
+
+With `keep_order_no` enabled, pass the order number on the purchase URL:
+
+- Use half-width letters, digits, `_`, `.`, and `-`, up to 64 characters. An invalid value is ignored and the purchase proceeds without an order number.
+- A given order number settles at most once per plan. Reopening the URL after a successful purchase shows the completion screen instead of charging again, and the number stays used after a refund. Issue a new order number for a new order.
+- A failed payment (insufficient funds, 3-D Secure failure, closed authentication screen) can retry with the same order number.
+- Duplicate blocking applies to card payments only. Bank transfer and PayPal still store and report the order number.
+- `order_no` appears in the completion redirect, the payment API and Webhook `payment` object, and the purchaser list. The customer can edit `order_no` and `quantity` in the URL, so reconcile Webhook values against the seller's order data.
+
 ## Application URL parameters
 
 Create and get responses can contain `url_application`. Return that URL instead of constructing one.
@@ -45,7 +63,8 @@ When the user wants prefilled form values, append query parameters to the return
 | Parameter | Applies to | Meaning |
 |---|---|---|
 | `remark_n=value` | One-time, recurring, installment, registration, and plan-selection forms | Prefill remark field `n`. `n` is 1-based and matches the plan-edit table (`notes[0]` → `remark_1`). Max 500 characters before encoding. |
-| `quantity=` | Recurring application URLs | Prefill contracted units when the plan accepts a unit count (`contracted_units`). |
+| `quantity=` | One-time product and recurring application URLs | Prefill the purchase quantity (one-time) or contracted units (recurring, when the plan accepts a unit count). |
+| `order_no=value` | One-time product URLs with `keep_order_no` enabled | Attach the seller's order number so the same order cannot be paid twice. Must match the allowed characters and 64-character limit; an invalid value is ignored. |
 
 Prefills are editable by the customer; they cannot be made read-only. Unknown `remark_n` indexes are ignored. Mail merge tags `${remarks_name_N}` / `${remarks_value_N}` are 0-based (`remark_1` → `${remarks_value_0}`) and also work in cancellation-complete mail.
 

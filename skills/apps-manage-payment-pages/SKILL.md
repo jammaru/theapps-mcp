@@ -25,17 +25,19 @@ Do not choose a family from the price or name alone. Use the intended billing be
 2. Establish the plan name, amount, billing behavior, payment mode, language, and enabled payment platform.
 3. Treat `stripe_env_id: "1"` as a test-mode payment setting, not an API sandbox. The resource is still created in the connected Apps account.
 4. Build the smallest valid body. Follow the MCP input schema for required and conditional fields.
+   When the user asks for one-click purchases, also set `allow_duplicate: true` and `use_one_click: true`; add `keep_order_no: true` only when order-number deduplication is wanted. Such a plan cannot use `waiting_list`.
 5. Call the create tool with `dry_run: true`.
 6. Check the method, `/v1/client/...` path, body, payment mode, price, and billing cycle. Explain the pending effect.
 7. Call the same tool with `confirm: true` only after the user approves that preview.
-8. Return the created identifier, `url_application` when present, and a concise settings summary. If the user wants prefilled remarks or recurring unit count, append `remark_n` / `quantity` to that URL instead of reconstructing it.
+8. Return the created identifier, `url_application` when present, and a concise settings summary. If the user wants prefilled remarks, a prefilled quantity, or an order number, append `remark_n` / `quantity` / `order_no` to that URL instead of reconstructing it.
 
 ## Update
 
 1. Fetch the existing plan (`apps_get_product`, `apps_get_paid_plan`, or `apps_get_installment_plan`).
 2. Send only fields that should change.
 3. Do not change immutable fields. For installment plans, do not change `price` or `billing_cycle`.
-4. Preview with `dry_run: true`, explain the difference, then execute with `confirm: true` after approval.
+4. For one-click settings, fetch the plan first and omit `use_one_click` / `keep_order_no` when they should stay as they are. Disabling one-click affects every customer of that plan.
+5. Preview with `dry_run: true`, explain the difference, then execute with `confirm: true` after approval.
 
 ## Delete
 

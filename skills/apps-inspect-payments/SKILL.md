@@ -36,3 +36,4 @@ Return the payment family, status, amount and time when present, the identifier 
 - Apps-mcp does not provide customer-list search, payment execution, refund, cancellation, or lump-sum early-repayment tools.
 - Upcoming charges shown as scheduled (「予定」) on the administration contract screen are not a documented Apps API filter. Use the matching payment list/get tools for recorded payments.
 - Do not call product / paid / installment plan tools from this skill. Page configuration belongs to `apps-manage-payment-pages`.
+- `order_no` helps reconcile a one-time payment with the seller's order, but it is not a lookup key for `apps_get_charge`. Use `payment_id` for API lookups.

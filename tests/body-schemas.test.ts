@@ -68,6 +68,52 @@ describe("product body schemas", () => {
     expect(data.notes).toEqual([{ name: "管理番号", require: false }]);
   });
 
+  test("accepts one-click purchase flags for repeat buyers", () => {
+    const data = expectOk(productCreateBody, {
+      ...minimal,
+      allow_duplicate: true,
+      use_one_click: true,
+      keep_order_no: true,
+    }) as Record<string, unknown>;
+    expect(data.use_one_click).toBe(true);
+    expect(data.keep_order_no).toBe(true);
+  });
+
+  test("rejects one-click without allow_duplicate, card platform, or with waiting_list", () => {
+    expectFail(productCreateBody, { ...minimal, use_one_click: true }, "allow_duplicate");
+    expectFail(
+      productCreateBody,
+      { ...minimal, platform: { paypal: true }, allow_duplicate: true, use_one_click: true },
+      "platform",
+    );
+    expectFail(
+      productCreateBody,
+      { ...minimal, allow_duplicate: true, use_one_click: true, waiting_list: { type: 1 } },
+      "waiting_list",
+    );
+  });
+
+  test("requires use_one_click for keep_order_no", () => {
+    expectFail(
+      productCreateBody,
+      { ...minimal, allow_duplicate: true, keep_order_no: true },
+      "keep_order_no",
+    );
+    expectOk(productCreateBody, { ...minimal, allow_duplicate: true, use_one_click: true });
+  });
+
+  test("update accepts one-click flags without the full plan state", () => {
+    expectOk(productUpdateBody, { use_one_click: true });
+    expectOk(productUpdateBody, { keep_order_no: true });
+    expectOk(productUpdateBody, { use_one_click: false });
+    expectFail(
+      productUpdateBody,
+      { allow_duplicate: false, use_one_click: true },
+      "allow_duplicate",
+    );
+    expectFail(productUpdateBody, { use_one_click: false, keep_order_no: true }, "keep_order_no");
+  });
+
   test("rejects create missing platform or all-false platform", () => {
     expectFail(productCreateBody, { ...minimal, platform: undefined }, "platform");
     const { platform: _p, ...noPlatform } = minimal;
